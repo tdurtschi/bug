@@ -6,9 +6,9 @@
   "license": "MIT",
   "scripts": {
     "webpack": "./node_modules/.bin/webpack",
-    "copyServer": "cp",
-    "build": "npm-run-all webpack",
-    "start": "node ./src/server"
+    "build": "webpack",
+    "start": "webpack-dev-server",
+    "startExpress": "node ./src/server"
   },
   "dependencies": {
     "express": "^4.17.1",
@@ -27,6 +27,7 @@
     "webpack": "^4.32.2",
     "webpack-cli": "^3.3.2",
     "webpack-dev-middleware": "^3.7.0",
+    "webpack-dev-server": "^3.5.1",
     "webpack-hot-middleware": "^2.25.0"
   }
 }
