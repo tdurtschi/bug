@@ -1,0 +1,17 @@
+Tasks
+	- I want to see a bug on a canvas
+	- I want to see a bug move across the canvas without hitting the wall
+	- The bug climbs on a 90 degree line
+
+Aspects
+	- Portability
+		- The app doesn't depend on anything but a canvas
+		- Bug logic is separated from visual logic
+		- The app builds into a single/several .js files that can be called in vanillajs.
+		- Performant with many entities.
+
+	- Testing
+		- Full TDD
+		
+	- visual
+		- Realistic animated images.
