@@ -25,18 +25,19 @@ class Bug implements Entity{
 			}, initialState)
 	}
 
-	public update(input?: Entity[]): Bug {
+	public update(inputs?: Entity[]): Bug {
 		const {
 			pos, 
 			direction, 
 			speed} = this.state
 
-		this.state.pos = pos.add(direction.multiplyScalar(speed))
-
-		if(input && input.find(i => i.type === "WALL"))
+		if(inputs && inputs.find(i => i.type === "WALL"))
 		{
 			this.state.direction = direction.multiplyScalar(-1)
 		}
+		
+		this.state.pos = pos.clone().add(direction.clone().multiplyScalar(speed))
+
 		return this
 	}
 }

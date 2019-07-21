@@ -1,16 +1,21 @@
 import Entity from "../entity"
 import Bug from "../bug"
-import BugUIState from "./bug-state";
+import BugUIState from "./bug-ui-state";
 
 export interface BugUIOption {
-	target: string;
+	target: string
+}
+
+export interface UIEntity {
+	id: number
+	update: () => any
 }
 
 export class BugUI{
 	canvas: HTMLCanvasElement
 	ctx: CanvasRenderingContext2D
 	entities: Entity[]
-	uiEntities: [{id: number, update: () => any}]
+	uiEntities: UIEntity[]
 	x: number
 	images: Array<HTMLImageElement>
 
@@ -19,19 +24,34 @@ export class BugUI{
 		this.ctx = this.canvas.getContext("2d")
 		this.entities = [new Bug(0)]
 		this.uiEntities = [new BugUIState(0)]
-		this.beginLoop()
+		this.beginLoop(0)
 		this.x = 240
 	}
 
-	beginLoop() {
-		this.entities.forEach(entity => entity.update())
-		this.uiEntities.forEach(entity => entity.update())
+	beginLoop(timeMs: number) {
+		this.updateEntities(timeMs)
 		this.render(this.entities)
 		this.reQueue()
 	}
 
+	updateEntities(timeMs: number) { 
+		const frame = this.getFrame(timeMs)
+		this.entities.forEach(entity => {
+			if(frame % 4 == 0){
+				entity.update()
+			}
+		})
+		this.uiEntities.forEach(entity => {
+			if(frame % 15 == 0){
+				entity.update()
+			}
+		})
+	}
+
+	getFrame = (timeMs: number): number => Math.floor((timeMs / (16 + 2/3)))
+
 	reQueue() {
-		window.requestAnimationFrame(() => this.beginLoop())
+		window.requestAnimationFrame((time) => this.beginLoop(time))
 	}
 
 	clear() {
@@ -57,18 +77,18 @@ export class BugUI{
 		if(entity.type === "BUG") return () => {
 				const bug = (entity as Bug)
 				const uiBug = this.uiEntities.find(ui => ui.id == entity.id) as BugUIState
-				const {pos, direction} = bug.state;
-				const {sizeX, sizeY} = {sizeX: 40, sizeY: 40};
+				const {pos, direction} = bug.state
+				const {sizeX, sizeY} = {sizeX: 35, sizeY: 20}
 				const image = uiBug.getImage()
 				const ctx = this.ctx
-				ctx.save();
-				ctx.translate( pos.x+sizeX/2,this.fixY(pos.y)-sizeY/2 );
+				ctx.save()
+				ctx.translate(pos.x,this.fixY(pos.y))
+				ctx.translate(0, -sizeY)
 				if(direction.x > 0) {
-					ctx.scale(-1,1);
+					ctx.scale(-1,1)
 				}
-				ctx.rotate(direction.angle());
-				ctx.drawImage(image, -sizeX/2, -sizeY/2);
-				ctx.restore();
+				ctx.drawImage(image, 0, 0, sizeX, sizeY)
+				ctx.restore()
 		}
 		else return (): void => null
 	}

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { BugUI } from '../../bug/bug-ui/bug-ui';
+import { BugUI } from '../../bug/bug-ui/ui-engine';
 
 class App extends React.Component {
 	componentDidMount() {
