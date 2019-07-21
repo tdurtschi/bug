@@ -1,5 +1,16 @@
 import * as React from 'react';
+import { BugUI } from '../../bug/bug-ui/bug-ui';
 
-export default () => (
-	<div>Hello World!</div>
-)
+class App extends React.Component {
+	componentDidMount() {
+		new BugUI({target: "bug-ui"})
+	}
+
+	render() {
+		return (<>
+			<canvas id={"bug-ui"} height={400} width={400}></canvas>
+		</>);
+	}
+}
+
+export default App

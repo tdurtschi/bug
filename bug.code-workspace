@@ -1,0 +1,21 @@
+{
+	"folders": [
+		{
+			"path": "C:\\code\\PersonalSite\\PersonalSite\\Scripts"
+		},
+		{
+			"path": "."
+		},
+		{
+			"path": "C:\\code\\PersonalSite\\PersonalSite\\spec"
+		}
+	],
+	"settings": {
+		"files.exclude": {
+			"**/.classpath": true,
+			"**/.project": true,
+			"**/.settings": true,
+			"**/.factorypath": true
+		}
+	}
+}
