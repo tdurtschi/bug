@@ -1,10 +1,18 @@
 import "jasmine"
 import Bug from "../src/bug/bug"
-import Wall from "../src/bug/wall"
+import Wall from "../src/wall/wall"
 import {vectorEquals} from "../src/util"
 import Victor from "victor"
+import {BugMode} from "../src/bug/bugConstants"
 
 describe("Bug", () => {
+	describe("Default bug", () => {
+		it("Is in walking mode.", () => {
+			const bug = new Bug()
+			expect(bug.state.mode).toEqual(BugMode.WALKING)
+		})
+	})
+
 	it("can be created with an existing state", () => {
 		const initialState = {
 			pos: new Victor(10, 10)
@@ -22,36 +30,36 @@ describe("Bug", () => {
 		expect(typeof(bug.update) === "function").toBe(true)
 	})
 
-	it("travels at a given speed", () => {
-		const bug = new Bug(0, {
-			direction: new Victor(1, 0),
-			speed: 17
+	describe("Walking mode", () => {
+		it("Travels at a given speed", () => {
+			const bug = new Bug(0, {
+				direction: new Victor(1, 0),
+				speed: 17
+			})
+			expect(bug.update().state.pos.x).toEqual(17)
 		})
-		expect(bug.update().state.pos.x).toEqual(17)
+		
+		describe("directions", () => {
+			it("travels in +x direction when 'direction' is (1,0)", () => {
+				const bug = new Bug(0, {direction: new Victor(1, 0)})
+				
+				expect(bug.update().state.pos.x).toEqual(1)
+			})
+			it("travels in -x direction when 'direction' is (-1,0)", () => {
+				const bug = new Bug(0, {direction: new Victor(-1, 0)})
+				
+				expect(bug.update().state.pos.x).toEqual(-1)
+			})
+		})
 	})
 
-	describe("directions", () => {
-		it("travels in +x direction when 'direction' is (1,0)", () => {
-			const bug = new Bug(0, {direction: new Victor(1, 0)})
-			
-			expect(bug.update().state.pos.x).toEqual(1)
-		})
-		it("travels in -x direction when 'direction' is (-1,0)", () => {
-			const bug = new Bug(0, {direction: new Victor(-1, 0)})
-			
-			expect(bug.update().state.pos.x).toEqual(-1)
-		})
-
-		xit("can rotate at 90 degrees", () => {
-			const bug = new Bug(0, {behaviorQueue:[{type:"TURN", params:"LEFT"}]})
-
-			expect(bug.update().state.direction).toEqual(new Victor(0, 1))
-		})
-
-		xit("can rotate at -90 degrees", () => {
-			const bug = new Bug(0, {behaviorQueue:[{type:"TURN", params:"RIGHT"}]})
-
-			expect(vectorEquals(bug.update().state.direction, new Victor(0, -1))).toBeTruthy()
+	describe("Stopped mode", () => {
+		it("Doesn't change its coordinates", () => {
+			const bug = new Bug(0, {
+				mode: BugMode.STOPPED
+			})
+			expect(bug.update().state.pos.x).toEqual(0)
+			expect(bug.update().state.pos.y).toEqual(0)
 		})
 	})
 

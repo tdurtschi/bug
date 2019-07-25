@@ -1,11 +1,13 @@
-import Entity from "./entity"
+import Entity from "../entity"
 import Victor from "victor"
+import {BugMode} from "./bugConstants"
 
 interface BugState{
 	pos: Victor
 	direction: Victor
 	speed: number
 	behaviorQueue: any
+	mode: BugMode
 }
 
 class Bug implements Entity{
@@ -21,15 +23,25 @@ class Bug implements Entity{
 				pos: new Victor(0,0),
 				direction: new Victor(1,0),
 				speed: 1,
-				behaviorQueue: []
+				behaviorQueue: [],
+				mode: BugMode.WALKING
 			}, initialState)
 	}
 
 	public update(inputs?: Entity[]): Bug {
+		if(this.state.mode == BugMode.WALKING){
+			this.walk(inputs)
+		}
+
+		return this
+	}
+
+	private walk(inputs?: Entity[]){
 		const {
 			pos, 
 			direction, 
-			speed} = this.state
+			speed
+		} = this.state
 
 		if(inputs && inputs.find(i => i.type === "WALL"))
 		{
@@ -37,8 +49,6 @@ class Bug implements Entity{
 		}
 		
 		this.state.pos = pos.clone().add(direction.clone().multiplyScalar(speed))
-
-		return this
 	}
 }
 
