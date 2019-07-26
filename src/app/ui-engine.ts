@@ -4,7 +4,8 @@ import BugUIState from "../bug/bug-ui/bug-ui-state";
 import EntityUpdater from "./entity-updater";
 
 export interface BugUIOption {
-	target: string
+	target: string,
+	entities: Entity[]
 }
 
 export interface UIEntity {
@@ -12,7 +13,7 @@ export interface UIEntity {
 	update: () => any
 }
 
-export class BugUI{
+export class BugUI {
 	canvas: HTMLCanvasElement
 	ctx: CanvasRenderingContext2D
 	entities: Entity[]
@@ -21,10 +22,10 @@ export class BugUI{
 	images: Array<HTMLImageElement>
 	entityUpdater: EntityUpdater
 
-	constructor(args: BugUIOption){
+	constructor(args: BugUIOption) {
 		this.canvas = (document.getElementById(args.target) as HTMLCanvasElement)
 		this.ctx = this.canvas.getContext("2d")
-		this.entities = [new Bug(0)]
+		this.entities = args.entities
 		this.uiEntities = [new BugUIState(0)]
 		this.entityUpdater = new EntityUpdater()
 		this.beginLoop(0)
@@ -36,18 +37,18 @@ export class BugUI{
 		this.reQueue()
 	}
 
-	updateUIEntities(timeMs: number) { 
+	updateUIEntities(timeMs: number) {
 		const frame = this.getFrame(timeMs)
 		this.entityUpdater.update(this.entities, frame)
 
 		this.uiEntities.forEach(entity => {
-			if(frame % 15 == 0){
+			if (frame % 15 == 0) {
 				entity.update()
 			}
 		})
 	}
 
-	getFrame = (timeMs: number): number => Math.floor((timeMs / (16 + 2/3)))
+	getFrame = (timeMs: number): number => Math.floor((timeMs / (16 + 2 / 3)))
 
 	reQueue() {
 		window.requestAnimationFrame((time) => this.beginLoop(time))
@@ -56,7 +57,7 @@ export class BugUI{
 	clear() {
 		var ctx = this.ctx
 		ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
-		ctx.rect(0,0, this.canvas.width, this.canvas.height)
+		ctx.rect(0, 0, this.canvas.width, this.canvas.height)
 		ctx.stroke()
 	}
 
@@ -68,26 +69,31 @@ export class BugUI{
 		})
 	}
 
-	fixY(y: number){
+	fixY(y: number) {
 		return this.canvas.height - y
 	}
 
 	getRendererFor(entity: Entity) {
-		if(entity.type === "BUG") return () => {
-				const bug = (entity as Bug)
-				const uiBug = this.uiEntities.find(ui => ui.id == entity.id) as BugUIState
-				const {pos, direction} = bug.state
-				const {sizeX, sizeY} = {sizeX: 35, sizeY: 20}
-				const image = uiBug.getImage()
-				const ctx = this.ctx
-				ctx.save()
-				ctx.translate(pos.x,this.fixY(pos.y))
-				ctx.translate(0, -sizeY)
-				if(direction.x > 0) {
-					ctx.scale(-1,1)
-				}
-				ctx.drawImage(image, 0, 0, sizeX, sizeY)
-				ctx.restore()
+		if (entity.type === "BUG") return () => {
+			const bug = (entity as Bug)
+			const uiBug = this.uiEntities.find(ui => ui.id == entity.id) as BugUIState
+			const { pos, direction } = bug.state
+			const size = bug.state.size
+			const image = uiBug.getImage()
+			const ctx = this.ctx
+			ctx.fillRect(pos.x, pos.y, 5, 5)
+			ctx.save()
+			ctx.translate(pos.x, this.fixY(pos.y))
+			ctx.translate(0, -size.y)
+			if (direction.x > 0) {
+				ctx.scale(-1, 1)
+			}
+			ctx.drawImage(image, 0, 0, size.x, size.y)
+			ctx.restore()
+		}
+		else if (entity.type === "WALL") return () => {
+			const ctx = this.ctx
+			ctx.fillRect(entity.state.pos.x, entity.state.pos.y, entity.state.size.x, entity.state.size.y)
 		}
 		else return (): void => null
 	}

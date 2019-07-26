@@ -1,9 +1,8 @@
-import Entity from "../entity"
+import Entity, { EntityState } from "../entity"
 import Victor from "victor"
 import {BugMode} from "./bugConstants"
 
-interface BugState{
-	pos: Victor
+interface BugState extends EntityState{
 	direction: Victor
 	speed: number
 	behaviorQueue: any
@@ -21,6 +20,7 @@ class Bug implements Entity{
 		this.state = Object.assign(
 			{
 				pos: new Victor(0,0),
+				size: new Victor(30, 20),
 				direction: new Victor(1,0),
 				speed: 1,
 				behaviorQueue: [],
