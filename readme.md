@@ -1,5 +1,15 @@
 # Bug
-Bug is a game loop that models simple living entities.
+Bug is a simulation that models a weevil walking around.
+
+## Setup
+### Prerequisites
+* NodeJS
+* Yarn
+### Install Dependencies
+from terminal, run `yarn` to install all node dependencies.
 
 ## Run it
 from terminal, `yarn start` to run a dev server.
+
+## Tests
+from terminal, `yarn test` to run the jasmine test suite.
