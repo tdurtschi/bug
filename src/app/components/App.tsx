@@ -1,24 +1,27 @@
 import * as React from 'react';
-import { BugUI } from '../ui-engine';
-import Bug from '../../bug/bug';
-import Wall from '../../wall/wall';
-import Victor from "victor"
+import { UI } from '../ui-engine';
 
-class App extends React.Component {
+interface Props{
+	startUIEngine: () => UI
+}
+
+interface State{
+	bugUi: UI
+}
+
+class App extends React.Component<Props, State> {
 	componentDidMount() {
-		new BugUI({
-			target: "bug-ui",
-			entities: [
-				new Bug(),
-				new Wall(0, {pos: new Victor(80, 0)})
-			]
-		})
+		this.state = {bugUi: this.props.startUIEngine()}
 	}
 
 	render() {
-		return (<>
-			<canvas id={"bug-ui"} height={400} width={400}></canvas>
-		</>);
+		return (
+		<div>
+			<canvas id="bug-ui" height={400} width={400}></canvas>
+			<button id="pause-button" onClick={() => this.state.bugUi.togglePause()}>
+				PAUSE
+			</button>
+		</div>);
 	}
 }
 

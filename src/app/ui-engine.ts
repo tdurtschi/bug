@@ -13,7 +13,11 @@ export interface UIEntity {
 	update: () => any
 }
 
-export class BugUI {
+export interface UI{
+	togglePause: () => void
+}
+
+export class BugUI implements UI{
 	canvas: HTMLCanvasElement
 	ctx: CanvasRenderingContext2D
 	entities: Entity[]
@@ -21,6 +25,7 @@ export class BugUI {
 	x: number
 	images: Array<HTMLImageElement>
 	entityUpdater: EntityUpdater
+	isPaused: boolean = false
 
 	constructor(args: BugUIOption) {
 		this.canvas = (document.getElementById(args.target) as HTMLCanvasElement)
@@ -32,8 +37,11 @@ export class BugUI {
 	}
 
 	beginLoop(timeMs: number) {
-		this.updateUIEntities(timeMs)
-		this.render(this.entities)
+		if(!this.isPaused){
+			this.updateUIEntities(timeMs)
+			this.render(this.entities)
+		}
+		
 		this.reQueue()
 	}
 
@@ -74,17 +82,17 @@ export class BugUI {
 	}
 
 	getRendererFor(entity: Entity) {
+		const ctx = this.ctx
 		if (entity.type === "BUG") return () => {
-			const bug = (entity as Bug)
-			const uiBug = this.uiEntities.find(ui => ui.id == entity.id) as BugUIState
-			const { pos, direction } = bug.state
-			const size = bug.state.size
+						const uiBug = this.uiEntities.find(ui => ui.id == entity.id) as BugUIState
 			const image = uiBug.getImage()
-			const ctx = this.ctx
-			ctx.fillRect(pos.x, pos.y, 5, 5)
+			
+			const bug = (entity as Bug)
+			const { pos, direction, size } = bug.state
+			
+			ctx.fillRect(pos.x, pos.y, size.x, size.y)
 			ctx.save()
 			ctx.translate(pos.x, this.fixY(pos.y))
-			ctx.translate(0, -size.y)
 			if (direction.x > 0) {
 				ctx.scale(-1, 1)
 			}
@@ -92,10 +100,13 @@ export class BugUI {
 			ctx.restore()
 		}
 		else if (entity.type === "WALL") return () => {
-			const ctx = this.ctx
 			ctx.fillRect(entity.state.pos.x, entity.state.pos.y, entity.state.size.x, entity.state.size.y)
 		}
 		else return (): void => null
+	}
+
+	public togglePause() {
+		this.isPaused = !this.isPaused
 	}
 }
 

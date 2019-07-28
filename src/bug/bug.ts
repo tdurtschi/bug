@@ -24,7 +24,7 @@ class Bug implements Entity{
 				direction: new Victor(1,0),
 				speed: 1,
 				behaviorQueue: [],
-				mode: BugMode.WALKING
+				mode: BugMode.WALKING,
 			}, initialState)
 	}
 
