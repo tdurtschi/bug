@@ -18,7 +18,7 @@ export default class EntityUpdater {
 				otherState.pos.x < state.pos.x + state.size.x &&
 				otherState.pos.x + otherState.size.x > state.pos.x &&
 				otherState.pos.y < state.pos.y + state.size.y &&
-				otherState.size.x + otherState.pos.y > state.pos.y) {
+				otherState.size.y + otherState.pos.y > state.pos.y) {
 				collisions.push(obj);
 			}
 		});
