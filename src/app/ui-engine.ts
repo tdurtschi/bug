@@ -107,6 +107,9 @@ export class BugUI implements UI{
 
 	public togglePause() {
 		this.isPaused = !this.isPaused
+		if(this.isPaused){
+			console.log(this.entities)
+		}
 	}
 }
 
