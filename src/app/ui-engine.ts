@@ -90,17 +90,23 @@ export class BugUI implements UI{
 			const bug = (entity as Bug)
 			const { pos, direction, size } = bug.state
 			
-			ctx.fillRect(pos.x, pos.y, size.x, size.y)
 			ctx.save()
 			ctx.translate(pos.x, this.fixY(pos.y))
+			ctx.translate(0, -size.y)
 			if (direction.x > 0) {
+				ctx.translate(size.x, 0)
 				ctx.scale(-1, 1)
 			}
 			ctx.drawImage(image, 0, 0, size.x, size.y)
 			ctx.restore()
 		}
 		else if (entity.type === "WALL") return () => {
-			ctx.fillRect(entity.state.pos.x, entity.state.pos.y, entity.state.size.x, entity.state.size.y)
+			ctx.save()
+			const {pos, size} = entity.state
+			ctx.translate(pos.x, this.fixY(pos.y))
+			ctx.translate(0, -size.y)
+			ctx.fillRect(0, 0, size.x, size.y)
+			ctx.restore()
 		}
 		else return (): void => null
 	}

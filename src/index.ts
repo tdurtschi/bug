@@ -10,8 +10,10 @@ import Wall from './wall/wall';
 const startUIEngine = (): UI => new BugUI({
 	target: "bug-ui",
 	entities: [
-		new Bug(0, {pos: new Victor(0, 20)}),
-		new Wall(1, {pos: new Victor(80, 0)})
+		new Bug(0, {pos: new Victor(50, 0)}),
+		new Wall(1, {pos: new Victor(-5, 0), size: new Victor(10, 400)}),
+		new Wall(1, {pos: new Victor(395, 0), size: new Victor(10, 400)}),
+		new Wall(1, {pos: new Victor(180, 0), size: new Victor(40, 150)})
 	]
 })
 
