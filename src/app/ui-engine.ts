@@ -26,6 +26,7 @@ export class BugUI implements UI{
 	images: Array<HTMLImageElement>
 	entityUpdater: EntityUpdater
 	isPaused: boolean = false
+	frame: number = 0
 
 	constructor(args: BugUIOption) {
 		this.canvas = (document.getElementById(args.target) as HTMLCanvasElement)
@@ -34,20 +35,29 @@ export class BugUI implements UI{
 		this.uiEntities = [new BugUIState(0)]
 		this.entityUpdater = new EntityUpdater()
 		this.beginLoop = this.beginLoop.bind(this)
+		this.update = this.update.bind(this)
 		this.beginLoop(0)
+		setInterval(this.update, 17)
+	}
+
+	update() {
+		this.frame = this.frame + 1
+		if(!this.isPaused){
+			this.updateUIEntities(this.frame)
+		}
 	}
 
 	beginLoop(timeMs: number) {
 		if(!this.isPaused){
-			this.updateUIEntities(timeMs)
+			//this.updateUIEntities(timeMs)
 			this.render(this.entities)
 		}
 		
 		this.reQueue()
 	}
 
-	updateUIEntities(timeMs: number) {
-		const frame = this.getFrame(timeMs)
+	updateUIEntities(frame: number) {
+		//const frame = this.getFrame(timeMs)
 		this.entityUpdater.update(this.entities, frame)
 
 		this.uiEntities.forEach(entity => {
