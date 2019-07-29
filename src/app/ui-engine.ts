@@ -33,6 +33,7 @@ export class BugUI implements UI{
 		this.entities = args.entities
 		this.uiEntities = [new BugUIState(0)]
 		this.entityUpdater = new EntityUpdater()
+		this.beginLoop = this.beginLoop.bind(this)
 		this.beginLoop(0)
 	}
 
@@ -59,7 +60,7 @@ export class BugUI implements UI{
 	getFrame = (timeMs: number): number => Math.floor((timeMs / (16 + 2 / 3)))
 
 	reQueue() {
-		window.requestAnimationFrame((time) => this.beginLoop(time))
+		window.requestAnimationFrame(this.beginLoop)
 	}
 
 	clear() {
@@ -84,7 +85,7 @@ export class BugUI implements UI{
 	getRendererFor(entity: Entity) {
 		const ctx = this.ctx
 		if (entity.type === "BUG") return () => {
-						const uiBug = this.uiEntities.find(ui => ui.id == entity.id) as BugUIState
+			const uiBug = this.uiEntities.find(ui => ui.id == entity.id) as BugUIState
 			const image = uiBug.getImage()
 			
 			const bug = (entity as Bug)
@@ -101,8 +102,8 @@ export class BugUI implements UI{
 			ctx.restore()
 		}
 		else if (entity.type === "WALL") return () => {
-			ctx.save()
 			const {pos, size} = entity.state
+			ctx.save()
 			ctx.translate(pos.x, this.fixY(pos.y))
 			ctx.translate(0, -size.y)
 			ctx.fillRect(0, 0, size.x, size.y)

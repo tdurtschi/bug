@@ -46,10 +46,11 @@ class Bug implements Entity{
 		if(inputs && inputs.find(i => i.type === "WALL"))
 		{
 			console.log(`Bug hit a wall!`)
-			this.state.direction = direction.multiplyScalar(-1)
+			direction.multiplyScalar(-1)
 		}
 		
-		this.state.pos = pos.clone().add(direction.clone().multiplyScalar(speed))
+		this.state.pos.addScalarX(direction.x * speed)
+		this.state.pos.addScalarY(direction.y * speed)
 	}
 }
 
