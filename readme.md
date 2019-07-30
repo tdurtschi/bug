@@ -1,5 +1,5 @@
 # Bug
-Bug is a simulation that models a weevil walking around.
+Bug is a simulation that models a weevil walking around an HTML canvas.
 
 ## Setup
 ### Prerequisites

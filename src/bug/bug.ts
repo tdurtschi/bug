@@ -45,7 +45,6 @@ class Bug implements Entity{
 
 		if(inputs && inputs.find(i => i.type === "WALL"))
 		{
-			console.log(`Bug hit a wall!`)
 			direction.multiplyScalar(-1)
 		}
 		

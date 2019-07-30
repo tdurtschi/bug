@@ -4,9 +4,6 @@ Goals for this project:
 	- Remain as clean as possible.
 
 Tasks
-	- Create Readme.md
-	- I want to see a bug on a canvas
-	- I want to see a bug move across the canvas without hitting the wall
 	- The bug climbs on a 90 degree line
 
 Aspects
