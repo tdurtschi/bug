@@ -4,6 +4,7 @@ Goals for this project:
 	- Remain as clean as possible.
 
 Tasks
+	- Make the tests more performant when not running UI test
 	- The bug climbs on a 90 degree line
 
 Aspects

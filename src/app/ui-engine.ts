@@ -2,6 +2,7 @@ import Entity from "../entity"
 import Bug from "../bug/bug"
 import BugUIState from "../bug/bug-ui/bug-ui-state";
 import EntityUpdater from "./entity-updater";
+import Tree from "../tree/tree";
 
 export interface BugUIOption {
 	target: string,
@@ -49,7 +50,6 @@ export class BugUI implements UI{
 
 	beginLoop(timeMs: number) {
 		if(!this.isPaused){
-			//this.updateUIEntities(timeMs)
 			this.render(this.entities)
 		}
 		
@@ -57,7 +57,6 @@ export class BugUI implements UI{
 	}
 
 	updateUIEntities(frame: number) {
-		//const frame = this.getFrame(timeMs)
 		this.entityUpdater.update(this.entities, frame)
 
 		this.uiEntities.forEach(entity => {
@@ -117,6 +116,16 @@ export class BugUI implements UI{
 			ctx.translate(pos.x, this.fixY(pos.y))
 			ctx.translate(0, -size.y)
 			ctx.fillRect(0, 0, size.x, size.y)
+			ctx.restore()
+		}
+		else if (entity.type === "TREE") return () => {
+			const {pos, size} = entity.state
+			const tree = (entity as Tree).state.graph
+			ctx.save()
+			ctx.translate(pos.x, this.fixY(pos.y))
+			ctx.moveTo(0, 0)
+			ctx.lineTo(Math.floor(tree.node.x), Math.floor(-tree.node.y))
+			ctx.stroke()
 			ctx.restore()
 		}
 		else return (): void => null
