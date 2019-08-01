@@ -1,4 +1,4 @@
-import Entity from "../entity";
+import Entity from "../core/entity";
 
 export default class EntityUpdater {
 	public update(entities: Entity[], frame: number) {

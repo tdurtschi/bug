@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { UI } from '../ui-engine';
+import { Game } from '../game-engine';
 
 interface Props{
-	startUIEngine: () => UI
+	startUIEngine: () => Game
 }
 
 interface State{
-	bugUi: UI
+	bugUi: Game
 }
 
 class App extends React.Component<Props, State> {
