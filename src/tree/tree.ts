@@ -51,7 +51,7 @@ export class TreeStruct implements ITreeStruct {
 	}
 
 	update = () => {
-		const diff = (this.maxSize - this.node.y) / 100
+		const diff = (this.maxSize - this.node.y * (Math.pow(this.depth, 1.2))) / 100
 		this.node.addScalarY(Math.sin(this.node.direction()) * diff)
 		this.node.addScalarX(Math.cos(this.node.direction()) * diff)
 

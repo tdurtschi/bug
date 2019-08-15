@@ -28,7 +28,6 @@ class GameUI {
 		var ctx = this.ctx
 		ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
 		ctx.rect(0, 0, this.canvas.width, this.canvas.height)
-		//ctx.stroke()
 		ctx.beginPath()
 	}
 
@@ -68,6 +67,7 @@ class GameUI {
 			const { pos, size } = entity.state
 			const tree = (entity as Tree).state.graph
 			ctx.save()
+			ctx.strokeStyle = "green";
 			ctx.translate(pos.x, this.fixY(pos.y))
 			this.renderTree(tree, ctx)
 			ctx.restore()
