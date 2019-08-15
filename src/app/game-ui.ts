@@ -2,7 +2,7 @@ import BugUIState from "../bug/bug-ui/bug-ui-state";
 import Tree, { ITreeStruct } from "../tree/tree";
 import Entity from "../core/entity"
 import Bug from "../bug/bug"
-import { UIEntity, BugUIOption } from "./game-engine";
+import { UIEntity, GameEngineOptions } from "./game-engine";
 
 class GameUI {
 	canvas: HTMLCanvasElement
@@ -11,8 +11,7 @@ class GameUI {
 	images: Array<HTMLImageElement>
 	frame: number = 0
 
-	constructor(args: BugUIOption) {
-		console.log("I'm not null!")
+	constructor(args: GameEngineOptions) {
 		this.canvas = (document.getElementById(args.target) as HTMLCanvasElement)
 		this.ctx = this.canvas.getContext("2d")
 	}
@@ -29,7 +28,8 @@ class GameUI {
 		var ctx = this.ctx
 		ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
 		ctx.rect(0, 0, this.canvas.width, this.canvas.height)
-		ctx.stroke()
+		//ctx.stroke()
+		ctx.beginPath()
 	}
 
 	fixY(y: number) {
@@ -76,11 +76,14 @@ class GameUI {
 	}
 
 	renderTree(root: ITreeStruct, ctx: CanvasRenderingContext2D) {
+		const x = Math.floor(root.node.x),
+			y = Math.floor(root.node.y)
 		ctx.moveTo(0, 0)
-		ctx.lineTo(Math.floor(root.node.x), Math.floor(-root.node.y))
+		ctx.lineTo(x, -y)
 		ctx.stroke()
 
-		ctx.translate(root.node.x, -root.node.y)
+		ctx.save()
+		ctx.translate(x, -y)
 		if (root.left)
 		{
 			this.renderTree(root.left, ctx)
@@ -89,7 +92,7 @@ class GameUI {
 		{
 			this.renderTree(root.right, ctx)
 		}
-		ctx.translate(-root.node.x, root.node.y)
+		ctx.restore()
 	}
 }
 

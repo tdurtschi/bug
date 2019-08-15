@@ -3,7 +3,7 @@ import BugUIState from "../bug/bug-ui/bug-ui-state";
 import EntityUpdater from "./entity-updater";
 import GameUI from "./game-ui"
 
-export interface BugUIOption {
+export interface GameEngineOptions {
 	target: string,
 	entities: Entity[]
 }
@@ -27,9 +27,10 @@ export class GameEngine implements Game {
 	isPaused: boolean = false
 	frame: number = 0
 
-	constructor(args: BugUIOption) {
-		this.gameUI = new GameUI(args)
+	constructor(args: GameEngineOptions) {
 		this.entities = args.entities
+		this.gameUI = new GameUI(args)
+		
 		this.uiEntities = [new BugUIState(0)]
 		this.entityUpdater = new EntityUpdater()
 		this.beginLoop = this.beginLoop.bind(this)

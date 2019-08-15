@@ -1,66 +1,72 @@
-import Entity, {EntityState} from "../core/entity"
+import Entity, { EntityState } from "../core/entity"
 import Victor from "victor"
 
-export interface TreeState extends EntityState{
+export interface TreeState extends EntityState {
 	graph: ITreeStruct
 }
 
-export default class Tree implements Entity{
+export default class Tree implements Entity {
 	id: number
 	type: string = "TREE"
 	state: TreeStateInternal
-	
-	constructor(id?: number, initialState?: Partial<TreeState>){
+
+	constructor(id?: number, initialState?: Partial<TreeState>) {
 		this.id = id ? id : 0
-		
+
 		this.state = Object.assign(
 			{
-				pos: new Victor(1,0),
+				pos: new Victor(1, 0),
 				size: new Victor(0, 0),
-				direction: new Victor(1,0),
+				direction: new Victor(1, 0),
 				graph: new TreeStruct()
 			}, initialState)
 	}
-	
-	public update = (input: any) => {
-		this.updateGraph(this.state.graph)
-	}
 
-	public updateGraph = (root: TreeStruct): void => {
-		const diff = (root.maxSize - root.node.y) / 100
-		root.node.addScalarY(Math.sin(root.node.direction()) * diff)
-		root.node.addScalarX(Math.cos(root.node.direction()) * diff)
-		
-		if(root.left == null && root.right == null && root.node.magnitude() > 50){
-			root.left = new TreeStruct()
-			root.left.node.rotateDeg(root.node.direction() + 60)
-			root.right = new TreeStruct()
-			root.right.node.rotateDeg(root.node.direction() - 60)
-			console.log("branching!")
-		}
-		
-		if(root.left != null){
-			this.updateGraph(root.left)
-		}
-		if(root.right != null){
-			this.updateGraph(root.right)
-		}
+	public update = (input: any) => {
+		this.state.graph.update()
 	}
 }
-	
-interface TreeStateInternal extends TreeState{
+
+interface TreeStateInternal extends TreeState {
 	graph: TreeStruct
 }
 
-export interface ITreeStruct{
+export interface ITreeStruct {
 	left: TreeStruct | null
 	right: TreeStruct | null
 	node: Victor
+	depth: number
+	update: () => void
 }
 
-export class TreeStruct implements ITreeStruct{
+export class TreeStruct implements ITreeStruct {
 	left: TreeStruct | null = null
 	right: TreeStruct | null = null
-	node = new Victor(0,1)
+	node = new Victor(0, 1)
+	depth: number = 0
 	maxSize: number = 100
+
+	constructor(depth: number = 1) {
+		this.depth = depth
+	}
+
+	update = () => {
+		const diff = (this.maxSize - this.node.y) / 100
+		this.node.addScalarY(Math.sin(this.node.direction()) * diff)
+		this.node.addScalarX(Math.cos(this.node.direction()) * diff)
+
+		if (this.left == null && this.right == null && this.node.magnitude() > 35 && this.depth < 4)
+		{
+			this.left = new TreeStruct(this.depth + 1)
+			this.left.node.rotateDeg(this.node.direction() + 60)
+			this.right = new TreeStruct(this.depth + 1)
+			this.right.node.rotateDeg(this.node.direction() - 60)
+		}
+
+		this.updateLeft()
+		this.updateRight()
+	}
+
+	updateLeft = () => this.left && this.left.update()
+	updateRight = () => this.right && this.right.update()
 }

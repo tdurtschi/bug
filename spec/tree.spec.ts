@@ -22,12 +22,41 @@ describe("Tree", () => {
 		const tree = new Tree(),
 			{ graph } = tree.state
 
-		for (let i = 0; i < 100; i++) { tree.update([]) }
+		updateALot(tree, 100)
 
 		expect(graph.node.magnitude()).toBeLessThan(100)
 	})
 
+	it("Has a maximum depth", () => {
+		const tree = new Tree(),
+			{ graph } = tree.state
+
+		updateALot(tree, 1000)
+
+		const maxDepth = (tree: TreeStruct): number => {
+			let values = [tree.depth]
+			if (tree.left)
+				values.push(maxDepth(tree.left))
+
+			if (tree.right)
+				values.push(maxDepth(tree.right))
+
+			return Math.max(...values)
+		}
+
+		expect(maxDepth(graph)).toBeLessThan(5)
+	})
+
 	describe("Child nodes", () => {
+		it("Get a larger depth than the parent", () => {
+			const tree = new Tree(), { graph } = tree.state
+
+			updateALot(tree, 100)
+			expect(graph.depth).toEqual(1)
+			expect(graph.left.depth).toEqual(2)
+			expect(graph.right.depth).toEqual(2)
+		})
+
 		it("Grows if it exists.", () => {
 			const tree = new Tree(), { graph } = tree.state
 
@@ -41,4 +70,8 @@ describe("Tree", () => {
 			expect(graph.right.node.magnitude()).toBeGreaterThan(rightMag)
 		})
 	})
+
+	const updateALot = (tree: Tree, numTimes: number = 100) => {
+		for (let i = 0; i < numTimes; i++) { tree.update([]) }
+	}
 })

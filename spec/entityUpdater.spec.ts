@@ -1,6 +1,7 @@
 import Bug from "../src/bug/bug"
 import EntityUpdater from "../src/app/entity-updater"
 import Victor from "victor"
+import Tree from "../src/tree/tree";
 
 describe("Entity Updater", () => {
 	it("Updates all the Entities", () => {
@@ -21,6 +22,13 @@ describe("Entity Updater", () => {
 
 		new Array(4, 5, 6, 7).forEach(frame => entityUpdater.update(entities, frame))
 		expect(entities[0].state.pos.x).toEqual(2)
+	})
+
+	it("Updates trees every 30 frames", () => {
+		const entities = [new Tree()]
+		const entityUpdater = new EntityUpdater()
+
+		new Array(0, 1, 2, 3).forEach(frame => entityUpdater.update(entities, frame))
 	})
 
 	describe("Collision Detection", () => {

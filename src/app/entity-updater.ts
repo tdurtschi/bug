@@ -3,13 +3,18 @@ import Entity from "../core/entity";
 export default class EntityUpdater {
 	public update(entities: Entity[], frame: number) {
 		entities.forEach(entity => {
-			if (frame % 4 == 0) {
+			if (frame % 4 == 0 && entity.type == "BUG")
+			{
+				entity.update(this.getCollisions(entity, entities))
+			}
+			if (frame % 2 == 0 && entity.type == "TREE")
+			{
 				entity.update(this.getCollisions(entity, entities))
 			}
 		})
 	}
 
-	private getCollisions = (entity: Entity, otherEntities: Entity[]): Entity[]  => {
+	private getCollisions = (entity: Entity, otherEntities: Entity[]): Entity[] => {
 		const state = entity.state;
 		const collisions: Entity[] = [];
 		otherEntities.forEach(function (obj) {
@@ -18,7 +23,8 @@ export default class EntityUpdater {
 				otherState.pos.x < state.pos.x + state.size.x &&
 				otherState.pos.x + otherState.size.x > state.pos.x &&
 				otherState.pos.y < state.pos.y + state.size.y &&
-				otherState.size.y + otherState.pos.y > state.pos.y) {
+				otherState.size.y + otherState.pos.y > state.pos.y)
+			{
 				collisions.push(obj);
 			}
 		});
