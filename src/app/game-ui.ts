@@ -35,7 +35,7 @@ class GameUI {
 	getRendererFor(entity: Entity, uiEntities: UIEntity[]) {
 		const ctx = this.ctx
 		if (entity.type === "BUG") return () => {
-			const uiBug = uiEntities.find(ui => ui.id == entity.id) as BugUIState
+			const uiBug = uiEntities.find(ui => ui.id == entity.id) as BugUIState // TODO Needs Error handling
 			const image = uiBug.getImage()
 
 			const bug = (entity as Bug)

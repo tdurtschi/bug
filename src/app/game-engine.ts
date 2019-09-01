@@ -1,11 +1,12 @@
 import Entity from "../core/entity"
-import BugUIState from "../bug/bug-ui/bug-ui-state";
 import EntityUpdater from "./entity-updater";
 import GameUI from "./game-ui"
+import { IEntityManager } from "./entity-manager";
 
 export interface GameEngineOptions {
 	target: string,
-	entities: Entity[]
+	entities: Entity[],
+	uiEntities: UIEntity[],
 }
 
 export interface UIEntity {
@@ -19,6 +20,7 @@ export interface Game {
 
 export class GameEngine implements Game {
 	gameUI: GameUI
+	entityManager: IEntityManager
 	entities: Entity[]
 	uiEntities: UIEntity[]
 	entityUpdater: EntityUpdater
@@ -29,7 +31,7 @@ export class GameEngine implements Game {
 		this.entities = args.entities
 		this.gameUI = new GameUI(args)
 
-		this.uiEntities = [new BugUIState(0)]
+		this.uiEntities = args.uiEntities
 		this.entityUpdater = new EntityUpdater()
 		this.beginLoop = this.beginLoop.bind(this)
 		this.update = this.update.bind(this)
