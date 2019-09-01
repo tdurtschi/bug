@@ -7,9 +7,6 @@ import { UIEntity, GameEngineOptions } from "./game-engine";
 class GameUI {
 	canvas: HTMLCanvasElement
 	ctx: CanvasRenderingContext2D
-	x: number
-	images: Array<HTMLImageElement>
-	frame: number = 0
 
 	constructor(args: GameEngineOptions) {
 		this.canvas = (document.getElementById(args.target) as HTMLCanvasElement)

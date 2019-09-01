@@ -21,8 +21,6 @@ export class GameEngine implements Game {
 	gameUI: GameUI
 	entities: Entity[]
 	uiEntities: UIEntity[]
-	x: number
-	images: Array<HTMLImageElement>
 	entityUpdater: EntityUpdater
 	isPaused: boolean = false
 	frame: number = 0
@@ -30,7 +28,7 @@ export class GameEngine implements Game {
 	constructor(args: GameEngineOptions) {
 		this.entities = args.entities
 		this.gameUI = new GameUI(args)
-		
+
 		this.uiEntities = [new BugUIState(0)]
 		this.entityUpdater = new EntityUpdater()
 		this.beginLoop = this.beginLoop.bind(this)
@@ -43,7 +41,7 @@ export class GameEngine implements Game {
 		this.frame = this.frame + 1
 		if (!this.isPaused)
 		{
-			this.updateUIEntities(this.frame)
+			this.updateAllEntities(this.frame)
 		}
 	}
 
@@ -56,7 +54,7 @@ export class GameEngine implements Game {
 		this.reQueue()
 	}
 
-	updateUIEntities(frame: number) {
+	updateAllEntities(frame: number) {
 		this.entityUpdater.update(this.entities, frame)
 
 		this.uiEntities.forEach(entity => {
