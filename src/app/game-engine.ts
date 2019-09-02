@@ -1,12 +1,10 @@
-import Entity from "../core/entity"
 import EntityUpdater from "./entity-updater";
-import GameUI from "./game-ui"
-import { IEntityManager } from "./entity-manager";
+import { IGameUI } from "./game-ui"
+import EntityManager, { IEntityManager } from "./entity-manager";
 
 export interface GameEngineOptions {
-	target: string,
-	entities: Entity[],
-	uiEntities: UIEntity[],
+	gameUI: IGameUI
+	entityManager: EntityManager
 }
 
 export interface UIEntity {
@@ -19,19 +17,16 @@ export interface Game {
 }
 
 export class GameEngine implements Game {
-	gameUI: GameUI
+	gameUI: IGameUI
 	entityManager: IEntityManager
-	entities: Entity[]
-	uiEntities: UIEntity[]
 	entityUpdater: EntityUpdater
 	isPaused: boolean = false
 	frame: number = 0
 
 	constructor(args: GameEngineOptions) {
-		this.entities = args.entities
-		this.gameUI = new GameUI(args)
+		this.gameUI = args.gameUI
+		this.entityManager = args.entityManager
 
-		this.uiEntities = args.uiEntities
 		this.entityUpdater = new EntityUpdater()
 		this.beginLoop = this.beginLoop.bind(this)
 		this.update = this.update.bind(this)
@@ -50,16 +45,16 @@ export class GameEngine implements Game {
 	beginLoop(timeMs: number) {
 		if (!this.isPaused)
 		{
-			this.gameUI.render(this.entities, this.uiEntities)
+			this.gameUI.render()
 		}
 
-		this.reQueue()
+		window.requestAnimationFrame(this.beginLoop)
 	}
 
 	updateAllEntities(frame: number) {
-		this.entityUpdater.update(this.entities, frame)
+		this.entityUpdater.update(this.entityManager.getEntities(), frame)
 
-		this.uiEntities.forEach(entity => {
+		this.entityManager.getUIEntities().forEach(entity => {
 			if (frame % 15 == 0)
 			{
 				entity.update()
@@ -67,17 +62,11 @@ export class GameEngine implements Game {
 		})
 	}
 
-	getFrame = (timeMs: number): number => Math.floor((timeMs / (16 + 2 / 3)))
-
-	reQueue() {
-		window.requestAnimationFrame(this.beginLoop)
-	}
-
 	public togglePause() {
 		this.isPaused = !this.isPaused
 		if (this.isPaused)
 		{
-			console.log(this.entities)
+			console.log(this.entityManager.getEntities())
 		}
 	}
 }

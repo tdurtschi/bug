@@ -2,20 +2,34 @@ import BugUIState from "../bug/bug-ui/bug-ui-state";
 import Tree, { ITreeStruct } from "../tree/tree";
 import Entity from "../core/entity"
 import Bug from "../bug/bug"
-import { UIEntity, GameEngineOptions } from "./game-engine";
+import { UIEntity } from "./game-engine";
+import EntityManager from "./entity-manager";
 
-class GameUI {
+export interface GameUIOptions {
+	target: string
+	entityManager: EntityManager
+}
+
+export interface IGameUI {
+	render: () => void
+}
+
+class GameUI implements IGameUI {
 	canvas: HTMLCanvasElement
 	ctx: CanvasRenderingContext2D
+	entityManager: EntityManager
 
-	constructor(args: GameEngineOptions) {
+	constructor(args: GameUIOptions) {
 		this.canvas = (document.getElementById(args.target) as HTMLCanvasElement)
 		this.ctx = this.canvas.getContext("2d")
+		this.entityManager = args.entityManager
 	}
 
-	public render = (entities: Entity[], uiEntities: UIEntity[]): void => {
+	public render = (): void => {
+		const uiEntities = this.entityManager.getUIEntities()
+
 		this.clear()
-		entities.forEach(entity => {
+		this.entityManager.getEntities().forEach(entity => {
 			const renderFn = this.getRendererFor(entity, uiEntities)
 			renderFn()
 		})

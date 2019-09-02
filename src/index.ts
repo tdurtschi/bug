@@ -9,6 +9,7 @@ import Wall from './wall/wall';
 import Tree from './tree/tree';
 import EntityManager from './app/entity-manager';
 import BugUIState from './bug/bug-ui/bug-ui-state';
+import GameUI from './app/game-ui';
 
 const entities = [
 	new Bug(0, { pos: new Victor(50, 0) }),
@@ -21,12 +22,14 @@ const uiEntities = [new BugUIState(0)]
 
 const entityManager = new EntityManager(entities, uiEntities)
 
-const startUIEngine = (): Game => new GameEngine({
-	target: "bug-ui",
-	entities: entityManager.entities,
-	uiEntities: entityManager.uiEntities
+const startGame = (): Game => new GameEngine({
+	gameUI: new GameUI({
+		target: "bug-ui",
+		entityManager
+	}),
+	entityManager
 })
 
-ReactDOM.render(React.createElement(App, { startUIEngine }), document.getElementById('root'));
+ReactDOM.render(React.createElement(App, { startGame }), document.getElementById('root'));
 
 (window as any).Victor = Victor
