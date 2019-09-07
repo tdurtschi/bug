@@ -28,9 +28,7 @@ export class GameEngine implements Game {
 		this.entityManager = args.entityManager
 
 		this.entityUpdater = new EntityUpdater()
-		this.beginLoop = this.beginLoop.bind(this)
 		this.update = this.update.bind(this)
-		this.beginLoop(0)
 		setInterval(this.update, 17)
 	}
 
@@ -40,15 +38,6 @@ export class GameEngine implements Game {
 		{
 			this.updateAllEntities(this.frame)
 		}
-	}
-
-	beginLoop(timeMs: number) {
-		if (!this.isPaused)
-		{
-			this.gameUI.render()
-		}
-
-		window.requestAnimationFrame(this.beginLoop)
 	}
 
 	updateAllEntities(frame: number) {
@@ -64,6 +53,8 @@ export class GameEngine implements Game {
 
 	public togglePause() {
 		this.isPaused = !this.isPaused
+		this.gameUI.togglePause()
+
 		if (this.isPaused)
 		{
 			console.log(this.entityManager.getEntities())

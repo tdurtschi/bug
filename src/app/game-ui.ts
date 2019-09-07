@@ -12,17 +12,22 @@ export interface GameUIOptions {
 
 export interface IGameUI {
 	render: () => void
+	togglePause: () => void
 }
 
 class GameUI implements IGameUI {
 	canvas: HTMLCanvasElement
 	ctx: CanvasRenderingContext2D
 	entityManager: EntityManager
+	isPaused: boolean = false
 
 	constructor(args: GameUIOptions) {
 		this.canvas = (document.getElementById(args.target) as HTMLCanvasElement)
 		this.ctx = this.canvas.getContext("2d")
 		this.entityManager = args.entityManager
+		
+		this.beginLoop = this.beginLoop.bind(this)
+		this.beginLoop(0)
 	}
 
 	public render = (): void => {
@@ -33,6 +38,19 @@ class GameUI implements IGameUI {
 			const renderFn = this.getRendererFor(entity, uiEntities)
 			renderFn()
 		})
+	}
+
+	public togglePause = (): void => {
+		this.isPaused = !this.isPaused;
+	}
+
+	beginLoop(timeMs: number) {
+		if (!this.isPaused)
+		{
+			this.render()
+		}
+
+		window.requestAnimationFrame(this.beginLoop)
 	}
 
 	clear() {
