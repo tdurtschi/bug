@@ -76,4 +76,15 @@ describe("Bug", () => {
 			expect(bug.update(undefined)).toBeTruthy()
 		})
 	})
+
+	describe("Spontaneous activity", () => {
+		it("reacts (changes mode) when it receives a spontaneous urge", () => {
+			const bug = new Bug(0, {
+				direction: new Victor(1,0),
+				spontaneous: () => true
+			});
+
+			expect(bug.update().state.mode).not.toEqual(BugMode.WALKING);
+		})
+	})
 })

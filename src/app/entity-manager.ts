@@ -4,11 +4,12 @@ import Entity from "../core/entity";
 export interface IEntityManager {
 	getEntities: () => Entity[]
 	getUIEntities: () => UIEntity[]
+	addEntity: (entity: Entity) => void
 }
 
 export default class EntityManager implements IEntityManager {
-	entities: Entity[] // TODO Make private
-	uiEntities: UIEntity[] // TODO make private
+	private entities: Entity[]
+	private uiEntities: UIEntity[]
 	constructor(entities: Entity[], uiEntities: UIEntity[]) {
 		this.entities = entities
 		this.uiEntities = uiEntities
@@ -16,4 +17,5 @@ export default class EntityManager implements IEntityManager {
 
 	public getEntities = () => this.entities
 	public getUIEntities = () => this.uiEntities;
+	public addEntity = (entity: Entity) => this.entities.push(entity);
 }
