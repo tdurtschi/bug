@@ -30,4 +30,16 @@ describe("Game Engine", () => {
 
 		expect(fakeUI.togglePause).toHaveBeenCalled()
 	})
+
+	it("Passes new entity to entity manager", () => {
+		const fakeUI = {
+			render: () => { },
+			togglePause: () => { }
+		}
+		const game = new GameEngine({ gameUI: fakeUI, entityManager: new EntityManager([], []) })
+		const bug = new Bug()
+		game.addEntity(bug)
+
+		expect(game.entityManager.getEntities().length).toBeGreaterThan(0);
+	})
 })

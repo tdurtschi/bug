@@ -1,6 +1,7 @@
 import EntityUpdater from "./entity-updater";
 import { IGameUI } from "./game-ui"
 import EntityManager, { IEntityManager } from "./entity-manager";
+import Entity from "../core/entity";
 
 export interface GameEngineOptions {
 	gameUI: IGameUI
@@ -14,6 +15,7 @@ export interface UIEntity {
 
 export interface Game {
 	togglePause: () => void
+	addEntity: (entity: Entity) => void
 }
 
 export class GameEngine implements Game {
@@ -49,6 +51,10 @@ export class GameEngine implements Game {
 				entity.update()
 			}
 		})
+	}
+
+	public addEntity(entity: Entity) {
+		this.entityManager.addEntity(entity);
 	}
 
 	public togglePause() {
