@@ -21,7 +21,8 @@ class GameUI implements IGameUI {
 	ctx: CanvasRenderingContext2D
 	entityManager: EntityManager
 	isPaused: boolean = false
-	uiEntities: UIEntity[];
+	uiEntities: UIEntity[]
+	frame: number = 0
 
 	constructor(args: GameUIOptions) {
 		this.canvas = (document.getElementById(args.target) as HTMLCanvasElement)
@@ -43,6 +44,8 @@ class GameUI implements IGameUI {
 	}
 
 	public render = (): void => {
+		this.updateUIEntities()
+
 		this.clear()
 		this.entityManager.getEntities().forEach(entity => {
 			const renderFn = this.getRendererFor(entity)
@@ -55,8 +58,9 @@ class GameUI implements IGameUI {
 	}
 
 	public updateUIEntities = (): void => {
+		this.frame++
 		this.uiEntities.forEach(entity => {
-			entity.update()
+			entity.update(this.frame)
 		})
 	}
 

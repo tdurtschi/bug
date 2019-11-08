@@ -11,6 +11,9 @@ interface State {
 	game: Game
 }
 
+const HEIGHT = 400
+const WIDTH = 400
+
 let id = 5
 
 class App extends React.Component<Props, State> {
@@ -21,14 +24,23 @@ class App extends React.Component<Props, State> {
 	render() {
 		return (
 			<div>
-				<canvas id="bug-ui" height={400} width={400}></canvas>
+				<canvas id="bug-ui" height={HEIGHT} width={WIDTH}></canvas>
 				<button id="pause-button" onClick={() => this.state.game.togglePause()}>
 					PAUSE
 				</button>
-				<button id="add-bug" onClick={() => this.state.game.addEntity(new Bug(id++, { pos: new Victor(100, 0) }))}>
+				<button id="add-bug" onClick={() => this.addBug()}>
 					Click Me
 				</button>
 			</div >);
+	}
+
+	private addBug() {
+		const bugX = Math.floor(Math.random() * (WIDTH - 40))
+		const bugY = 0
+
+		const direction = Math.random() < 0.5 ? new Victor(1, 0) : new Victor(-1, 0)
+
+		this.state.game.addEntity(new Bug(id++, { pos: new Victor(bugX, bugY), direction }))
 	}
 }
 

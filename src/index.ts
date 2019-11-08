@@ -8,7 +8,6 @@ import Bug from './bug/bug';
 import Wall from './wall/wall';
 import Tree from './tree/tree';
 import EntityManager from './app/entity-manager';
-import BugUIState from './bug/bug-ui/bug-ui-state';
 import GameUI from './app/game-ui';
 
 const entities = [

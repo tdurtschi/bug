@@ -10,7 +10,7 @@ export interface GameEngineOptions {
 
 export interface UIEntity {
 	id: number
-	update: () => any
+	update: (frame: number) => any
 }
 
 export interface Game {
@@ -44,10 +44,6 @@ export class GameEngine implements Game {
 
 	updateAllEntities(frame: number) {
 		this.entityUpdater.update(this.entityManager.getEntities(), frame)
-		if (frame % 15 == 0)
-		{
-			this.gameUI.updateUIEntities()
-		}
 	}
 
 	public addEntity(entity: Entity) {
