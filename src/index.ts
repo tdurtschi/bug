@@ -18,9 +18,7 @@ const entities = [
 	new Tree(3, { pos: new Victor(150, 0) })
 ]
 
-const uiEntities = [new BugUIState(0)]
-
-const entityManager = new EntityManager(entities, uiEntities)
+const entityManager = new EntityManager(entities)
 
 const startGame = (): Game => new GameEngine({
 	gameUI: new GameUI({

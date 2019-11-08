@@ -13,6 +13,7 @@ export interface GameUIOptions {
 export interface IGameUI {
 	render: () => void
 	togglePause: () => void
+	updateUIEntities: () => void
 }
 
 class GameUI implements IGameUI {
@@ -20,28 +21,43 @@ class GameUI implements IGameUI {
 	ctx: CanvasRenderingContext2D
 	entityManager: EntityManager
 	isPaused: boolean = false
+	uiEntities: UIEntity[];
 
 	constructor(args: GameUIOptions) {
 		this.canvas = (document.getElementById(args.target) as HTMLCanvasElement)
 		this.ctx = this.canvas.getContext("2d")
 		this.entityManager = args.entityManager
-		
+
 		this.beginLoop = this.beginLoop.bind(this)
+
+		const entities = this.entityManager.getEntities()
+		this.uiEntities = entities.map((entity) => {
+			if (entity.type === "BUG")
+			{
+				return new BugUIState(entity.id);
+			}
+			else return null;
+		}).filter((entity) => entity !== null);
+
 		this.beginLoop(0)
 	}
 
 	public render = (): void => {
-		const uiEntities = this.entityManager.getUIEntities()
-
 		this.clear()
 		this.entityManager.getEntities().forEach(entity => {
-			const renderFn = this.getRendererFor(entity, uiEntities)
+			const renderFn = this.getRendererFor(entity)
 			renderFn()
 		})
 	}
 
 	public togglePause = (): void => {
 		this.isPaused = !this.isPaused;
+	}
+
+	public updateUIEntities = (): void => {
+		this.uiEntities.forEach(entity => {
+			entity.update()
+		})
 	}
 
 	beginLoop(timeMs: number) {
@@ -64,10 +80,10 @@ class GameUI implements IGameUI {
 		return this.canvas.height - y
 	}
 
-	getRendererFor(entity: Entity, uiEntities: UIEntity[]) {
+	getRendererFor(entity: Entity) {
 		const ctx = this.ctx
 		if (entity.type === "BUG") return () => {
-			const uiBug = uiEntities.find(ui => ui.id == entity.id) as BugUIState // TODO Needs Error handling
+			const uiBug = this.findUIEntity(entity) // TODO Needs Error handling
 			const image = uiBug.getImage()
 
 			const bug = (entity as Bug)
@@ -122,6 +138,19 @@ class GameUI implements IGameUI {
 			this.renderTree(root.right, ctx)
 		}
 		ctx.restore()
+	}
+
+	findUIEntity(entity: Entity) {
+		let uiEntity = this.uiEntities.find(ui => ui.id == entity.id) as BugUIState
+		if (!uiEntity)
+		{
+			if (entity.type === "BUG")
+			{
+				uiEntity = new BugUIState(entity.id)
+				this.uiEntities.push(uiEntity)
+			}
+		}
+		return uiEntity
 	}
 }
 

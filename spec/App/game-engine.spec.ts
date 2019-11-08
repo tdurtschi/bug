@@ -10,9 +10,10 @@ describe("Game Engine", () => {
 		const spyBug = Object.assign(new Bug(), { update: jasmine.createSpy("BUG-update") });
 		const fakeUI = {
 			render: () => { },
-			togglePause: () => { }
+			togglePause: () => { },
+			updateUIEntities: () => { }
 		}
-		const game = new GameEngine({ gameUI: fakeUI, entityManager: new EntityManager([spyBug], []) })
+		const game = new GameEngine({ gameUI: fakeUI, entityManager: new EntityManager([spyBug]) })
 		game.togglePause()
 
 		jasmine.clock().tick(1000)
@@ -22,10 +23,11 @@ describe("Game Engine", () => {
 	it("Pauses the UI when paused", () => {
 		const fakeUI = {
 			render: () => { },
-			togglePause: jasmine.createSpy("UI-togglePause")
+			togglePause: jasmine.createSpy("UI-togglePause"),
+			updateUIEntities: () => { }
 		}
 
-		const game = new GameEngine({ gameUI: fakeUI, entityManager: new EntityManager([], []) })
+		const game = new GameEngine({ gameUI: fakeUI, entityManager: new EntityManager([]) })
 		game.togglePause()
 
 		expect(fakeUI.togglePause).toHaveBeenCalled()
@@ -34,9 +36,10 @@ describe("Game Engine", () => {
 	it("Passes new entity to entity manager", () => {
 		const fakeUI = {
 			render: () => { },
-			togglePause: () => { }
+			togglePause: () => { },
+			updateUIEntities: () => { }
 		}
-		const game = new GameEngine({ gameUI: fakeUI, entityManager: new EntityManager([], []) })
+		const game = new GameEngine({ gameUI: fakeUI, entityManager: new EntityManager([]) })
 		const bug = new Bug()
 		game.addEntity(bug)
 

@@ -44,17 +44,14 @@ export class GameEngine implements Game {
 
 	updateAllEntities(frame: number) {
 		this.entityUpdater.update(this.entityManager.getEntities(), frame)
-
-		this.entityManager.getUIEntities().forEach(entity => {
-			if (frame % 15 == 0)
-			{
-				entity.update()
-			}
-		})
+		if (frame % 15 == 0)
+		{
+			this.gameUI.updateUIEntities()
+		}
 	}
 
 	public addEntity(entity: Entity) {
-		this.entityManager.addEntity(entity);
+		this.entityManager.addEntity(entity)
 	}
 
 	public togglePause() {
