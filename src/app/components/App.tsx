@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Game } from '../game-engine';
 import Bug from '../../bug/bug';
 import Victor from "victor"
+import Tree from '../../tree/tree';
 
 interface Props {
 	startGame: () => Game
@@ -29,9 +30,19 @@ class App extends React.Component<Props, State> {
 					PAUSE
 				</button>
 				<button id="add-bug" onClick={() => this.addBug()}>
-					Click Me
+					Add Bug
+				</button>
+				<button id="add-tree" onClick={() => this.addTree()}>
+					Add Tree
 				</button>
 			</div >);
+	}
+
+	private addTree(): void {
+		const treeX = Math.floor(Math.random() * (WIDTH - 40))
+		const treeY = 0
+
+		this.state.game.addEntity(new Tree(id++, { pos: new Victor(treeX, treeY) }))
 	}
 
 	private addBug() {
