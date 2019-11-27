@@ -26,7 +26,7 @@ class App extends React.Component<Props, State> {
 	render() {
 		return (
 			<div>
-				<canvas id="bug-background" height={HEIGHT} width={WIDTH}></canvas>
+				<div id="bug-background"></div>
 				<canvas id="bug-ui" height={HEIGHT} width={WIDTH}></canvas>
 				<div id="bug-controls">
 					<button id="pause-button" onClick={() => this.state.game.togglePause()}>

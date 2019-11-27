@@ -1,26 +1,40 @@
+$HEIGHT: 400px;
+$WIDTH: 400px;
+$BORDER: 10px;
+
 #bug-background{
 	position: absolute;
 	top: 0px;
 	left: 0px;
 	z-index: 0;
+	height: $HEIGHT;
+	width: $WIDTH;
+	border: $BORDER solid black;
+	border-radius: 20px;
+	background: rgb(248,255,247);
+	background: linear-gradient(0deg, rgba(248,255,247,1) 0%, rgba(172,241,255,1) 94%, rgba(145,236,255,1) 100%);
 }
 
 #bug-ui{
 	position: absolute;
-	top: 0px;
-	left: 0px;
+	top: $BORDER;
+	left: $BORDER;
 	z-index: 1;
+	height: $HEIGHT;
+	width: $WIDTH;
 }
 
 #bug-controls{
+	box-sizing: border-box;
 	position: absolute;
-	top: 0px;
-	left: 0px;
+	top: $BORDER;
+	left: $BORDER;
 	z-index: 2;
 	width:400px;
 	display:flex;
 	justify-content:space-evenly;
 	padding-top: 10px;
+	width: $WIDTH;
 
 	button{
 		font-size: 16px;
