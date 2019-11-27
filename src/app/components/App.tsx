@@ -3,6 +3,7 @@ import { Game } from '../game-engine';
 import Bug from '../../bug/bug';
 import Victor from "victor"
 import Tree from '../../tree/tree';
+import "../app.scss";
 
 interface Props {
 	startGame: () => Game
@@ -25,16 +26,19 @@ class App extends React.Component<Props, State> {
 	render() {
 		return (
 			<div>
+				<canvas id="bug-background" height={HEIGHT} width={WIDTH}></canvas>
 				<canvas id="bug-ui" height={HEIGHT} width={WIDTH}></canvas>
-				<button id="pause-button" onClick={() => this.state.game.togglePause()}>
-					PAUSE
-				</button>
-				<button id="add-bug" onClick={() => this.addBug()}>
-					Add Bug
-				</button>
-				<button id="add-tree" onClick={() => this.addTree()}>
-					Add Tree
-				</button>
+				<div id="bug-controls">
+					<button id="pause-button" onClick={() => this.state.game.togglePause()}>
+						PAUSE
+					</button>
+					<button id="add-bug" onClick={() => this.addBug()}>
+						Add Bug
+					</button>
+					<button id="add-tree" onClick={() => this.addTree()}>
+						Add Tree
+					</button>
+				</div>
 			</div >);
 	}
 

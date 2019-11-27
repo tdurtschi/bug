@@ -1,0 +1,33 @@
+#bug-background{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	z-index: 0;
+}
+
+#bug-ui{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	z-index: 1;
+}
+
+#bug-controls{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	z-index: 2;
+	width:400px;
+	display:flex;
+	justify-content:space-evenly;
+	padding-top: 10px;
+
+	button{
+		font-size: 16px;
+		border-radius:6px;
+
+		:active{
+			background-color: #101010;
+		}
+	}
+}

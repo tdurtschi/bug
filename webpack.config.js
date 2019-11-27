@@ -13,12 +13,23 @@ module.exports = {
 			{
 				test: /\.(png|jpe?g|gif)$/,
 				use: [
-				  {
-					loader: 'file-loader',
-					options: {},
-				  },
+					{
+						loader: 'file-loader',
+						options: {},
+					},
 				],
-			}
+			},
+			{
+				test: /\.s?css$/i,
+				use: [
+					// Creates `style` nodes from JS strings
+					'style-loader',
+					// Translates CSS into CommonJS
+					'css-loader',
+					// Compiles Sass to CSS
+					'sass-loader'
+				]
+			},
 		]
 	},
 	resolve: {
