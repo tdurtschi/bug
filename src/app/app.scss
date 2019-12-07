@@ -1,16 +1,16 @@
-$HEIGHT: 400px;
-$WIDTH: 400px;
-$BORDER: 10px;
+$HEIGHT: 100vh;
+$WIDTH: 100vw;
+$BORDER: 0px;
 
 #bug-background{
 	position: absolute;
+	box-sizing: border-box;
 	top: 0px;
 	left: 0px;
 	z-index: 0;
 	height: $HEIGHT;
 	width: $WIDTH;
-	border: $BORDER solid black;
-	border-radius: 20px;
+	border-bottom: 5px solid #3f2c1d;
 	background: rgb(248,255,247);
 	background: linear-gradient(0deg, rgba(248,255,247,1) 0%, rgba(172,241,255,1) 94%, rgba(145,236,255,1) 100%);
 }

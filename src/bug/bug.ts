@@ -20,7 +20,7 @@ class Bug implements Entity {
 
 		this.state = Object.assign(
 			{
-				pos: new Victor(0, 0),
+				pos: new Victor(0, 0), // What part of the bug does this coordinate refer to?
 				size: new Victor(30, 20),
 				direction: new Victor(1, 0),
 				speed: 1,

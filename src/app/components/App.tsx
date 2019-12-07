@@ -6,15 +6,15 @@ import Tree from '../../tree/tree';
 import "../app.scss";
 
 interface Props {
-	startGame: () => Game
+	startGame: () => Game,
+	height: number,
+	width: number
 }
 
 interface State {
 	game: Game
 }
 
-const HEIGHT = 400
-const WIDTH = 400
 
 let id = 5
 
@@ -27,7 +27,7 @@ class App extends React.Component<Props, State> {
 		return (
 			<div>
 				<div id="bug-background"></div>
-				<canvas id="bug-ui" height={HEIGHT} width={WIDTH}></canvas>
+				<canvas id="bug-ui" height={this.props.height} width={this.props.width}></canvas>
 				<div id="bug-controls">
 					<button id="pause-button" onClick={() => this.state.game.togglePause()}>
 						PAUSE
@@ -43,14 +43,14 @@ class App extends React.Component<Props, State> {
 	}
 
 	private addTree(): void {
-		const treeX = Math.floor(Math.random() * (WIDTH - 40))
+		const treeX = Math.floor(Math.random() * (this.props.width - 40))
 		const treeY = 0
 
 		this.state.game.addEntity(new Tree(id++, { pos: new Victor(treeX, treeY) }))
 	}
 
 	private addBug() {
-		const bugX = Math.floor(Math.random() * (WIDTH - 40))
+		const bugX = Math.floor(Math.random() * (this.props.width - 40))
 		const bugY = 0
 
 		const direction = Math.random() < 0.5 ? new Victor(1, 0) : new Victor(-1, 0)
