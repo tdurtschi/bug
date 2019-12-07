@@ -1,4 +1,4 @@
-import { UIEntity } from "../../app/game-engine";
+import { UIEntity } from "../../../core/game-engine";
 
 const weevil1 = require("./weevil1.png")
 const weevil2 = require("./weevil2.png")

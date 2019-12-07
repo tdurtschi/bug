@@ -1,8 +1,8 @@
-import Bug from "../src/bug/bug"
-import EntityUpdater from "../src/app/entity-updater"
+import Bug from "../entities/bug/bug"
+import EntityUpdater from "./entity-updater"
 import Victor from "victor"
-import Entity from "../src/core/entity";
-import { IEntityManager } from "../src/app/entity-manager";
+import Entity from "../entities/entity";
+import { IEntityManager } from "./entity-manager";
 
 const fakeEntityManager: (entities: Entity[]) => IEntityManager =
 	entities => ({

@@ -1,6 +1,6 @@
-import { GameEngine } from "../../src/app/game-engine";
-import EntityManager from "../../src/app/entity-manager";
-import Bug from "../../src/bug/bug";
+import { GameEngine } from "./game-engine";
+import EntityManager from "./entity-manager";
+import Bug from "../entities/bug/bug";
 
 describe("Game Engine", () => {
 	beforeEach(() => jasmine.clock().install())

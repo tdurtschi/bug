@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { Game } from '../game-engine';
-import Bug from '../../bug/bug';
+import { Game } from '../../core/game-engine';
+import Bug from '../../entities/bug/bug';
 import Victor from "victor"
-import Tree from '../../tree/tree';
+import Tree from '../../entities/tree/tree';
 
 interface Props {
 	startGame: () => Game,

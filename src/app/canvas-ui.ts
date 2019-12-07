@@ -1,9 +1,9 @@
-import BugUIState from "../bug/bug-ui/bug-ui-state";
-import Tree, { ITreeStruct } from "../tree/tree";
-import Entity from "../core/entity"
-import Bug from "../bug/bug"
-import { UIEntity } from "./game-engine";
-import EntityManager from "./entity-manager";
+import BugUIState from "../entities/bug/bug-ui/bug-ui-state";
+import Tree, { ITreeStruct } from "../entities/tree/tree";
+import Entity from "../entities/entity"
+import Bug from "../entities/bug/bug"
+import { UIEntity } from "../core/game-engine";
+import EntityManager from "../core/entity-manager";
 
 export interface GameUIOptions {
 	target: string
@@ -16,7 +16,7 @@ export interface IGameUI {
 	updateUIEntities: () => void
 }
 
-class GameUI implements IGameUI {
+class CanvasUI implements IGameUI {
 	canvas: HTMLCanvasElement
 	ctx: CanvasRenderingContext2D
 	entityManager: EntityManager
@@ -158,4 +158,4 @@ class GameUI implements IGameUI {
 	}
 }
 
-export default GameUI
+export default CanvasUI

@@ -1,4 +1,4 @@
-import Entity, { EntityState } from "../core/entity"
+import Entity, { EntityState } from "../entity"
 import Victor from "victor"
 import { BugMode } from "./bugConstants"
 

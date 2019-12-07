@@ -1,4 +1,4 @@
-import Tree, { TreeStruct } from "../src/tree/tree";
+import Tree, { TreeStruct } from "./tree";
 
 describe("Tree", () => {
 	it("Starts as a single node", () => {

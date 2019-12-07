@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, fireEvent } from '@testing-library/react'
-import App from '../../src/app/components/App'
+import App from './App'
 
 describe("Pause button", () => {
 	it("Calls the togglePause method on the UI.", () => {

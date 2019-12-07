@@ -1,7 +1,7 @@
-import Entity from "../src/core/entity";
-import Bug from "../src/bug/bug";
-import EntityManager from "../src/app/entity-manager";
-import Wall from "../src/wall/wall";
+import Entity from "../entities/entity";
+import Bug from "../entities/bug/bug";
+import EntityManager from "./entity-manager";
+import Wall from "../entities/wall/wall";
 
 describe("Entity Manager", () => {
 	it("Accepts an initial state", () => {

@@ -1,7 +1,7 @@
 import EntityUpdater from "./entity-updater";
-import { IGameUI } from "./game-ui"
+import { IGameUI } from "../app/canvas-ui"
 import EntityManager, { IEntityManager } from "./entity-manager";
-import Entity from "../core/entity";
+import Entity from "../entities/entity";
 
 export interface GameEngineOptions {
 	gameUI: IGameUI

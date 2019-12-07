@@ -1,4 +1,4 @@
-import Entity from "../core/entity";
+import Entity from "../entities/entity";
 import { IEntityManager } from "./entity-manager";
 
 export default class EntityUpdater {

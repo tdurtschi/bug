@@ -1,4 +1,4 @@
-import Entity from "../core/entity";
+import Entity from "../entities/entity";
 
 export interface IEntityManager {
 	getEntities: () => Entity[]

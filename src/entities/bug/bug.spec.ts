@@ -1,9 +1,9 @@
 import "jasmine"
-import Bug from "../src/bug/bug"
-import Wall from "../src/wall/wall"
-import {vectorEquals} from "../src/util"
+import Bug from "./bug"
+import Wall from "../wall/wall"
+import {vectorEquals} from "../../util"
 import Victor from "victor"
-import {BugMode} from "../src/bug/bugConstants"
+import {BugMode} from "./bugConstants"
 
 describe("Bug", () => {
 	describe("Default bug", () => {

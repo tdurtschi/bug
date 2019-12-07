@@ -3,14 +3,14 @@ import * as ReactDOM from 'react-dom';
 import Victor from "victor";
 
 import App from "./app/components/App";
-import { GameEngine, Game } from './app/game-engine';
-import Wall from './wall/wall';
-import EntityManager from './app/entity-manager';
-import GameUI from './app/game-ui';
+import { GameEngine, Game } from './core/game-engine';
+import Wall from './entities/wall/wall';
+import EntityManager from './core/entity-manager';
+import CanvasUI from './app/canvas-ui';
 import "./app/app.scss";
 
 const startGame = (): Game => new GameEngine({
-	gameUI: new GameUI({
+	gameUI: new CanvasUI({
 		target: "bug-ui",
 		entityManager
 	}),
