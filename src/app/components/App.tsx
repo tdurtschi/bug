@@ -3,7 +3,6 @@ import { Game } from '../game-engine';
 import Bug from '../../bug/bug';
 import Victor from "victor"
 import Tree from '../../tree/tree';
-import "../app.scss";
 
 interface Props {
 	startGame: () => Game,

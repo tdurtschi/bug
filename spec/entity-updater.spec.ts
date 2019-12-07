@@ -1,13 +1,20 @@
 import Bug from "../src/bug/bug"
 import EntityUpdater from "../src/app/entity-updater"
 import Victor from "victor"
-import Tree from "../src/tree/tree";
+import Entity from "../src/core/entity";
+import { IEntityManager } from "../src/app/entity-manager";
+
+const fakeEntityManager: (entities: Entity[]) => IEntityManager =
+	entities => ({
+		getEntities: () => entities,
+		addEntity: () => { }
+	})
 
 describe("Entity Updater", () => {
 	it("Updates all the Entities", () => {
 		const entities = [new Bug(), new Bug()]
-		const entityUpdater = new EntityUpdater()
-		entityUpdater.update(entities, 0)
+		const entityUpdater = new EntityUpdater(fakeEntityManager(entities))
+		entityUpdater.update()
 
 		expect(entities[0].state.pos.x).toEqual(1)
 		expect(entities[1].state.pos.x).toEqual(1)
@@ -15,20 +22,13 @@ describe("Entity Updater", () => {
 
 	it("Updates bugs every 4 frames", () => {
 		const entities = [new Bug()]
-		const entityUpdater = new EntityUpdater()
+		const entityUpdater = new EntityUpdater(fakeEntityManager(entities))
 
-		new Array(0, 1, 2, 3).forEach(frame => entityUpdater.update(entities, frame))
+		new Array(4).fill(0).forEach(_ => entityUpdater.update())
 		expect(entities[0].state.pos.x).toEqual(1)
 
-		new Array(4, 5, 6, 7).forEach(frame => entityUpdater.update(entities, frame))
+		new Array(4).fill(0).forEach(_ => entityUpdater.update())
 		expect(entities[0].state.pos.x).toEqual(2)
-	})
-
-	it("Updates trees every 30 frames", () => {
-		const entities = [new Tree()]
-		const entityUpdater = new EntityUpdater()
-
-		new Array(0, 1, 2, 3).forEach(frame => entityUpdater.update(entities, frame))
 	})
 
 	describe("Collision Detection", () => {
@@ -42,7 +42,7 @@ describe("Entity Updater", () => {
 			entities[1].update = jasmine.createSpy()
 			entities[2].update = jasmine.createSpy()
 
-			new EntityUpdater().update(entities, 0)
+			new EntityUpdater(fakeEntityManager(entities)).update()
 
 			expect((entities[0].update as jasmine.Spy).calls.mostRecent().args[0][0]).toEqual(entities[1])
 			expect((entities[1].update as jasmine.Spy).calls.mostRecent().args[0][0]).toEqual(entities[0])

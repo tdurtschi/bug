@@ -1,13 +1,24 @@
 import Entity from "../core/entity";
+import { IEntityManager } from "./entity-manager";
 
 export default class EntityUpdater {
-	public update(entities: Entity[], frame: number) {
+	frame: number = 0
+
+	constructor(private entityManager: IEntityManager) { }
+
+	update() {
+		this.updateAllEntities()
+		this.frame = this.frame + 1
+	}
+
+	public updateAllEntities() {
+		const entities = this.entityManager.getEntities();
 		entities.forEach(entity => {
-			if (frame % 4 == 0 && entity.type == "BUG")
+			if (this.frame % 4 == 0 && entity.type == "BUG")
 			{
 				entity.update(this.getCollisions(entity, entities))
 			}
-			if (frame % 2 == 0 && entity.type == "TREE")
+			if (this.frame % 2 == 0 && entity.type == "TREE")
 			{
 				entity.update(this.getCollisions(entity, entities))
 			}

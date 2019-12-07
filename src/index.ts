@@ -7,6 +7,7 @@ import { GameEngine, Game } from './app/game-engine';
 import Wall from './wall/wall';
 import EntityManager from './app/entity-manager';
 import GameUI from './app/game-ui';
+import "./app/app.scss";
 
 const startGame = (): Game => new GameEngine({
 	gameUI: new GameUI({

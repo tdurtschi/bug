@@ -29,21 +29,16 @@ export class GameEngine implements Game {
 		this.gameUI = args.gameUI
 		this.entityManager = args.entityManager
 
-		this.entityUpdater = new EntityUpdater()
+		this.entityUpdater = new EntityUpdater(args.entityManager)
 		this.update = this.update.bind(this)
 		setInterval(this.update, 17)
 	}
 
 	update() {
-		this.frame = this.frame + 1
 		if (!this.isPaused)
 		{
-			this.updateAllEntities(this.frame)
+			this.entityUpdater.update()
 		}
-	}
-
-	updateAllEntities(frame: number) {
-		this.entityUpdater.update(this.entityManager.getEntities(), frame)
 	}
 
 	public addEntity(entity: Entity) {
