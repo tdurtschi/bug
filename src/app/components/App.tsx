@@ -1,29 +1,21 @@
-import * as React from 'react';
-import { Game } from '../../core/game-engine';
+import * as React from 'react'
+import { Game } from '../../core/game-engine'
 import Victor from "victor"
-import Tree from '../../entities/tree/tree';
-import BugFactory from '../../entities/bug/bugFactory';
-import { idGenerator } from '../../core/id-generator';
-import Spontaneous from '../../core/spontaneous';
-import { range } from '../../util';
+import Tree from '../../entities/tree/tree'
+import BugFactory from '../../entities/bug/bugFactory'
 
 interface Props {
-	startGame: () => Game,
+	game: Game,
 	height: number,
-	width: number
-}
-
-interface State {
-	game: Game
+	width: number,
+	bugFactory: BugFactory
 }
 
 let id = 5
 
-class App extends React.Component<Props, State> {
-	bugFactory = new BugFactory(idGenerator, new Spontaneous(() => range(5, 5) * 1000, () => range(10, 4)).get);
-
+class App extends React.Component<Props> {
 	componentDidMount() {
-		this.state = { game: this.props.startGame() }
+		this.props.game.start()
 	}
 
 	render() {
@@ -32,7 +24,7 @@ class App extends React.Component<Props, State> {
 				<div id="bug-background"></div>
 				<canvas id="bug-ui" height={this.props.height} width={this.props.width}></canvas>
 				<div id="bug-controls">
-					<button id="pause-button" onClick={() => this.state.game.togglePause()}>
+					<button id="pause-button" onClick={() => this.props.game.togglePause()}>
 						PAUSE
 					</button>
 					<button id="add-bug" onClick={() => this.addBug()}>
@@ -49,7 +41,7 @@ class App extends React.Component<Props, State> {
 		const treeX = Math.floor(Math.random() * (this.props.width - 40))
 		const treeY = 0
 
-		this.state.game.addEntity(new Tree(id++, { pos: new Victor(treeX, treeY) }))
+		this.props.game.addEntity(new Tree(id++, { pos: new Victor(treeX, treeY) }))
 	}
 
 	private addBug() {
@@ -58,7 +50,7 @@ class App extends React.Component<Props, State> {
 
 		const direction = Math.random() < 0.5 ? new Victor(1, 0) : new Victor(-1, 0)
 
-		this.state.game.addEntity(this.bugFactory.build({ pos: new Victor(bugX, bugY), direction }))
+		this.props.game.addEntity(this.props.bugFactory.build({ pos: new Victor(bugX, bugY), direction }))
 	}
 }
 

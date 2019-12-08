@@ -16,6 +16,7 @@ export interface UIEntity {
 export interface Game {
 	togglePause: () => void
 	addEntity: (entity: Entity) => void
+	start: () => void
 }
 
 export class GameEngine implements Game {
@@ -30,15 +31,11 @@ export class GameEngine implements Game {
 		this.entityManager = args.entityManager
 
 		this.entityUpdater = new EntityUpdater(args.entityManager)
-		this.update = this.update.bind(this)
-		setInterval(this.update, 17)
 	}
 
-	update() {
-		if (!this.isPaused)
-		{
-			this.entityUpdater.update()
-		}
+	public start() {
+		setInterval(this.update, 17)
+		this.gameUI.start()
 	}
 
 	public addEntity(entity: Entity) {
@@ -52,6 +49,13 @@ export class GameEngine implements Game {
 		if (this.isPaused)
 		{
 			console.log(this.entityManager.getEntities())
+		}
+	}
+
+	update = () => {
+		if (!this.isPaused)
+		{
+			this.entityUpdater.update()
 		}
 	}
 }

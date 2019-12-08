@@ -14,6 +14,7 @@ export interface IGameUI {
 	render: () => void
 	togglePause: () => void
 	updateUIEntities: () => void
+	start: () => void
 }
 
 class CanvasUI implements IGameUI {
@@ -24,10 +25,13 @@ class CanvasUI implements IGameUI {
 	uiEntities: UIEntity[]
 	frame: number = 0
 
-	constructor(args: GameUIOptions) {
-		this.canvas = (document.getElementById(args.target) as HTMLCanvasElement)
+	constructor(private options: GameUIOptions) {
+	}
+
+	public start = (): void => {
+		this.canvas = (document.getElementById(this.options.target) as HTMLCanvasElement)
 		this.ctx = this.canvas.getContext("2d")
-		this.entityManager = args.entityManager
+		this.entityManager = this.options.entityManager
 
 		this.beginLoop = this.beginLoop.bind(this)
 
