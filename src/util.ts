@@ -10,3 +10,4 @@ export const rangeDecimal = (mean: number, variance: number, places: number) => 
 
 	return range(mean * multiplier, variance * multiplier) / multiplier
 }
+

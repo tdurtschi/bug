@@ -35,7 +35,7 @@ class CanvasUI implements IGameUI {
 		this.uiEntities = entities.map((entity) => {
 			if (entity.type === "BUG")
 			{
-				return new BugUIState(entity.id);
+				return new BugUIState(entity.id, (entity as Bug));
 			}
 			else return null;
 		}).filter((entity) => entity !== null);
@@ -150,7 +150,7 @@ class CanvasUI implements IGameUI {
 		{
 			if (entity.type === "BUG")
 			{
-				uiEntity = new BugUIState(entity.id)
+				uiEntity = new BugUIState(entity.id, (entity as Bug))
 				this.uiEntities.push(uiEntity)
 			}
 		}

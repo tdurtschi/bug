@@ -44,7 +44,7 @@ describe("Tree", () => {
 			return Math.max(...values)
 		}
 
-		expect(maxDepth(graph)).toBeLessThan(5)
+		expect(maxDepth(graph)).toBeLessThan(7)
 	})
 
 	describe("Child nodes", () => {
