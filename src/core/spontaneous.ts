@@ -1,14 +1,14 @@
 export default class Spontaneous {
 	signal: boolean = false
 	requestsToWait: number = 0
-	constructor(intervalMs: number, requestsToWait: () => number) {
+	constructor(intervalMs: () => number, requestsToWait: () => number) {
 		const triggerOnce = () => {
 			setTimeout(
 				() => {
 					this.signal = true
 					this.requestsToWait = requestsToWait()
 					triggerOnce()
-				}, intervalMs);
+				}, intervalMs());
 		}
 
 		triggerOnce();

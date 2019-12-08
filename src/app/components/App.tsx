@@ -20,7 +20,7 @@ interface State {
 let id = 5
 
 class App extends React.Component<Props, State> {
-	bugFactory = new BugFactory(idGenerator, new Spontaneous(3000, () => range(10, 4)).get);
+	bugFactory = new BugFactory(idGenerator, new Spontaneous(() => range(5, 5) * 1000, () => range(10, 4)).get);
 
 	componentDidMount() {
 		this.state = { game: this.props.startGame() }

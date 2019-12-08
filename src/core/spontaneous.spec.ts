@@ -2,14 +2,14 @@ import Spontaneous from "./spontaneous";
 
 describe('Spontaneous', () => {
 	it("Returns false", () => {
-		expect(new Spontaneous(0, () => 0).get()).toBeFalsy();
+		expect(new Spontaneous(() => 0, () => 0).get()).toBeFalsy();
 	})
 
 	it("Returns true once whenever an interval is reached", () => {
 		const clock = jasmine.clock()
 		clock.install()
 
-		const subject = new Spontaneous(1, () => 0)
+		const subject = new Spontaneous(() => 1, () => 0)
 
 		clock.tick(1)
 
@@ -31,7 +31,7 @@ describe('Spontaneous', () => {
 		const clock = jasmine.clock()
 		clock.install()
 
-		const subject = new Spontaneous(1, () => requestsToWait)
+		const subject = new Spontaneous(() => 1, () => requestsToWait)
 
 		clock.tick(1)
 

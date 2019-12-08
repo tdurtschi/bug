@@ -1,6 +1,7 @@
 import Entity, { EntityState } from "../entity"
 import Victor from "victor"
 import { BugMode } from "./bugConstants"
+import { randBool } from "../../util"
 
 export interface BugState extends EntityState {
 	direction: Victor
@@ -45,12 +46,18 @@ class Bug implements Entity {
 	}
 
 	private changeMode() {
-		if (this.state.mode == BugMode.WALKING)
+		if (randBool())
 		{
-			this.state.mode = BugMode.STOPPED
+			if (this.state.mode == BugMode.WALKING)
+			{
+				this.state.mode = BugMode.STOPPED
+			} else
+			{
+				this.state.mode = BugMode.WALKING
+			}
 		} else
 		{
-			this.state.mode = BugMode.WALKING
+			this.state.direction.multiplyScalar(-1)
 		}
 	}
 
