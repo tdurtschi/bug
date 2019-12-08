@@ -1,9 +1,9 @@
 import "jasmine"
 import Bug from "./bug"
 import Wall from "../wall/wall"
-import {vectorEquals} from "../../util"
+import { vectorEquals } from "../../util"
 import Victor from "victor"
-import {BugMode} from "./bugConstants"
+import { BugMode } from "./bugConstants"
 
 describe("Bug", () => {
 	describe("Default bug", () => {
@@ -17,7 +17,7 @@ describe("Bug", () => {
 		const initialState = {
 			pos: new Victor(10, 10)
 		}
-		
+
 		const bug = new Bug(0, initialState)
 
 		expect(bug.state.pos).toEqual(initialState.pos)
@@ -27,7 +27,7 @@ describe("Bug", () => {
 		let bug = new Bug()
 		bug = bug.update().update().update()
 		expect(bug.state).toBeTruthy
-		expect(typeof(bug.update) === "function").toBe(true)
+		expect(typeof (bug.update) === "function").toBe(true)
 	})
 
 	describe("Walking mode", () => {
@@ -38,16 +38,16 @@ describe("Bug", () => {
 			})
 			expect(bug.update().state.pos.x).toEqual(17)
 		})
-		
+
 		describe("directions", () => {
 			it("travels in +x direction when 'direction' is (1,0)", () => {
-				const bug = new Bug(0, {direction: new Victor(1, 0)})
-				
+				const bug = new Bug(0, { direction: new Victor(1, 0) })
+
 				expect(bug.update().state.pos.x).toEqual(1)
 			})
 			it("travels in -x direction when 'direction' is (-1,0)", () => {
-				const bug = new Bug(0, {direction: new Victor(-1, 0)})
-				
+				const bug = new Bug(0, { direction: new Victor(-1, 0) })
+
 				expect(bug.update().state.pos.x).toEqual(-1)
 			})
 		})
@@ -66,8 +66,8 @@ describe("Bug", () => {
 	describe("inputs", () => {
 		it("will turn around when there is an obstruction ahead", () => {
 			const input = [new Wall()]
-			const bug = new Bug(0, {direction: new Victor(1, 0)})
-			
+			const bug = new Bug(0, { direction: new Victor(1, 0) })
+
 			expect(vectorEquals(bug.update(input).state.direction, new Victor(-1, 0))).toBeTruthy()
 		})
 
@@ -79,16 +79,16 @@ describe("Bug", () => {
 
 	describe("Spontaneous activity", () => {
 		it("reacts (changes mode) when it receives a spontaneous urge", () => {
-			const direction = new Victor(1,0)
+			const direction = new Victor(1, 0)
 			const bug = new Bug(0, {
-				direction,
+				direction: direction.clone(),
 				spontaneous: () => true
 			});
 
 			bug.update();
 
 			expect(bug.state.mode != BugMode.WALKING
-					|| bug.state.direction != direction).toBeTruthy();
+				|| !vectorEquals(bug.state.direction, direction)).toBeTruthy();
 		})
 	})
 })
