@@ -1,8 +1,11 @@
 import * as React from 'react';
 import { Game } from '../../core/game-engine';
-import Bug from '../../entities/bug/bug';
 import Victor from "victor"
 import Tree from '../../entities/tree/tree';
+import BugFactory from '../../entities/bug/bugFactory';
+import { idGenerator } from '../../core/id-generator';
+import Spontaneous from '../../core/spontaneous';
+import { range } from '../../util';
 
 interface Props {
 	startGame: () => Game,
@@ -14,10 +17,11 @@ interface State {
 	game: Game
 }
 
-
 let id = 5
 
 class App extends React.Component<Props, State> {
+	bugFactory = new BugFactory(idGenerator, new Spontaneous(3000, () => range(10, 4)).get);
+
 	componentDidMount() {
 		this.state = { game: this.props.startGame() }
 	}
@@ -54,7 +58,7 @@ class App extends React.Component<Props, State> {
 
 		const direction = Math.random() < 0.5 ? new Victor(1, 0) : new Victor(-1, 0)
 
-		this.state.game.addEntity(new Bug(id++, { pos: new Victor(bugX, bugY), direction }))
+		this.state.game.addEntity(this.bugFactory.build({ pos: new Victor(bugX, bugY), direction }))
 	}
 }
 

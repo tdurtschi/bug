@@ -2,7 +2,7 @@ import Entity, { EntityState } from "../entity"
 import Victor from "victor"
 import { BugMode } from "./bugConstants"
 
-interface BugState extends EntityState {
+export interface BugState extends EntityState {
 	direction: Victor
 	speed: number
 	behaviorQueue: any
