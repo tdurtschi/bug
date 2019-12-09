@@ -7,8 +7,8 @@ export interface IEntityManager {
 
 export default class EntityManager implements IEntityManager {
 	private entities: Entity[]
-	constructor(entities: Entity[]) {
-		this.entities = entities
+	constructor(initialEntities: Entity[]) {
+		this.entities = initialEntities
 	}
 
 	public getEntities = () => this.entities;

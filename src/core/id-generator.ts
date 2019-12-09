@@ -1,5 +1,5 @@
 let id = 0
 
-export const idGenerator = () => id++
+export const generateId = () => id++
 
 export const maxId = () => id

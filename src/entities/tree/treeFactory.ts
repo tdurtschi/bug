@@ -1,14 +1,13 @@
-import Bug, { BugState } from "./bug";
+import Tree, { TreeState } from "./tree";
 
-
-export default class BugFactory {
+export default class TreeFactory {
 	constructor(
 		private generateId: () => number,
 		private spontaneous: () => boolean
 	) { }
 
-	build(initialState?: Partial<BugState>): Bug {
+	build(initialState?: Partial<TreeState>): Tree {
 		const newState = Object.assign({ spontaneous: this.spontaneous }, initialState);
-		return new Bug(this.generateId(), newState);
+		return new Tree(this.generateId(), newState);
 	}
 }

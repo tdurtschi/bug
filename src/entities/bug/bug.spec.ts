@@ -7,9 +7,9 @@ import { BugMode } from "./bugConstants"
 
 describe("Bug", () => {
 	describe("Default bug", () => {
-		it("Is in walking mode.", () => {
+		it("Is in stopped mode.", () => {
 			const bug = new Bug()
-			expect(bug.state.mode).toEqual(BugMode.WALKING)
+			expect(bug.state.mode).toEqual(BugMode.STOPPED)
 		})
 	})
 
@@ -33,6 +33,7 @@ describe("Bug", () => {
 	describe("Walking mode", () => {
 		it("Travels at a given speed", () => {
 			const bug = new Bug(0, {
+				mode: BugMode.WALKING,
 				direction: new Victor(1, 0),
 				speed: 17
 			})
@@ -41,12 +42,18 @@ describe("Bug", () => {
 
 		describe("directions", () => {
 			it("travels in +x direction when 'direction' is (1,0)", () => {
-				const bug = new Bug(0, { direction: new Victor(1, 0) })
+				const bug = new Bug(0, {
+					mode: BugMode.WALKING,
+					direction: new Victor(1, 0)
+				})
 
 				expect(bug.update().state.pos.x).toEqual(1)
 			})
 			it("travels in -x direction when 'direction' is (-1,0)", () => {
-				const bug = new Bug(0, { direction: new Victor(-1, 0) })
+				const bug = new Bug(0, {
+					mode: BugMode.WALKING,
+					direction: new Victor(-1, 0)
+				})
 
 				expect(bug.update().state.pos.x).toEqual(-1)
 			})
@@ -66,7 +73,10 @@ describe("Bug", () => {
 	describe("inputs", () => {
 		it("will turn around when there is an obstruction ahead", () => {
 			const input = [new Wall()]
-			const bug = new Bug(0, { direction: new Victor(1, 0) })
+			const bug = new Bug(0, {
+				mode: BugMode.WALKING,
+				direction: new Victor(1, 0)
+			})
 
 			expect(vectorEquals(bug.update(input).state.direction, new Victor(-1, 0))).toBeTruthy()
 		})
@@ -81,13 +91,14 @@ describe("Bug", () => {
 		it("reacts (changes mode) when it receives a spontaneous urge", () => {
 			const direction = new Victor(1, 0)
 			const bug = new Bug(0, {
+				mode: BugMode.WALKING,
 				direction: direction.clone(),
 				spontaneous: () => true
 			});
 
 			bug.update();
 
-			expect(bug.state.mode != BugMode.WALKING
+			expect(bug.state.mode != BugMode.STOPPED
 				|| !vectorEquals(bug.state.direction, direction)).toBeTruthy();
 		})
 	})

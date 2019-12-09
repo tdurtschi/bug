@@ -1,14 +1,15 @@
 import * as React from 'react'
 import { Game } from '../../core/game-engine'
 import Victor from "victor"
-import Tree from '../../entities/tree/tree'
 import BugFactory from '../../entities/bug/bugFactory'
+import TreeFactory from '../../entities/tree/treeFactory'
 
 interface Props {
 	game: Game,
 	height: number,
 	width: number,
-	bugFactory: BugFactory
+	bugFactory: BugFactory,
+	treeFactory: TreeFactory
 }
 
 let id = 5
@@ -38,19 +39,24 @@ class App extends React.Component<Props> {
 	}
 
 	private addTree(): void {
-		const treeX = Math.floor(Math.random() * (this.props.width - 40))
-		const treeY = 0
+		const { game, treeFactory } = this.props
 
-		this.props.game.addEntity(new Tree(id++, { pos: new Victor(treeX, treeY) }))
+		const pos = new Victor(this.randomX(), 0)
+
+		game.addEntity(treeFactory.build({ pos }))
 	}
 
 	private addBug() {
-		const bugX = Math.floor(Math.random() * (this.props.width - 40))
-		const bugY = 0
+		const { game, bugFactory } = this.props
 
+		const pos = new Victor(this.randomX(), 0)
 		const direction = Math.random() < 0.5 ? new Victor(1, 0) : new Victor(-1, 0)
 
-		this.props.game.addEntity(this.props.bugFactory.build({ pos: new Victor(bugX, bugY), direction }))
+		game.addEntity(bugFactory.build({ pos, direction }))
+	}
+
+	private randomX() {
+		return Math.floor(Math.random() * (this.props.width - 40));
 	}
 }
 
