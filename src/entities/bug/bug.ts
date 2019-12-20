@@ -21,7 +21,8 @@ class Bug implements Entity {
 
 		this.state = Object.assign(
 			{
-				pos: new Victor(0, 0), // What part of the bug does this coordinate refer to?
+				//Position: the front of the bug at foot level
+				pos: new Victor(0, 0),
 				size: new Victor(30, 20),
 				direction: new Victor(1, 0),
 				speed: 1,
@@ -34,7 +35,8 @@ class Bug implements Entity {
 	public update(inputs?: Entity[]): Bug {
 		if (this.state.spontaneous())
 		{
-			this.changeMode()
+			console.log("AAAAAAAAAAAAAH")
+			randBool() ? this.turnAround() : this.changeMode()
 		}
 
 		if (this.state.mode == BugMode.WALKING)
@@ -46,18 +48,12 @@ class Bug implements Entity {
 	}
 
 	private changeMode() {
-		if (randBool())
+		if (this.state.mode == BugMode.WALKING)
 		{
-			if (this.state.mode == BugMode.WALKING)
-			{
-				this.state.mode = BugMode.STOPPED
-			} else
-			{
-				this.state.mode = BugMode.WALKING
-			}
+			this.state.mode = BugMode.STOPPED
 		} else
 		{
-			this.state.direction.multiplyScalar(-1)
+			this.state.mode = BugMode.WALKING
 		}
 	}
 
@@ -75,6 +71,10 @@ class Bug implements Entity {
 
 		this.state.pos.addScalarX(direction.x * speed)
 		this.state.pos.addScalarY(direction.y * speed)
+	}
+
+	private turnAround() {
+		this.state.direction.multiplyScalar(-1)
 	}
 }
 

@@ -1,13 +1,13 @@
 import { UIEntity } from "../../../core/game-engine";
-import Bug from "../bug";
-import { BugMode } from "../bugConstants";
+import Bug from "../../../entities/bug/bug";
+import { BugMode } from "../../../entities/bug/bugConstants";
 
 const weevil1 = require("./weevil1.png")
 const weevil2 = require("./weevil2.png")
 
-export default class BugUIState implements UIEntity {
+export default class BugUI implements UIEntity {
 	imageIdx: number
-	static images: HTMLImageElement[] = BugUIState.getBugImages()
+	static images: HTMLImageElement[] = BugUI.getBugImages()
 	randomOffset: number
 
 	constructor(
@@ -18,7 +18,7 @@ export default class BugUIState implements UIEntity {
 	}
 
 	public getImage() {
-		return BugUIState.images[this.imageIdx]
+		return BugUI.images[this.imageIdx]
 	}
 
 	public update(frame: number) {

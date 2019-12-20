@@ -6,7 +6,7 @@ import App from "./app/components/App";
 import { GameEngine } from './core/game-engine';
 import Wall from './entities/wall/wall';
 import EntityManager from './core/entity-manager';
-import CanvasUI from './app/canvas-ui';
+import CanvasUI from './canvas-ui/canvas-ui';
 import "./app/app.scss";
 import BugFactory from './entities/bug/bugFactory';
 import { generateId } from './core/id-generator';

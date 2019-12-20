@@ -3,6 +3,7 @@ import EntityUpdater from "./entity-updater"
 import Victor from "victor"
 import Entity from "../entities/entity";
 import { IEntityManager } from "./entity-manager";
+import { BugMode } from "../entities/bug/bugConstants";
 
 const fakeEntityManager: (entities: Entity[]) => IEntityManager =
 	entities => ({
@@ -12,7 +13,7 @@ const fakeEntityManager: (entities: Entity[]) => IEntityManager =
 
 describe("Entity Updater", () => {
 	it("Updates all the Entities", () => {
-		const entities = [new Bug(), new Bug()]
+		const entities: Entity[] = [new Bug(0, { mode: BugMode.WALKING }), new Bug(0, { mode: BugMode.WALKING })]
 		const entityUpdater = new EntityUpdater(fakeEntityManager(entities))
 		entityUpdater.update()
 
@@ -21,7 +22,7 @@ describe("Entity Updater", () => {
 	})
 
 	it("Updates bugs every 4 frames", () => {
-		const entities = [new Bug()]
+		const entities = [new Bug(0, { mode: BugMode.WALKING })]
 		const entityUpdater = new EntityUpdater(fakeEntityManager(entities))
 
 		new Array(4).fill(0).forEach(_ => entityUpdater.update())

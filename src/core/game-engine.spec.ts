@@ -1,7 +1,7 @@
 import { GameEngine } from "./game-engine";
 import EntityManager from "./entity-manager";
 import Bug from "../entities/bug/bug";
-import { IGameUI } from "../app/canvas-ui";
+import { IGameUI } from "../canvas-ui/canvas-ui";
 
 describe("Game Engine", () => {
 	beforeEach(() => jasmine.clock().install())

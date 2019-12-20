@@ -1,9 +1,11 @@
-import BugUIState from "../entities/bug/bug-ui/bug-ui-state";
+import BugUI from "./renderers/bug/bug-ui";
 import Tree, { ITreeStruct } from "../entities/tree/tree";
 import Entity from "../entities/entity"
 import Bug from "../entities/bug/bug"
 import { UIEntity } from "../core/game-engine";
 import EntityManager from "../core/entity-manager";
+import { fixY } from "./canvas-helpers";
+import bugRenderer from "./renderers/bug/bug-renderer";
 
 export interface GameUIOptions {
 	target: string
@@ -39,7 +41,7 @@ class CanvasUI implements IGameUI {
 		this.uiEntities = entities.map((entity) => {
 			if (entity.type === "BUG")
 			{
-				return new BugUIState(entity.id, (entity as Bug));
+				return new BugUI(entity.id, (entity as Bug));
 			}
 			else return null;
 		}).filter((entity) => entity !== null);
@@ -52,8 +54,7 @@ class CanvasUI implements IGameUI {
 
 		this.clear()
 		this.entityManager.getEntities().forEach(entity => {
-			const renderFn = this.getRendererFor(entity)
-			renderFn()
+			this.renderEntity(entity)
 		})
 	}
 
@@ -84,48 +85,31 @@ class CanvasUI implements IGameUI {
 		ctx.beginPath()
 	}
 
-	fixY(y: number) {
-		return this.canvas.height - y
-	}
-
-	getRendererFor(entity: Entity) {
+	renderEntity(entity: Entity) {
 		const ctx = this.ctx
-		if (entity.type === "BUG") return () => {
-			const uiBug = this.findUIEntity(entity) // TODO Needs Error handling
-			const image = uiBug.getImage()
-
-			const bug = (entity as Bug)
-			const { pos, direction, size } = bug.state
-
-			ctx.save()
-			ctx.translate(pos.x, this.fixY(pos.y))
-			ctx.translate(0, -size.y)
-			if (direction.x > 0)
-			{
-				ctx.translate(size.x, 0)
-				ctx.scale(-1, 1)
-			}
-			ctx.drawImage(image, 0, 0, size.x, size.y)
-			ctx.restore()
+		if (entity.type === "BUG")
+		{
+			bugRenderer(this.findUIEntity(entity), ctx)
 		}
-		else if (entity.type === "WALL") return () => {
+		else if (entity.type === "WALL")
+		{
 			const { pos, size } = entity.state
 			ctx.save()
-			ctx.translate(pos.x, this.fixY(pos.y))
+			ctx.translate(pos.x, fixY(ctx, pos.y))
 			ctx.translate(0, -size.y)
 			ctx.fillRect(0, 0, size.x, size.y)
 			ctx.restore()
 		}
-		else if (entity.type === "TREE") return () => {
+		else if (entity.type === "TREE")
+		{
 			const { pos, size } = entity.state
 			const tree = (entity as Tree).state.graph
 			ctx.save()
 			ctx.strokeStyle = "green";
-			ctx.translate(pos.x, this.fixY(pos.y))
+			ctx.translate(pos.x, fixY(ctx, pos.y))
 			this.renderTree(tree, ctx)
 			ctx.restore()
 		}
-		else return (): void => null
 	}
 
 	renderTree(root: ITreeStruct, ctx: CanvasRenderingContext2D) {
@@ -149,12 +133,12 @@ class CanvasUI implements IGameUI {
 	}
 
 	findUIEntity(entity: Entity) {
-		let uiEntity = this.uiEntities.find(ui => ui.id == entity.id) as BugUIState
+		let uiEntity = this.uiEntities.find(ui => ui.id == entity.id) as BugUI
 		if (!uiEntity)
 		{
 			if (entity.type === "BUG")
 			{
-				uiEntity = new BugUIState(entity.id, (entity as Bug))
+				uiEntity = new BugUI(entity.id, (entity as Bug))
 				this.uiEntities.push(uiEntity)
 			}
 		}

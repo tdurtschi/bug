@@ -1,5 +1,5 @@
 import EntityUpdater from "./entity-updater";
-import { IGameUI } from "../app/canvas-ui"
+import { IGameUI } from "../canvas-ui/canvas-ui"
 import EntityManager, { IEntityManager } from "./entity-manager";
 import Entity from "../entities/entity";
 
