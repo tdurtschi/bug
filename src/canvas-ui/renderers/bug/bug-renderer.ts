@@ -12,7 +12,6 @@ export default (uiBug: BugUI, ctx: CanvasRenderingContext2D) => {
 	ctx.translate(0, -size.y)
 	if (direction.x > 0)
 	{
-		ctx.translate(size.x, 0)
 		ctx.scale(-1, 1)
 	}
 	ctx.drawImage(image, 0, 0, size.x, size.y)

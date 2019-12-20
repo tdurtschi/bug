@@ -74,10 +74,7 @@ class Bug implements Entity {
 	}
 
 	private turnAround() {
-		console.log("Innitial position:", this.state.pos)
 		const subtractVector = this.state.direction.clone().norm().multiplyScalar(this.state.size.x)
-		console.log(subtractVector)
-		console.log("^^^^^^^^^^^")
 		this.state.pos.subtract(subtractVector)
 		this.state.direction.multiplyScalar(-1)
 	}
