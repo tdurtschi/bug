@@ -81,17 +81,18 @@ describe("Bug", () => {
 			expect(vectorEquals(bug.update(input).state.direction, new Victor(-1, 0))).toBeTruthy()
 		})
 
-		// it("Turns around along its x-axis", () => {
-		// 	const input = [new Wall()]
-		// 	const bug = new Bug(0, {
-		// 		pos: new Victor(10, 0),
-		// 		size: new Victor(10, 1),
-		// 		mode: BugMode.WALKING,
-		// 		direction: new Victor(1, 0)
-		// 	})
-
-		// 	expect(vectorEquals(bug.update(input).state.pos, new Victor(0, 0))).toBeTruthy()
-		// })
+		it("Turns around along its x-axis", () => {
+			const input = [new Wall()]
+			const bug = new Bug(0, {
+				pos: new Victor(10, 0),
+				size: new Victor(10, 0),
+				mode: BugMode.WALKING,
+				direction: new Victor(1, 0)
+			})
+			const bugPos = bug.update(input).state.pos
+			console.log("bug pos:", bugPos)
+			expect(vectorEquals(bugPos, new Victor(0, 0))).toBeTruthy()
+		})
 
 		it("fails gracefully when given bad input", () => {
 			const bug = new Bug()
@@ -110,7 +111,7 @@ describe("Bug", () => {
 
 			bug.update();
 
-			expect(bug.state.mode != BugMode.STOPPED
+			expect(bug.state.mode == BugMode.STOPPED
 				|| !vectorEquals(bug.state.direction, direction)).toBeTruthy();
 		})
 	})

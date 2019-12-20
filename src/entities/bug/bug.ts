@@ -35,7 +35,6 @@ class Bug implements Entity {
 	public update(inputs?: Entity[]): Bug {
 		if (this.state.spontaneous())
 		{
-			console.log("AAAAAAAAAAAAAH")
 			randBool() ? this.turnAround() : this.changeMode()
 		}
 
@@ -66,14 +65,20 @@ class Bug implements Entity {
 
 		if (inputs && inputs.find(i => i.type === "WALL"))
 		{
-			direction.multiplyScalar(-1)
+			this.turnAround()
+		} else
+		{
+			this.state.pos.addScalarX(direction.x * speed)
+			this.state.pos.addScalarY(direction.y * speed)
 		}
-
-		this.state.pos.addScalarX(direction.x * speed)
-		this.state.pos.addScalarY(direction.y * speed)
 	}
 
 	private turnAround() {
+		console.log("Innitial position:", this.state.pos)
+		const subtractVector = this.state.direction.clone().norm().multiplyScalar(this.state.size.x)
+		console.log(subtractVector)
+		console.log("^^^^^^^^^^^")
+		this.state.pos.subtract(subtractVector)
 		this.state.direction.multiplyScalar(-1)
 	}
 }
