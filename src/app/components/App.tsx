@@ -3,6 +3,8 @@ import { Game } from '../../core/game-engine'
 import Victor from "victor"
 import BugFactory from '../../entities/bug/bugFactory'
 import TreeFactory from '../../entities/tree/treeFactory'
+import { randBool } from '../../util'
+import { BugMode } from '../../entities/bug/bugConstants'
 
 interface Props {
 	game: Game,
@@ -50,9 +52,11 @@ class App extends React.Component<Props> {
 		const { game, bugFactory } = this.props
 
 		const pos = new Victor(this.randomX(), 0)
-		const direction = Math.random() < 0.5 ? new Victor(1, 0) : new Victor(-1, 0)
+		const direction = randBool() ? new Victor(1, 0) : new Victor(-1, 0)
+		const size = new Victor(30, 20)
+		const mode = BugMode.WALKING
 
-		game.addEntity(bugFactory.build({ pos, direction }))
+		game.addEntity(bugFactory.build({ pos, direction, size, mode }))
 	}
 
 	private randomX() {

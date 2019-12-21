@@ -32,7 +32,7 @@ const game = new GameEngine({
 	entityManager
 })
 
-const spontaneous = new Spontaneous(() => range(2, 1) * 500, () => range(10, 4)).get
+const spontaneous = new Spontaneous(() => range(8000, 4000), () => range(10, 4)).get
 
 const bugFactory = new BugFactory(generateId, spontaneous)
 const treeFactory = new TreeFactory(generateId, spontaneous)
