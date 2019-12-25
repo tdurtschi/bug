@@ -8,8 +8,15 @@ describe("App", () => {
 	it("Starts the game upon rendering.", () => {
 		const pauseSpy = jasmine.createSpy()
 		const startSpy = jasmine.createSpy("start")
+		const stubGame = {
+			isPaused: false,
+			togglePause: pauseSpy,
+			addEntity: (): any => null,
+			start: startSpy
+		}
+
 		render(<App
-			game={{ togglePause: pauseSpy, addEntity: () => null, start: startSpy }}
+			game={stubGame}
 			width={0}
 			height={0}
 			bugFactory={new BugFactory(() => 0, () => false)}

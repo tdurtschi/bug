@@ -5,10 +5,16 @@ import BugFactory from '../../entities/bug/bugFactory'
 import TreeFactory from '../../entities/tree/treeFactory'
 
 describe("Pause button", () => {
+	const pauseSpy = jasmine.createSpy()
+	const stubGame = {
+		isPaused: false,
+		togglePause: pauseSpy,
+		addEntity: (): any => null,
+		start: (): any => null
+	}
 	it("Calls the togglePause method on the UI.", () => {
-		const pauseSpy = jasmine.createSpy()
 		const rendered = render(<App
-			game={{ togglePause: pauseSpy, addEntity: () => null, start: () => null }}
+			game={stubGame}
 			width={0}
 			height={0}
 			bugFactory={new BugFactory(() => 0, () => false)}

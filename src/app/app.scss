@@ -39,9 +39,15 @@ $BORDER: 0px;
 	button{
 		font-size: 16px;
 		border-radius:6px;
+		outline: none;
 
 		:active{
 			background-color: #101010;
+		}
+
+		&.paused{
+			border-style: inset;
+			background-color: #FFFF88;
 		}
 	}
 }

@@ -19,6 +19,7 @@ let id = 5
 class App extends React.Component<Props> {
 	componentDidMount() {
 		this.props.game.start()
+		document.addEventListener("keydown", this.handleKeyDown)
 	}
 
 	render() {
@@ -27,7 +28,11 @@ class App extends React.Component<Props> {
 				<div id="bug-background"></div>
 				<canvas id="bug-ui" height={this.props.height} width={this.props.width}></canvas>
 				<div id="bug-controls">
-					<button id="pause-button" onClick={() => this.props.game.togglePause()}>
+					<button
+						id="pause-button"
+						className={this.props.game.isPaused ? "paused" : ""}
+						onClick={this.pause}
+					>
 						PAUSE
 					</button>
 					<button id="add-bug" onClick={() => this.addBug()}>
@@ -40,7 +45,27 @@ class App extends React.Component<Props> {
 			</div >);
 	}
 
-	private addTree(): void {
+	private handleKeyDown = (e: KeyboardEvent) => {
+		switch (e.key)
+		{
+			case "p":
+				this.pause()
+				break
+			case "b":
+				this.addBug()
+				break
+			case "t":
+				this.addTree()
+				break
+		}
+	}
+
+	private pause = () => {
+		this.props.game.togglePause();
+		this.forceUpdate();
+	}
+
+	private addTree = (): void => {
 		const { game, treeFactory } = this.props
 
 		const pos = new Victor(this.randomX(), 0)
@@ -48,7 +73,7 @@ class App extends React.Component<Props> {
 		game.addEntity(treeFactory.build({ pos }))
 	}
 
-	private addBug() {
+	private addBug = () => {
 		const { game, bugFactory } = this.props
 
 		const pos = new Victor(this.randomX(), 0)
@@ -59,7 +84,7 @@ class App extends React.Component<Props> {
 		game.addEntity(bugFactory.build({ pos, direction, size, mode }))
 	}
 
-	private randomX() {
+	private randomX = () => {
 		return Math.floor(Math.random() * (this.props.width - 40));
 	}
 }

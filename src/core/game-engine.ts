@@ -15,15 +15,16 @@ export interface UIEntity {
 
 export interface Game {
 	togglePause: () => void
+	isPaused: boolean
 	addEntity: (entity: Entity) => void
 	start: () => void
 }
 
 export class GameEngine implements Game {
+	public isPaused: boolean = false
 	gameUI: IGameUI
 	entityManager: IEntityManager
 	entityUpdater: EntityUpdater
-	isPaused: boolean = false
 	frame: number = 0
 
 	constructor(args: GameEngineOptions) {
