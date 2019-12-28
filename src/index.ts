@@ -48,3 +48,4 @@ const appProps = {
 ReactDOM.render(React.createElement(App, appProps), document.getElementById('root'));
 
 (window as any).Victor = Victor
+window.DEBUG = false

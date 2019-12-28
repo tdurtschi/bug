@@ -1,8 +1,8 @@
 import Victor from "victor"
 
-export const vectorEquals = (a: Victor, b: Victor) => {
+export const vectorEquals = (a: Victor, b: Victor, debug: boolean = true) => {
 	const result = a.x === b.x && a.y === b.y
-	if (!result)
+	if (!result && debug)
 	{
 		console.log("Testing for vector equality but failed.")
 		console.log(a)

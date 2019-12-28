@@ -7,7 +7,7 @@
   "scripts": {
     "webpack": "./node_modules/.bin/webpack",
     "build": "webpack",
-    "start": "webpack-dev-server",
+    "start": "./node_modules/.bin/webpack-dev-server",
     "startExpress": "node ./src/server",
     "test": "ts-node node_modules/jasmine/bin/jasmine",
     "test-browser": "start-server-and-test start http://localhost:9000 test-browser-run",

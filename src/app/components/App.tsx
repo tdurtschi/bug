@@ -14,12 +14,16 @@ interface Props {
 	treeFactory: TreeFactory
 }
 
-let id = 5
+interface State {
+	bug?: any
+}
 
-class App extends React.Component<Props> {
+class App extends React.Component<Props, State> {
 	componentDidMount() {
 		this.props.game.start()
 		document.addEventListener("keydown", this.handleKeyDown)
+		this.setState({})
+		setInterval(() => this.forceUpdate(), 500)
 	}
 
 	render() {
@@ -42,6 +46,11 @@ class App extends React.Component<Props> {
 						Add Tree
 					</button>
 				</div>
+				<pre>
+					{window.DEBUG && <p className="debug">
+						{JSON.stringify(this.state, null, 4)}
+					</p>}
+				</pre>
 			</div >);
 	}
 
@@ -81,7 +90,9 @@ class App extends React.Component<Props> {
 		const size = new Victor(30, 20)
 		const mode = BugMode.WALKING
 
-		game.addEntity(bugFactory.build({ pos, direction, size, mode }))
+		const bug = bugFactory.build({ pos, direction, size, mode })
+		this.setState({ bug })
+		game.addEntity(bug)
 	}
 
 	private randomX = () => {

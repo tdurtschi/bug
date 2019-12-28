@@ -2,6 +2,12 @@ $HEIGHT: 100vh;
 $WIDTH: 100vw;
 $BORDER: 0px;
 
+.debug{
+	margin-top:100px;
+	z-index: 2;
+	position: absolute;
+}
+
 #bug-background{
 	position: absolute;
 	box-sizing: border-box;

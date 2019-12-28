@@ -216,7 +216,7 @@ describe("Bug", () => {
 				direction: new Victor(1, 0)
 			})
 			const bugPos = bug.update(input).state.pos
-			console.log("bug pos:", bugPos)
+
 			expect(vectorEquals(bugPos, new Victor(0, 0))).toBeTruthy()
 		})
 
@@ -255,7 +255,7 @@ describe("Bug", () => {
 			bug.update();
 
 			expect(bug.state.mode == BugMode.STOPPED
-				|| !vectorEquals(bug.state.direction, direction)).toBeTruthy();
+				|| !vectorEquals(bug.state.direction, direction, false)).toBeTruthy();
 		})
 	})
 })

@@ -47,7 +47,7 @@ export class GameEngine implements Game {
 		this.isPaused = !this.isPaused
 		this.gameUI.togglePause()
 
-		if (this.isPaused)
+		if (this.isPaused && window.DEBUG)
 		{
 			console.log(this.entityManager.getEntities())
 		}
