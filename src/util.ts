@@ -1,6 +1,15 @@
 import Victor from "victor"
 
-export const vectorEquals = (a: Victor, b: Victor) => a.x === b.x && a.y === b.y
+export const vectorEquals = (a: Victor, b: Victor) => {
+	const result = a.x === b.x && a.y === b.y
+	if (!result)
+	{
+		console.log("Testing for vector equality but failed.")
+		console.log(a)
+		console.log(b)
+	}
+	return result
+}
 
 export const randInt = (min: number, max: number) =>
 	Math.floor(Math.random() * (max - min) + min + 0.49)
