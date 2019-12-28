@@ -28,7 +28,7 @@ export default class EntityUpdater {
 	private getCollisions = (entity: Entity, otherEntities: Entity[]): Entity[] => {
 		const state = entity.state;
 		const collisions: Entity[] = [];
-		otherEntities.forEach(function (obj) {
+		otherEntities.forEach((obj) => {
 			const otherState = obj.state;
 			if (otherState !== state &&
 				otherState.pos.x < state.pos.x + state.size.x &&

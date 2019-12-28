@@ -4,6 +4,8 @@ import Wall from "../wall/wall"
 import { vectorEquals } from "../../util"
 import Victor from "victor"
 import { BugMode } from "./bugConstants"
+import Tree, { ITreeStruct } from "../tree/tree"
+import TreeBuilder from "../tree/treeBuilder"
 
 describe("Bug", () => {
 	describe("Default bug", () => {
@@ -70,6 +72,70 @@ describe("Bug", () => {
 		})
 	})
 
+	describe("Climbing mode", () => {
+		it("Climbs up on a branch", () => {
+			const bug = new Bug(0, {
+				mode: BugMode.CLIMBING,
+				speed: 1,
+				pos: new Victor(0, 30),
+				climbingOn: new Tree(1, { pos: new Victor(0, 0) }),
+				direction: new Victor(0, 1)
+			})
+
+			bug.update()
+
+			expect(bug.state.pos.y).toEqual(31)
+		})
+
+		it("Will pick the left branch to climb up if its at the end of a branch", () => {
+			const tree = new TreeBuilder()
+				.node(0, 30)
+				.left(new TreeBuilder()
+					.node(-30, 30)
+					.build())
+				.right(new TreeBuilder()
+					.node(30, 30)
+					.build())
+				.build()
+
+			const bug = new Bug(0, {
+				mode: BugMode.CLIMBING,
+				speed: 1,
+				pos: new Victor(0, 30),
+				climbingOn: new Tree(1, { pos: new Victor(0, 0), graph: tree }),
+				direction: new Victor(0, 1)
+			})
+
+			// This is like... needs to be refactored!
+			bug.internalTreeRef = tree
+
+			bug.update()
+
+			expect(bug.internalTreeRef).toEqual(tree.left)
+			expect(vectorEquals(bug.state.direction, tree.left.node.clone().norm())).toBeTruthy()
+		})
+
+		it("Stops if the next branch doesn't exist", () => {
+			const tree = new TreeBuilder().node(0, 30).build()
+
+			const bug = new Bug(0, {
+				mode: BugMode.CLIMBING,
+				speed: 1,
+				pos: new Victor(0, 30),
+				climbingOn: new Tree(1, { pos: new Victor(0, 0), graph: tree }),
+				direction: new Victor(0, 1)
+			})
+
+			// This is like... needs to be refactored!
+			bug.internalTreeRef = tree
+
+			bug.update()
+
+			expect(bug.internalTreeRef).toEqual(tree)
+			expect(bug.state.mode).toEqual(BugMode.STOPPED)
+		})
+	})
+
 	describe("inputs", () => {
 		it("will turn around when there is an obstruction ahead", () => {
 			const input = [new Wall()]
@@ -92,6 +158,24 @@ describe("Bug", () => {
 			const bugPos = bug.update(input).state.pos
 			console.log("bug pos:", bugPos)
 			expect(vectorEquals(bugPos, new Victor(0, 0))).toBeTruthy()
+		})
+
+		it("will change to climbing mode when it reaches a tree", () => {
+			const input = [new Tree(1, { pos: new Victor(20, 0) })]
+			const bug = new Bug(0, {
+				pos: new Victor(10, 0),
+				size: new Victor(30, 20),
+				mode: BugMode.WALKING,
+				direction: new Victor(-1, 0)
+			})
+
+			bug.update(input)
+			const mode = bug.state.mode
+			const direction = bug.state.direction
+			expect(mode).toEqual(BugMode.CLIMBING)
+			expect(vectorEquals(direction, new Victor(0, 1))).toBeTruthy()
+			console.log(bug.state.pos)
+			expect(vectorEquals(bug.state.pos, new Victor(20, 30))).toBeTruthy()
 		})
 
 		it("fails gracefully when given bad input", () => {

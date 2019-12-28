@@ -4,6 +4,7 @@ import Victor from "victor"
 import Entity from "../entities/entity";
 import { IEntityManager } from "./entity-manager";
 import { BugMode } from "../entities/bug/bugConstants";
+import Tree from "../entities/tree/tree";
 
 const fakeEntityManager: (entities: Entity[]) => IEntityManager =
 	entities => ({
@@ -33,6 +34,7 @@ describe("Entity Updater", () => {
 	})
 
 	describe("Collision Detection", () => {
+		//TODO The X-pos coord points at the head of a bug regardless of its direction. Need to add a case with 2 bugs going opposite directions
 		it("Will tell a bug that it's intersecting another bug", () => {
 			const entities = [
 				new Bug(0, { pos: new Victor(1, 1) }),
@@ -48,6 +50,18 @@ describe("Entity Updater", () => {
 			expect((entities[0].update as jasmine.Spy).calls.mostRecent().args[0][0]).toEqual(entities[1])
 			expect((entities[1].update as jasmine.Spy).calls.mostRecent().args[0][0]).toEqual(entities[0])
 			expect((entities[2].update as jasmine.Spy).calls.mostRecent().args[0].length).toEqual(0)
+		})
+
+
+		it("Will tell a bug that it's intersecting a tree", () => {
+			const entities = [
+				new Bug(0, { pos: new Victor(1, 1) }),
+				new Tree(1, { pos: new Victor(10, 1) })
+			]
+			entities[0].update = jasmine.createSpy()
+
+			new EntityUpdater(fakeEntityManager(entities)).update()
+			expect((entities[0].update as jasmine.Spy).calls.mostRecent().args[0][0]).toEqual(entities[1])
 		})
 	})
 })

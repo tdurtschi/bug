@@ -2,6 +2,7 @@ import Entity, { EntityState } from "../entity"
 import Victor from "victor"
 import { BugMode } from "./bugConstants"
 import { randBool } from "../../util"
+import Tree, { ITreeStruct } from "../tree/tree"
 
 export interface BugState extends EntityState {
 	direction: Victor
@@ -9,12 +10,14 @@ export interface BugState extends EntityState {
 	behaviorQueue: any
 	mode: BugMode
 	spontaneous: () => boolean
+	climbingOn?: Tree
 }
 
 class Bug implements Entity {
 	public type: string = "BUG"
 	id: number
 	state: BugState
+	internalTreeRef: ITreeStruct
 
 	constructor(id?: number, initialState?: Partial<BugState>) {
 		this.id = id ? id : 0
@@ -33,14 +36,43 @@ class Bug implements Entity {
 	}
 
 	public update(inputs?: Entity[]): Bug {
-		if (this.state.spontaneous())
+		if (this.state.mode === BugMode.CLIMBING)
 		{
-			randBool() ? this.turnAround() : this.changeMode()
-		}
+			const branchOffset = this.state.pos.clone().subtract(this.state.climbingOn.getAbsolutePos(this.internalTreeRef))
 
-		if (this.state.mode == BugMode.WALKING)
+			if (branchOffset.magnitude() >= this.internalTreeRef.node.magnitude())
+			{
+				if (this.internalTreeRef.left)
+				{
+					this.internalTreeRef = this.internalTreeRef.left
+					this.state.pos = this.state.climbingOn.getAbsolutePos(this.internalTreeRef).add(new Victor(this.state.size.x, 0).rotate(this.internalTreeRef.node.direction()))
+					this.state.direction = this.internalTreeRef.node.clone().norm()
+				} else
+				{
+					this.state.mode = BugMode.STOPPED
+				}
+			}
+			this.walk()
+		} else
 		{
-			this.walk(inputs)
+			if (this.state.spontaneous())
+			{
+				randBool() ? this.turnAround() : this.changeMode()
+			}
+
+			const tree = inputs && (inputs.find(input => input.type === "TREE") as Tree)
+			if (tree)
+			{
+				this.state.pos = new Victor(tree.state.pos.x, this.state.size.x)
+				this.state.direction = new Victor(0, 1)
+				this.state.mode = BugMode.CLIMBING
+				this.state.climbingOn = tree
+				this.internalTreeRef = tree.state.graph
+			}
+			else if (this.state.mode == BugMode.WALKING)
+			{
+				this.walk(inputs)
+			}
 		}
 
 		return this

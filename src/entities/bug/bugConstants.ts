@@ -1,4 +1,5 @@
 export enum BugMode {
 	WALKING,
-	STOPPED
+	STOPPED,
+	CLIMBING
 }

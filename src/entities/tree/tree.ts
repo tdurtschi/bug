@@ -16,10 +16,29 @@ export default class Tree implements Entity {
 		this.state = Object.assign(
 			{
 				pos: new Victor(1, 0),
-				size: new Victor(0, 0),
+				size: new Victor(1, 1),
 				direction: new Victor(1, 0),
 				graph: new TreeStruct()
 			}, initialState)
+	}
+
+	public getAbsolutePos = (node: ITreeStruct, accumulator?: Victor, rootNode?: ITreeStruct): Victor => {
+		if (!accumulator && !rootNode)
+		{
+			return this.getAbsolutePos(node, this.state.pos.clone(), this.state.graph)
+		} else if (rootNode === node)
+		{
+			return accumulator
+		} else
+		{
+			const checkLeft = rootNode.left && this.getAbsolutePos(node, accumulator.clone().add(rootNode.node), rootNode.left)
+			if (checkLeft) return checkLeft
+
+			const checkRight = rootNode.right && this.getAbsolutePos(node, accumulator.clone().add(rootNode.node), rootNode.right)
+			if (checkRight) return checkRight
+
+			return undefined
+		}
 	}
 
 	public update = (input: any) => {
@@ -32,8 +51,8 @@ interface TreeStateInternal extends TreeState {
 }
 
 export interface ITreeStruct {
-	left: TreeStruct | null
-	right: TreeStruct | null
+	left: ITreeStruct | null
+	right: ITreeStruct | null
 	node: Victor
 	depth: number
 	update: () => void
@@ -44,6 +63,7 @@ export class TreeStruct implements ITreeStruct {
 	right: TreeStruct | null = null
 	node = new Victor(0, 1)
 	depth: number = 0
+	maxDepth: number = 6
 	maxSize: number
 	branchFactor: number
 	branchAngle: number
