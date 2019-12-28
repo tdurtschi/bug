@@ -35,44 +35,21 @@ class Bug implements Entity {
 			}, initialState)
 	}
 
-	public update(inputs?: Entity[]): Bug {
+	public update(inputs: Entity[] = []): Bug {
 		if (this.state.mode === BugMode.CLIMBING)
 		{
-			const branchOffset = this.state.pos.clone().subtract(this.state.climbingOn.getAbsolutePos(this.internalTreeRef))
-
-			if (branchOffset.magnitude() >= this.internalTreeRef.node.magnitude())
-			{
-				if (this.internalTreeRef.left)
-				{
-					this.internalTreeRef = this.internalTreeRef.left
-					this.state.pos = this.state.climbingOn.getAbsolutePos(this.internalTreeRef).add(new Victor(this.state.size.x, 0).rotate(this.internalTreeRef.node.direction()))
-					this.state.direction = this.internalTreeRef.node.clone().norm()
-				} else
-				{
-					this.state.mode = BugMode.STOPPED
-				}
-			}
-			this.walk()
-		} else
+			this.climb()
+		} else if (inputs.find(input => input.type === "TREE"))
 		{
-			if (this.state.spontaneous())
-			{
-				randBool() ? this.turnAround() : this.changeMode()
-			}
+			const tree = (inputs.find(input => input.type === "TREE") as Tree)
 
-			const tree = inputs && (inputs.find(input => input.type === "TREE") as Tree)
-			if (tree)
-			{
-				this.state.pos = new Victor(tree.state.pos.x, this.state.size.x)
-				this.state.direction = new Victor(0, 1)
-				this.state.mode = BugMode.CLIMBING
-				this.state.climbingOn = tree
-				this.internalTreeRef = tree.state.graph
-			}
-			else if (this.state.mode == BugMode.WALKING)
-			{
-				this.walk(inputs)
-			}
+			this.beginClimbing(tree)
+		} else if (this.state.spontaneous())
+		{
+			randBool() ? this.turnAround() : this.changeMode()
+		} else if (this.state.mode == BugMode.WALKING)
+		{
+			this.walk(inputs)
 		}
 
 		return this
@@ -109,6 +86,34 @@ class Bug implements Entity {
 		const subtractVector = this.state.direction.clone().norm().multiplyScalar(this.state.size.x)
 		this.state.pos.subtract(subtractVector)
 		this.state.direction.multiplyScalar(-1)
+	}
+
+	private beginClimbing(tree: Tree) {
+		this.state.pos = new Victor(tree.state.pos.x, this.state.size.x)
+		this.state.direction = new Victor(0, 1)
+		this.state.mode = BugMode.CLIMBING
+		this.state.climbingOn = tree
+		this.internalTreeRef = tree.state.graph
+	}
+
+	private climb() {
+		const branchPosition = this.state.climbingOn.getAbsolutePos(this.internalTreeRef)
+		const branchOffset = this.state.pos.clone().subtract(branchPosition)
+
+		if (branchOffset.magnitude() >= this.internalTreeRef.node.magnitude())
+		{
+			if (this.internalTreeRef.left)
+			{
+				this.internalTreeRef = this.internalTreeRef.left
+				this.state.pos = this.state.climbingOn.getAbsolutePos(this.internalTreeRef).add(new Victor(this.state.size.x, 0).rotate(this.internalTreeRef.node.direction()))
+				this.state.direction = this.internalTreeRef.node.clone().norm()
+			} else
+			{
+				this.state.mode = BugMode.STOPPED
+			}
+		}
+
+		this.walk()
 	}
 }
 

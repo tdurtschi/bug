@@ -82,6 +82,8 @@ describe("Bug", () => {
 				direction: new Victor(0, 1)
 			})
 
+			bug.internalTreeRef = bug.state.climbingOn.state.graph
+
 			bug.update()
 
 			expect(bug.state.pos.y).toEqual(31)
