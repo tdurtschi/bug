@@ -74,15 +74,14 @@ describe("Bug", () => {
 
 	describe("Climbing mode", () => {
 		it("Climbs up on a branch", () => {
+			const tree = new Tree(1, { pos: new Victor(0, 0) })
 			const bug = new Bug(0, {
 				mode: BugMode.CLIMBING,
 				speed: 1,
 				pos: new Victor(0, 30),
-				climbingOn: new Tree(1, { pos: new Victor(0, 0) }),
+				climbingOn: { tree, branch: tree.state.graph },
 				direction: new Victor(0, 1)
 			})
-
-			bug.internalTreeRef = bug.state.climbingOn.state.graph
 
 			bug.update()
 
@@ -104,16 +103,16 @@ describe("Bug", () => {
 				mode: BugMode.CLIMBING,
 				speed: 1,
 				pos: new Victor(0, 30),
-				climbingOn: new Tree(1, { pos: new Victor(0, 0), graph: tree }),
+				climbingOn: {
+					tree: new Tree(1, { pos: new Victor(0, 0), graph: tree }),
+					branch: tree
+				},
 				direction: new Victor(0, 1)
 			})
 
-			// This is like... needs to be refactored!
-			bug.internalTreeRef = tree
-
 			bug.update()
 
-			expect(bug.internalTreeRef).toEqual(tree.left)
+			expect(bug.state.climbingOn.branch).toEqual(tree.left)
 			expect(vectorEquals(bug.state.direction, tree.left.node.clone().norm())).toBeTruthy()
 		})
 
@@ -124,16 +123,16 @@ describe("Bug", () => {
 				mode: BugMode.CLIMBING,
 				speed: 1,
 				pos: new Victor(0, 30),
-				climbingOn: new Tree(1, { pos: new Victor(0, 0), graph: tree }),
+				climbingOn: {
+					tree: new Tree(1, { pos: new Victor(0, 0), graph: tree }),
+					branch: tree
+				},
 				direction: new Victor(0, 1)
 			})
 
-			// This is like... needs to be refactored!
-			bug.internalTreeRef = tree
-
 			bug.update()
 
-			expect(bug.internalTreeRef).toEqual(tree)
+			expect(bug.state.climbingOn.branch).toEqual(tree)
 			expect(bug.state.mode).toEqual(BugMode.STOPPED)
 		})
 	})

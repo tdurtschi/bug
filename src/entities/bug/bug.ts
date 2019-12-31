@@ -10,14 +10,18 @@ export interface BugState extends EntityState {
 	behaviorQueue: any
 	mode: BugMode
 	spontaneous: () => boolean
-	climbingOn?: Tree
+	climbingOn?: IClimbingOn
+}
+
+export interface IClimbingOn {
+	tree: Tree
+	branch: ITreeStruct
 }
 
 class Bug implements Entity {
 	public type: string = "BUG"
 	id: number
 	state: BugState
-	internalTreeRef: ITreeStruct
 
 	constructor(id?: number, initialState?: Partial<BugState>) {
 		this.id = id ? id : 0
@@ -67,7 +71,6 @@ class Bug implements Entity {
 
 	private walk(inputs?: Entity[]) {
 		const {
-			pos,
 			direction,
 			speed
 		} = this.state
@@ -92,21 +95,27 @@ class Bug implements Entity {
 		this.state.pos = new Victor(tree.state.pos.x, this.state.size.x)
 		this.state.direction = new Victor(0, 1)
 		this.state.mode = BugMode.CLIMBING
-		this.state.climbingOn = tree
-		this.internalTreeRef = tree.state.graph
+		this.state.climbingOn = {
+			tree,
+			branch: tree.state.graph
+		}
 	}
 
 	private climb() {
-		const branchPosition = this.state.climbingOn.getAbsolutePos(this.internalTreeRef)
+		const branchPosition = this.state.climbingOn.tree.getAbsolutePos(this.state.climbingOn.branch)
 		const branchOffset = this.state.pos.clone().subtract(branchPosition)
 
-		if (branchOffset.magnitude() >= this.internalTreeRef.node.magnitude())
+		if (branchOffset.magnitude() >= this.state.climbingOn.branch.node.magnitude())
 		{
-			if (this.internalTreeRef.left)
+			if (this.state.climbingOn.branch.left)
 			{
-				this.internalTreeRef = this.internalTreeRef.left
-				this.state.pos = this.state.climbingOn.getAbsolutePos(this.internalTreeRef).add(new Victor(this.state.size.x, 0).rotate(this.internalTreeRef.node.direction()))
-				this.state.direction = this.internalTreeRef.node.clone().norm()
+				this.state.climbingOn.branch = this.state.climbingOn.branch.left
+				this.state.pos = this.state.climbingOn.tree.getAbsolutePos(this.state.climbingOn.branch)
+					.add(
+						new Victor(this.state.size.x, 0).
+							rotate(this.state.climbingOn.branch.node.direction())
+					)
+				this.state.direction = this.state.climbingOn.branch.node.clone().norm()
 			} else
 			{
 				this.state.mode = BugMode.STOPPED
