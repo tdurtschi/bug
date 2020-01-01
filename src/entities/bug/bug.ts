@@ -40,7 +40,7 @@ class Bug implements Entity {
 	}
 
 	public update(inputs: Entity[] = []): Bug {
-		if (this.state.mode === BugMode.CLIMBING)
+		if (this.state.climbingOn && this.state.mode === BugMode.WALKING)
 		{
 			this.climb()
 		} else if (inputs.find(input => input.type === "TREE"))
@@ -94,7 +94,6 @@ class Bug implements Entity {
 	private beginClimbing(tree: Tree) {
 		this.state.pos = new Victor(tree.state.pos.x, this.state.size.x)
 		this.state.direction = new Victor(0, 1)
-		this.state.mode = BugMode.CLIMBING
 		this.state.climbingOn = {
 			tree,
 			branch: tree.state.graph

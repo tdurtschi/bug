@@ -6,7 +6,7 @@ import { BugMode } from "../../../entities/bug/bugConstants"
 export default (uiBug: BugUI, ctx: CanvasRenderingContext2D) => {
 	const bug = uiBug.bug
 	const image = uiBug.getImage()
-	const climbingYOffset = bug.state.mode === BugMode.CLIMBING ? 2.5 : 0
+	const climbingYOffset = bug.state.climbingOn ? 2.5 : 0
 	const { direction, size } = bug.state
 
 	const pos = new Victor(bug.state.pos.x, fixY(ctx, bug.state.pos.y))

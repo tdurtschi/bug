@@ -76,7 +76,7 @@ describe("Bug", () => {
 		it("Climbs up on a branch", () => {
 			const tree = new Tree(1, { pos: new Victor(0, 0) })
 			const bug = new Bug(0, {
-				mode: BugMode.CLIMBING,
+				mode: BugMode.WALKING,
 				speed: 1,
 				pos: new Victor(0, 30),
 				climbingOn: { tree, branch: tree.state.graph },
@@ -100,7 +100,7 @@ describe("Bug", () => {
 				.build()
 
 			const bug = new Bug(0, {
-				mode: BugMode.CLIMBING,
+				mode: BugMode.WALKING,
 				speed: 1,
 				pos: new Victor(0, 30),
 				climbingOn: {
@@ -120,7 +120,6 @@ describe("Bug", () => {
 			const tree = new TreeBuilder().node(0, 30).build()
 
 			const bug = new Bug(0, {
-				mode: BugMode.CLIMBING,
 				speed: 1,
 				pos: new Victor(0, 30),
 				climbingOn: {
@@ -131,9 +130,11 @@ describe("Bug", () => {
 			})
 
 			bug.update()
-
+			const position = bug.state.pos.clone()
 			expect(bug.state.climbingOn.branch).toEqual(tree)
 			expect(bug.state.mode).toEqual(BugMode.STOPPED)
+			bug.update()
+			expect(vectorEquals(bug.state.pos, position)).toBeTruthy()
 		})
 	})
 
@@ -171,9 +172,8 @@ describe("Bug", () => {
 			})
 
 			bug.update(input)
-			const mode = bug.state.mode
 			const direction = bug.state.direction
-			expect(mode).toEqual(BugMode.CLIMBING)
+			expect(bug.state.climbingOn.tree).toEqual(input[0])
 			expect(vectorEquals(direction, new Victor(0, 1))).toBeTruthy()
 			console.log(bug.state.pos)
 			expect(vectorEquals(bug.state.pos, new Victor(20, 30))).toBeTruthy()
