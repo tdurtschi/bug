@@ -71,6 +71,14 @@ describe("Tree", () => {
 	})
 
 	describe("Child nodes", () => {
+		it("Has a reference to the parent node", () => {
+			const tree = new Tree(), { graph } = tree.state
+
+			updateALot(tree, 100)
+			expect(graph.left).toBeTruthy()
+			expect(graph.left.parent).toBe(graph)
+		})
+
 		it("Get a larger depth than the parent", () => {
 			const tree = new Tree(), { graph } = tree.state
 

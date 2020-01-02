@@ -37,7 +37,7 @@ export default class Tree implements Entity {
 			const checkRight = rootNode.right && this.getAbsolutePos(node, accumulator.clone().add(rootNode.node), rootNode.right)
 			if (checkRight) return checkRight
 
-			return undefined
+			throw new Error("Couldn't find branch in tree while calculating position")
 		}
 	}
 
@@ -51,6 +51,7 @@ interface TreeStateInternal extends TreeState {
 }
 
 export interface ITreeStruct {
+	parent: ITreeStruct | null
 	left: ITreeStruct | null
 	right: ITreeStruct | null
 	node: Victor
@@ -59,6 +60,7 @@ export interface ITreeStruct {
 }
 
 export class TreeStruct implements ITreeStruct {
+	parent: TreeStruct | null = null
 	left: TreeStruct | null = null
 	right: TreeStruct | null = null
 	node = new Victor(0, 1)
@@ -69,12 +71,13 @@ export class TreeStruct implements ITreeStruct {
 	branchAngle: number
 	growthFactor: number
 
-	constructor(depth: number = 1) {
+	constructor(depth: number = 1, parent?: TreeStruct) {
 		this.depth = depth
-		this.maxSize = range2(80, 5);
-		this.branchFactor = range2(10, 10);
-		this.branchAngle = range2(60, 25);
-		this.growthFactor = rangeDecimal2(1.2, 0.2, 1);
+		this.maxSize = range2(80, 5)
+		this.branchFactor = range2(10, 10)
+		this.branchAngle = range2(60, 25)
+		this.growthFactor = rangeDecimal2(1.2, 0.2, 1)
+		this.parent = parent
 	}
 
 	update = () => {
@@ -86,9 +89,9 @@ export class TreeStruct implements ITreeStruct {
 
 		if (this.left == null && this.right == null && this.node.magnitude() > this.branchFactor && this.depth < 6)
 		{
-			this.left = new TreeStruct(this.depth + 1)
+			this.left = new TreeStruct(this.depth + 1, this)
 			this.left.node.rotateDeg(this.node.direction() + this.branchAngle)
-			this.right = new TreeStruct(this.depth + 1)
+			this.right = new TreeStruct(this.depth + 1, this)
 			this.right.node.rotateDeg(this.node.direction() - this.branchAngle)
 		}
 

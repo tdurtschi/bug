@@ -6,6 +6,7 @@ export default class TreeBuilder {
 	private static defaultNode: ITreeStruct = {
 		depth: 0,
 		update: () => null,
+		parent: null,
 		left: null,
 		right: null,
 		node: new Victor(0, 0)
@@ -37,6 +38,9 @@ export default class TreeBuilder {
 			left: this.leftBranch,
 			right: this.rightBranch
 		}
+
+		if (tree.left) tree.left.parent = tree
+		if (tree.right) tree.right.parent = tree
 
 		return tree
 	}

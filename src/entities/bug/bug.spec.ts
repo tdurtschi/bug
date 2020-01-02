@@ -74,7 +74,7 @@ describe("Bug", () => {
 
 	describe("Climbing mode", () => {
 		it("Climbs up on a branch", () => {
-			const tree = new Tree(1, { pos: new Victor(0, 0) })
+			const tree = new Tree(1, { pos: new Victor(0, 0), graph: new TreeBuilder().node(0, 100).build() })
 			const bug = new Bug(0, {
 				mode: BugMode.WALKING,
 				speed: 1,
@@ -116,11 +116,12 @@ describe("Bug", () => {
 			expect(vectorEquals(bug.state.direction, tree.left.node.clone().norm())).toBeTruthy()
 		})
 
-		it("Stops if the next branch doesn't exist", () => {
+		it("Turns around if the next branch doesn't exist", () => {
 			const tree = new TreeBuilder().node(0, 30).build()
 
 			const bug = new Bug(0, {
 				speed: 1,
+				mode: BugMode.WALKING,
 				pos: new Victor(0, 30),
 				climbingOn: {
 					tree: new Tree(1, { pos: new Victor(0, 0), graph: tree }),
@@ -130,11 +131,60 @@ describe("Bug", () => {
 			})
 
 			bug.update()
-			const position = bug.state.pos.clone()
-			expect(bug.state.climbingOn.branch).toEqual(tree)
-			expect(bug.state.mode).toEqual(BugMode.STOPPED)
+			expect(bug.state.direction.y).toEqual(-1)
+		})
+
+		it("Moves to the parent branch when climbing down", () => {
+			const tree = new TreeBuilder()
+				.node(0, 30)
+				.left(new TreeBuilder()
+					.node(-30, 30)
+					.build())
+				.build()
+
+			const climbingBranch = tree.left
+			const direction = climbingBranch.node.clone().norm().multiplyScalar(-1)
+
+			const bug = new Bug(0, {
+				mode: BugMode.WALKING,
+				speed: 1,
+				pos: new Victor(0, 30),
+				climbingOn: {
+					tree: new Tree(1, { pos: new Victor(0, 0), graph: tree }),
+					branch: tree.left
+				},
+				direction: direction
+			})
+
 			bug.update()
-			expect(vectorEquals(bug.state.pos, position)).toBeTruthy()
+
+			expect(bug.state.climbingOn.branch).toBe(tree)
+			expect(vectorEquals(bug.state.direction, new Victor(0, -1))).toBeTruthy()
+		})
+
+		it("Returns to the ground if no parent branch", () => {
+			const tree = new TreeBuilder()
+				.node(0, 30)
+				.build()
+
+			const climbingBranch = tree
+			const direction = climbingBranch.node.clone().norm().multiplyScalar(-1)
+
+			const bug = new Bug(0, {
+				mode: BugMode.WALKING,
+				speed: 1,
+				pos: new Victor(0, 0),
+				climbingOn: {
+					tree: new Tree(1, { pos: new Victor(0, 0), graph: tree }),
+					branch: tree
+				},
+				direction: direction
+			})
+
+			bug.update()
+
+			expect(bug.state.climbingOn).toBeUndefined()
+			expect(bug.state.direction.y).toEqual(0)
 		})
 	})
 

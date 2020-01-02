@@ -104,7 +104,24 @@ class Bug implements Entity {
 		const branchPosition = this.state.climbingOn.tree.getAbsolutePos(this.state.climbingOn.branch)
 		const branchOffset = this.state.pos.clone().subtract(branchPosition)
 
-		if (branchOffset.magnitude() >= this.state.climbingOn.branch.node.magnitude())
+		const isGoingDown = this.state.climbingOn.branch.node.direction() !== this.state.direction.direction()
+		if (isGoingDown)
+		{
+			if (branchOffset.direction() !== this.state.climbingOn.branch.node.direction())
+			{
+				if (this.state.climbingOn.branch.parent)
+				{
+					this.state.climbingOn.branch = this.state.climbingOn.branch.parent
+					this.state.pos = this.state.climbingOn.tree.getAbsolutePos(this.state.climbingOn.branch)
+						.add(this.state.climbingOn.branch.node)
+					this.state.direction = this.state.climbingOn.branch.node.clone().norm().multiplyScalar(-1)
+				} else
+				{
+					this.state.climbingOn = undefined
+					this.state.direction = new Victor(randBool() ? 1 : -1, 0)
+				}
+			}
+		} else if (branchOffset.magnitude() >= this.state.climbingOn.branch.node.magnitude())
 		{
 			if (this.state.climbingOn.branch.left)
 			{
@@ -117,7 +134,7 @@ class Bug implements Entity {
 				this.state.direction = this.state.climbingOn.branch.node.clone().norm()
 			} else
 			{
-				this.state.mode = BugMode.STOPPED
+				this.turnAround()
 			}
 		}
 
