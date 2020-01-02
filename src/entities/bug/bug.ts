@@ -104,10 +104,12 @@ class Bug implements Entity {
 		const branchPosition = this.state.climbingOn.tree.getAbsolutePos(this.state.climbingOn.branch)
 		const branchOffset = this.state.pos.clone().subtract(branchPosition)
 
-		const isGoingDown = this.state.climbingOn.branch.node.direction() !== this.state.direction.direction()
+		const diffBetweenBranchAndDirection = Math.abs(this.state.climbingOn.branch.node.direction() - this.state.direction.direction())
+		const isGoingDown = diffBetweenBranchAndDirection > 3
 		if (isGoingDown)
 		{
-			if (branchOffset.direction() !== this.state.climbingOn.branch.node.direction())
+			const directionDelta = Math.abs(branchOffset.direction() - this.state.climbingOn.branch.node.direction())
+			if (directionDelta > 0.3)
 			{
 				if (this.state.climbingOn.branch.parent)
 				{
@@ -128,7 +130,7 @@ class Bug implements Entity {
 				this.state.climbingOn.branch = this.state.climbingOn.branch.left
 				this.state.pos = this.state.climbingOn.tree.getAbsolutePos(this.state.climbingOn.branch)
 					.add(
-						new Victor(this.state.size.x, 0).
+						new Victor(this.state.size.x / 3, 0).
 							rotate(this.state.climbingOn.branch.node.direction())
 					)
 				this.state.direction = this.state.climbingOn.branch.node.clone().norm()
