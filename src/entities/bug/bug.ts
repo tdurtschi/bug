@@ -40,7 +40,7 @@ class Bug implements Entity {
 	}
 
 	public update(inputs: Entity[] = []): Bug {
-		if (this.state.climbingOn && this.state.mode === BugMode.WALKING)
+		if (this.isClimbing())
 		{
 			this.climb()
 		} else if (inputs.find(input => input.type === "TREE"))
@@ -101,19 +101,20 @@ class Bug implements Entity {
 	}
 
 	private climb() {
-		const branchPosition = this.state.climbingOn.tree.getAbsolutePos(this.state.climbingOn.branch)
+		const currentBranch = this.state.climbingOn.branch
+		const branchPosition = this.state.climbingOn.tree.getAbsolutePos(currentBranch)
 		const branchOffset = this.state.pos.clone().subtract(branchPosition)
 
-		const diffBetweenBranchAndDirection = Math.abs(this.state.climbingOn.branch.node.direction() - this.state.direction.direction())
+		const diffBetweenBranchAndDirection = Math.abs(currentBranch.node.direction() - this.state.direction.direction())
 		const isGoingDown = diffBetweenBranchAndDirection > 3
 		if (isGoingDown)
 		{
-			const directionDelta = Math.abs(branchOffset.direction() - this.state.climbingOn.branch.node.direction())
+			const directionDelta = Math.abs(branchOffset.direction() - currentBranch.node.direction())
 			if (directionDelta > 0.3)
 			{
-				if (this.state.climbingOn.branch.parent)
+				if (currentBranch.parent)
 				{
-					this.state.climbingOn.branch = this.state.climbingOn.branch.parent
+					this.state.climbingOn.branch = currentBranch.parent
 					this.state.pos = this.state.climbingOn.tree.getAbsolutePos(this.state.climbingOn.branch)
 						.add(this.state.climbingOn.branch.node)
 					this.state.direction = this.state.climbingOn.branch.node.clone().norm().multiplyScalar(-1)
@@ -123,12 +124,12 @@ class Bug implements Entity {
 					this.state.direction = new Victor(randBool() ? 1 : -1, 0)
 				}
 			}
-		} else if (branchOffset.magnitude() >= this.state.climbingOn.branch.node.magnitude())
+		} else if (branchOffset.magnitude() >= currentBranch.node.magnitude())
 		{
-			const nextBranch = randBool() && this.state.climbingOn.branch.left
-				? this.state.climbingOn.branch.left
-				: this.state.climbingOn.branch.right
-					? this.state.climbingOn.branch.right
+			const nextBranch = randBool() && currentBranch.left
+				? currentBranch.left
+				: currentBranch.right
+					? currentBranch.right
 					: undefined
 
 			if (nextBranch)
@@ -143,15 +144,30 @@ class Bug implements Entity {
 		this.walk()
 	}
 
-	private climbBranch(branch: ITreeStruct) {
+	private climbBranch(branch: ITreeStruct, direction: Direction = Direction.UP) {
+		let offset: Victor;
+		if (direction === Direction.UP)
+		{
+			offset = new Victor(this.state.size.x / 3, 0)
+				.rotate(branch.node.direction())
+		} else
+		{
+			offset = branch.node
+		}
+
 		this.state.climbingOn.branch = branch
-		this.state.pos = this.state.climbingOn.tree.getAbsolutePos(branch)
-			.add(
-				new Victor(this.state.size.x / 3, 0).
-					rotate(branch.node.direction())
-			)
-		this.state.direction = branch.node.clone().norm()
+		this.state.pos = this.state.climbingOn.tree
+			.getAbsolutePos(branch)
+			.add(offset)
+		this.state.direction = branch.node.clone()
+			.norm()
+			.multiplyScalar(direction === Direction.UP ? 1 : -1)
 	}
+
+	private isClimbing = () => this.state.climbingOn && this.state.mode === BugMode.WALKING
+
 }
+
+enum Direction { UP, DOWN }
 
 export default Bug
