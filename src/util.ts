@@ -25,3 +25,10 @@ export const rangeDecimal = (mean: number, variance: number, places: number) => 
 	return range(mean * multiplier, variance * multiplier) / multiplier
 }
 
+export const multi = (times: number, functionArg: (i: number) => any) => () => {
+	for (let i = 0; i < times - 1; i++)
+	{
+		functionArg(i)
+	}
+	return functionArg(times - 1)
+}

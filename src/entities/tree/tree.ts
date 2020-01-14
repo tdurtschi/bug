@@ -25,7 +25,9 @@ export default class Tree implements Entity {
 	public getAbsolutePos = (node: ITreeStruct, accumulator?: Victor, rootNode?: ITreeStruct): Victor => {
 		if (!accumulator && !rootNode)
 		{
-			return this.getAbsolutePos(node, this.state.pos.clone(), this.state.graph)
+			const result = this.getAbsolutePos(node, this.state.pos.clone(), this.state.graph)
+			if (result) return result
+			throw new Error("Couldn't find branch in tree while calculating position")
 		} else if (rootNode === node)
 		{
 			return accumulator
@@ -36,8 +38,6 @@ export default class Tree implements Entity {
 
 			const checkRight = rootNode.right && this.getAbsolutePos(node, accumulator.clone().add(rootNode.node), rootNode.right)
 			if (checkRight) return checkRight
-
-			throw new Error("Couldn't find branch in tree while calculating position")
 		}
 	}
 

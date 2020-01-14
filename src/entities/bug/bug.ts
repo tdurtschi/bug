@@ -125,15 +125,15 @@ class Bug implements Entity {
 			}
 		} else if (branchOffset.magnitude() >= this.state.climbingOn.branch.node.magnitude())
 		{
-			if (this.state.climbingOn.branch.left)
+			const nextBranch = randBool() && this.state.climbingOn.branch.left
+				? this.state.climbingOn.branch.left
+				: this.state.climbingOn.branch.right
+					? this.state.climbingOn.branch.right
+					: undefined
+
+			if (nextBranch)
 			{
-				this.state.climbingOn.branch = this.state.climbingOn.branch.left
-				this.state.pos = this.state.climbingOn.tree.getAbsolutePos(this.state.climbingOn.branch)
-					.add(
-						new Victor(this.state.size.x / 3, 0).
-							rotate(this.state.climbingOn.branch.node.direction())
-					)
-				this.state.direction = this.state.climbingOn.branch.node.clone().norm()
+				this.climbBranch(nextBranch)
 			} else
 			{
 				this.turnAround()
@@ -141,6 +141,16 @@ class Bug implements Entity {
 		}
 
 		this.walk()
+	}
+
+	private climbBranch(branch: ITreeStruct) {
+		this.state.climbingOn.branch = branch
+		this.state.pos = this.state.climbingOn.tree.getAbsolutePos(branch)
+			.add(
+				new Victor(this.state.size.x / 3, 0).
+					rotate(branch.node.direction())
+			)
+		this.state.direction = branch.node.clone().norm()
 	}
 }
 

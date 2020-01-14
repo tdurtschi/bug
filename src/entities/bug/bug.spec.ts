@@ -1,7 +1,7 @@
 import "jasmine"
 import Bug from "./bug"
 import Wall from "../wall/wall"
-import { vectorEquals } from "../../util"
+import { vectorEquals, multi } from "../../util"
 import Victor from "victor"
 import { BugMode } from "./bugConstants"
 import Tree, { ITreeStruct } from "../tree/tree"
@@ -74,7 +74,11 @@ describe("Bug", () => {
 
 	describe("Climbing mode", () => {
 		it("Climbs up on a branch", () => {
-			const tree = new Tree(1, { pos: new Victor(0, 0), graph: new TreeBuilder().node(0, 100).build() })
+			const tree = new Tree(1, {
+				pos: new Victor(0, 0),
+				graph: new TreeBuilder().node(0, 100).build()
+			})
+
 			const bug = new Bug(0, {
 				mode: BugMode.WALKING,
 				speed: 1,
@@ -88,33 +92,37 @@ describe("Bug", () => {
 			expect(bug.state.pos.y).toEqual(31)
 		})
 
-		it("Will pick the left branch to climb up if its at the end of a branch", () => {
-			const tree = new TreeBuilder()
-				.node(0, 30)
-				.left(new TreeBuilder()
-					.node(-30, 30)
-					.build())
-				.right(new TreeBuilder()
-					.node(30, 30)
-					.build())
-				.build()
+		it("Will pick the left or right branch to climb up if its at the end of a branch", multi(10,
+			() => {
+				const tree = new TreeBuilder()
+					.node(0, 30)
+					.left(new TreeBuilder()
+						.node(-30, 30)
+						.build())
+					.right(new TreeBuilder()
+						.node(30, 30)
+						.build())
+					.build()
 
-			const bug = new Bug(0, {
-				mode: BugMode.WALKING,
-				speed: 1,
-				pos: new Victor(0, 30),
-				climbingOn: {
-					tree: new Tree(1, { pos: new Victor(0, 0), graph: tree }),
-					branch: tree
-				},
-				direction: new Victor(0, 1)
-			})
+				const bug = new Bug(0, {
+					mode: BugMode.WALKING,
+					speed: 1,
+					pos: new Victor(0, 30),
+					climbingOn: {
+						tree: new Tree(1, { pos: new Victor(0, 0), graph: tree }),
+						branch: tree
+					},
+					direction: new Victor(0, 1)
+				})
 
-			bug.update()
+				bug.update()
 
-			expect(bug.state.climbingOn.branch).toEqual(tree.left)
-			expect(vectorEquals(bug.state.direction, tree.left.node.clone().norm())).toBeTruthy()
-		})
+				const onLeftBranch = bug.state.climbingOn.branch === tree.left
+				const onRightBranch = bug.state.climbingOn.branch === tree.right
+				expect(onLeftBranch || onRightBranch).toBeTruthy()
+				expect(vectorEquals(bug.state.direction, (onLeftBranch ? tree.left : tree.right)
+					.node.clone().norm())).toBeTruthy()
+			}))
 
 		it("Turns around if the next branch doesn't exist", () => {
 			const tree = new TreeBuilder().node(0, 30).build()
