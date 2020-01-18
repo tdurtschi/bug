@@ -233,7 +233,7 @@ describe("Bug", () => {
 			const direction = bug.state.direction
 			expect(bug.state.climbingOn.tree).toEqual(input[0])
 			expect(vectorEquals(direction, new Victor(0, 1))).toBeTruthy()
-			console.log(bug.state.pos)
+
 			expect(vectorEquals(bug.state.pos, new Victor(20, 30))).toBeTruthy()
 		})
 
