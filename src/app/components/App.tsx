@@ -47,9 +47,10 @@ class App extends React.Component<Props, State> {
 					</button>
 				</div>
 				<pre>
-					{window.DEBUG && <p className="debug">
-						{JSON.stringify(this.state, null, 4)}
-					</p>}
+					{window.DEBUG &&
+						<p className="debug">
+							{JSON.stringify(this.state, null, 4)}
+						</p>}
 				</pre>
 			</div >);
 	}
@@ -66,6 +67,8 @@ class App extends React.Component<Props, State> {
 			case "t":
 				this.addTree()
 				break
+			case "d":
+				window.DEBUG = !window.DEBUG
 		}
 	}
 

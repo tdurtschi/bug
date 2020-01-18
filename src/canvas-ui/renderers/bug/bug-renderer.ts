@@ -1,7 +1,6 @@
 import BugUI from "./bug-ui"
 import { fixY } from "../../canvas-helpers"
 import Victor = require("victor")
-import { BugMode } from "../../../entities/bug/bugConstants"
 
 export default (uiBug: BugUI, ctx: CanvasRenderingContext2D) => {
 	const bug = uiBug.bug
@@ -13,7 +12,7 @@ export default (uiBug: BugUI, ctx: CanvasRenderingContext2D) => {
 
 	ctx.save()
 	ctx.translate(pos.x, pos.y)
-	circle(ctx, 5)
+	window.DEBUG && circle(ctx, 5)
 	if (direction.x > 0)
 	{
 		ctx.rotate(-direction.angle())
@@ -29,18 +28,6 @@ export default (uiBug: BugUI, ctx: CanvasRenderingContext2D) => {
 
 	ctx.restore()
 }
-
-// const getAbsolutePos = (ctx: CanvasRenderingContext2D, bug: Bug): Victor => {
-// 	const climbing = (bug.state.mode as BugModeClimbing)
-// 	if (climbing.on)
-// 	{
-// 		const newX = bug.state.pos.x + climbing.relativePos.x
-// 		const newY = bug.state.pos.y + climbing.relativePos.y
-// 		return new Victor(newX, fixY(ctx, newY))
-// 	}
-
-// 	return new Victor(bug.state.pos.x, fixY(ctx, bug.state.pos.y))
-// }
 
 // Draws a circle at 0,0. Useful for debugging bug rendering
 const circle = (ctx: CanvasRenderingContext2D, size: number) => {
