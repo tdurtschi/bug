@@ -1,22 +1,25 @@
 import Entity, { EntityState } from "../entity";
 import Victor from "victor"
 
-class Wall implements Entity{
+class Wall implements Entity, EntityState {
+	pos: Victor;
+	size: Victor;
 	public id = 0
 	public type = "WALL"
 	public state: EntityState
 
-	constructor(id?: number, initialState?: Partial<EntityState>){
+	constructor(id?: number, initialState?: Partial<EntityState>) {
 		this.id = id ? id : 0
 
-		this.state = Object.assign(
+		Object.assign(
+			this,
 			{
-				pos: new Victor(0,0),
+				pos: new Victor(0, 0),
 				size: new Victor(10, 50)
 			}, initialState)
 	}
 
-	public update(){
+	public update() {
 
 	}
 }

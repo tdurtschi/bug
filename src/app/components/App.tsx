@@ -21,8 +21,8 @@ interface State {
 class App extends React.Component<Props, State> {
 	componentDidMount() {
 		this.props.game.start()
-		document.addEventListener("keydown", this.handleKeyDown)
 		this.setState({})
+		document.addEventListener("keydown", this.handleKeyDown)
 		setInterval(() => this.forceUpdate(), 500)
 	}
 

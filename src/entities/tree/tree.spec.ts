@@ -5,7 +5,7 @@ import Victor = require("victor");
 
 describe("Tree", () => {
 	it("Starts as a single node", () => {
-		const graph = new Tree().state.graph
+		const graph = new Tree().graph
 		expect(graph.left).toBeNull()
 		expect(graph.right).toBeNull()
 		expect(graph.node.x).toEqual(0)
@@ -14,7 +14,7 @@ describe("Tree", () => {
 
 	it("The root node grows upward", () => {
 		const tree = new Tree(),
-			{ graph } = tree.state
+			{ graph } = tree
 
 		const oldMag = graph.node.magnitude()
 		tree.update([])
@@ -35,7 +35,7 @@ describe("Tree", () => {
 			pos: new Victor(1, 1)
 		})
 
-		const subject = tree.state.graph.left.right
+		const subject = tree.graph.left.right
 		const absolutePos = tree.getAbsolutePos(subject)
 		expect(absolutePos).toBeDefined()
 		expect(vectorEquals(absolutePos, new Victor(51, 61))).toBeTruthy()
@@ -43,7 +43,7 @@ describe("Tree", () => {
 
 	it("Has a maximum height", () => {
 		const tree = new Tree(),
-			{ graph } = tree.state
+			{ graph } = tree
 
 		updateALot(tree, 100)
 
@@ -52,7 +52,7 @@ describe("Tree", () => {
 
 	it("Has a maximum depth", () => {
 		const tree = new Tree(),
-			{ graph } = tree.state
+			{ graph } = tree
 
 		updateALot(tree, 1000)
 
@@ -72,7 +72,7 @@ describe("Tree", () => {
 
 	describe("Child nodes", () => {
 		it("Has a reference to the parent node", () => {
-			const tree = new Tree(), { graph } = tree.state
+			const tree = new Tree(), { graph } = tree
 
 			updateALot(tree, 100)
 			expect(graph.left).toBeTruthy()
@@ -80,7 +80,7 @@ describe("Tree", () => {
 		})
 
 		it("Get a larger depth than the parent", () => {
-			const tree = new Tree(), { graph } = tree.state
+			const tree = new Tree(), { graph } = tree
 
 			updateALot(tree, 100)
 			expect(graph.depth).toEqual(1)
@@ -89,7 +89,7 @@ describe("Tree", () => {
 		})
 
 		it("Grows if it exists.", () => {
-			const tree = new Tree(), { graph } = tree.state
+			const tree = new Tree(), { graph } = tree
 
 			graph.left = new TreeStruct()
 			graph.right = new TreeStruct()

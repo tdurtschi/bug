@@ -5,10 +5,10 @@ import Victor = require("victor")
 export default (uiBug: BugUI, ctx: CanvasRenderingContext2D) => {
 	const bug = uiBug.bug
 	const image = uiBug.getImage()
-	const climbingYOffset = bug.state.climbingOn ? 3 : 0
-	const { direction, size } = bug.state
+	const climbingYOffset = bug.climbingOn ? 3 : 0
+	const { direction, size } = bug
 
-	const pos = new Victor(bug.state.pos.x, fixY(ctx, bug.state.pos.y))
+	const pos = new Victor(bug.pos.x, fixY(ctx, bug.pos.y))
 
 	ctx.save()
 	ctx.translate(pos.x, pos.y)

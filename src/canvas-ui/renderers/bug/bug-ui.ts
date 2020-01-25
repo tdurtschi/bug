@@ -22,7 +22,7 @@ export default class BugUI implements UIEntity {
 	}
 
 	public update(frame: number) {
-		if (this.bug.state.mode !== BugMode.STOPPED)
+		if (this.bug.mode !== BugMode.STOPPED)
 		{
 			if ((frame + this.randomOffset) % 15 == 0)
 			{

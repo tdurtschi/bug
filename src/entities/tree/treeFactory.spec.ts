@@ -11,7 +11,7 @@ describe("TreeFactory", () => {
 
 	it("Passes initial state", () => {
 		const tree: Tree = new TreeFactory(() => 0, () => false).build({ pos: new Victor(100, 100) })
-		expect(vectorEquals(tree.state.pos, new Victor(100, 100))).toBeTruthy();
+		expect(vectorEquals(tree.pos, new Victor(100, 100))).toBeTruthy();
 	})
 
 	it("Applies the correct ID", () => {
@@ -23,6 +23,6 @@ describe("TreeFactory", () => {
 	it("Gives trees spontaneous factor", () => {
 		const spontaneous = () => true;
 		const tree: Tree = new TreeFactory(() => 0, spontaneous).build()
-		expect((tree.state as any).spontaneous).toEqual(spontaneous)
+		expect((tree as any).spontaneous).toEqual(spontaneous)
 	})
 });

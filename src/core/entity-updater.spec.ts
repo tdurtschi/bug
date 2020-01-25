@@ -18,19 +18,19 @@ describe("Entity Updater", () => {
 		const entityUpdater = new EntityUpdater(fakeEntityManager(entities))
 		entityUpdater.update()
 
-		expect(entities[0].state.pos.x).toEqual(1)
-		expect(entities[1].state.pos.x).toEqual(1)
+		expect(entities[0].pos.x).toEqual(1)
+		expect(entities[1].pos.x).toEqual(1)
 	})
 
 	it("Updates bugs every 4 frames", () => {
-		const entities = [new Bug(0, { mode: BugMode.WALKING })]
+		const entities: Entity[] = [new Bug(0, { mode: BugMode.WALKING })]
 		const entityUpdater = new EntityUpdater(fakeEntityManager(entities))
 
 		new Array(4).fill(0).forEach(_ => entityUpdater.update())
-		expect(entities[0].state.pos.x).toEqual(1)
+		expect(entities[0].pos.x).toEqual(1)
 
 		new Array(4).fill(0).forEach(_ => entityUpdater.update())
-		expect(entities[0].state.pos.x).toEqual(2)
+		expect(entities[0].pos.x).toEqual(2)
 	})
 
 	describe("Collision Detection", () => {

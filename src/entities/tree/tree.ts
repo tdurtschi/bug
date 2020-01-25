@@ -5,7 +5,10 @@ export interface TreeState extends EntityState {
 	graph: ITreeStruct
 }
 
-export default class Tree implements Entity {
+export default class Tree implements Entity, TreeState {
+	graph: TreeStruct
+	pos: Victor
+	size: Victor
 	id: number
 	type: string = "TREE"
 	state: TreeStateInternal
@@ -13,7 +16,8 @@ export default class Tree implements Entity {
 	constructor(id?: number, initialState?: Partial<TreeState>) {
 		this.id = id ? id : 0
 
-		this.state = Object.assign(
+		Object.assign(
+			this,
 			{
 				pos: new Victor(1, 0),
 				size: new Victor(1, 1),
@@ -25,7 +29,7 @@ export default class Tree implements Entity {
 	public getAbsolutePos = (node: ITreeStruct, accumulator?: Victor, rootNode?: ITreeStruct): Victor => {
 		if (!accumulator && !rootNode)
 		{
-			const result = this.getAbsolutePos(node, this.state.pos.clone(), this.state.graph)
+			const result = this.getAbsolutePos(node, this.pos.clone(), this.graph)
 			if (result) return result
 			throw new Error("Couldn't find branch in tree while calculating position")
 		} else if (rootNode === node)
@@ -42,7 +46,7 @@ export default class Tree implements Entity {
 	}
 
 	public update = (input: any) => {
-		this.state.graph.update()
+		this.graph.update()
 	}
 }
 

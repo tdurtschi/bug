@@ -10,7 +10,7 @@ describe("BugFactory", () => {
 
 	it("Passes initial state", () => {
 		const bug: Bug = new BugFactory(() => 0, () => false).build({ mode: BugMode.STOPPED })
-		expect(bug.state.mode).toEqual(BugMode.STOPPED)
+		expect(bug.mode).toEqual(BugMode.STOPPED)
 	})
 
 	it("Applies the correct ID", () => {
@@ -22,6 +22,6 @@ describe("BugFactory", () => {
 	it("Gives bugs spontaneous factor", () => {
 		const spontaneous = () => true;
 		const bug: Bug = new BugFactory(() => 0, spontaneous).build()
-		expect(bug.state.spontaneous).toEqual(spontaneous)
+		expect(bug.spontaneous).toEqual(spontaneous)
 	})
 });

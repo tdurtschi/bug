@@ -93,7 +93,7 @@ class CanvasUI implements IGameUI {
 		}
 		else if (entity.type === "WALL")
 		{
-			const { pos, size } = entity.state
+			const { pos, size } = entity
 			ctx.save()
 			ctx.translate(pos.x, fixY(ctx, pos.y))
 			ctx.translate(0, -size.y)
@@ -102,8 +102,8 @@ class CanvasUI implements IGameUI {
 		}
 		else if (entity.type === "TREE")
 		{
-			const { pos, size } = entity.state
-			const tree = (entity as Tree).state.graph
+			const { pos } = entity
+			const tree = (entity as Tree).graph
 			ctx.save()
 			ctx.strokeStyle = "green";
 			ctx.translate(pos.x, fixY(ctx, pos.y))
