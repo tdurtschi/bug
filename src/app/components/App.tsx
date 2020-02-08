@@ -5,6 +5,7 @@ import BugFactory from '../../entities/bug/bugFactory'
 import TreeFactory from '../../entities/tree/treeFactory'
 import { randBool } from '../../util'
 import { BugMode } from '../../entities/bug/bugConstants'
+import { Debugger } from './Debugger'
 
 interface Props {
 	game: Game,
@@ -46,12 +47,7 @@ class App extends React.Component<Props, State> {
 						Add Tree
 					</button>
 				</div>
-				<pre>
-					{window.DEBUG &&
-						<p className="debug">
-							{JSON.stringify(this.state, null, 4)}
-						</p>}
-				</pre>
+				<Debugger debug={this.state} />
 			</div >);
 	}
 
