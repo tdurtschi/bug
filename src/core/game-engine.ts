@@ -18,12 +18,13 @@ export interface Game {
 	isPaused: boolean
 	addEntity: (entity: Entity) => void
 	start: () => void
+	entityManager: IEntityManager
 }
 
 export class GameEngine implements Game {
 	public isPaused: boolean = false
+	public entityManager: IEntityManager
 	gameUI: IGameUI
-	entityManager: IEntityManager
 	entityUpdater: EntityUpdater
 	frame: number = 0
 

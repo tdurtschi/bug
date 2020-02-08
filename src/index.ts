@@ -42,7 +42,8 @@ const appProps = {
 	height: HEIGHT,
 	width: WIDTH,
 	bugFactory,
-	treeFactory
+	treeFactory,
+	entityManager // TODO - Reduce # of components holding ref to this.
 }
 
 ReactDOM.render(React.createElement(App, appProps), document.getElementById('root'));

@@ -3,18 +3,14 @@ import { render, fireEvent } from '@testing-library/react'
 import App from './App'
 import BugFactory from '../../entities/bug/bugFactory'
 import TreeFactory from '../../entities/tree/treeFactory'
+import { gameStub } from '../../../spec/game-stub'
 
 describe("Pause button", () => {
-	const pauseSpy = jasmine.createSpy()
-	const stubGame = {
-		isPaused: false,
-		togglePause: pauseSpy,
-		addEntity: (): any => null,
-		start: (): any => null
-	}
+	const game = gameStub();
+
 	it("Calls the togglePause method on the UI.", () => {
 		const rendered = render(<App
-			game={stubGame}
+			game={game}
 			width={0}
 			height={0}
 			bugFactory={new BugFactory(() => 0, () => false)}
@@ -22,6 +18,6 @@ describe("Pause button", () => {
 		const button = rendered.container.querySelector("#pause-button")
 		fireEvent.click(button)
 
-		expect(pauseSpy).toHaveBeenCalled()
+		expect(game.togglePause).toHaveBeenCalled()
 	})
 })

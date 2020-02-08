@@ -12,19 +12,16 @@ interface Props {
 	height: number,
 	width: number,
 	bugFactory: BugFactory,
-	treeFactory: TreeFactory
+	treeFactory: TreeFactory,
 }
 
 interface State {
-	bug?: any
 }
 
 class App extends React.Component<Props, State> {
 	componentDidMount() {
 		this.props.game.start()
-		this.setState({})
 		document.addEventListener("keydown", this.handleKeyDown)
-		setInterval(() => this.forceUpdate(), 500)
 	}
 
 	render() {
@@ -47,7 +44,7 @@ class App extends React.Component<Props, State> {
 						Add Tree
 					</button>
 				</div>
-				<Debugger debug={this.state} />
+				<Debugger game={this.props.game} />
 			</div >);
 	}
 
@@ -63,8 +60,6 @@ class App extends React.Component<Props, State> {
 			case "t":
 				this.addTree()
 				break
-			case "d":
-				window.DEBUG = !window.DEBUG
 		}
 	}
 
