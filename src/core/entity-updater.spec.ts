@@ -49,13 +49,16 @@ describe("Entity Updater", () => {
 
 		it("Will tell a bug that it's intersecting a tree", () => {
 			const entities = [
-				new Bug(0, { pos: new Victor(1, 1) }),
+				new Bug(0, { pos: new Victor(1, 1), direction: new Victor(-1, 0) }), // Moving left
+				new Bug(0, { pos: new Victor(11, 1), direction: new Victor(1, 0) }), // Moving right
 				new Tree(1, { pos: new Victor(10, 1) })
 			]
 			entities[0].update = jasmine.createSpy()
+			entities[1].update = jasmine.createSpy()
 
 			new EntityUpdater(entityManagerStub(entities)).update()
-			expect((entities[0].update as jasmine.Spy).calls.mostRecent().args[0][0]).toEqual(entities[1])
+			expect((entities[0].update as jasmine.Spy).calls.mostRecent().args[0]).toContain(entities[1])
+			expect((entities[1].update as jasmine.Spy).calls.mostRecent().args[0]).toContain(entities[2])
 		})
 	})
 })

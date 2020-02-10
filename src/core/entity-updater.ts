@@ -1,5 +1,7 @@
 import Entity from "../entities/entity";
 import { IEntityManager } from "./entity-manager";
+import Bug from "../entities/bug/bug";
+import Victor = require("victor");
 
 export default class EntityUpdater {
 	frame: number = 0
@@ -28,15 +30,38 @@ export default class EntityUpdater {
 	private getCollisions = (entity: Entity, otherEntities: Entity[]): Entity[] => {
 		const collisions: Entity[] = [];
 		otherEntities.forEach((obj) => {
-			if (obj !== entity &&
-				obj.pos.x < entity.pos.x + entity.size.x &&
-				obj.pos.x + obj.size.x > entity.pos.x &&
-				obj.pos.y < entity.pos.y + entity.size.y &&
-				obj.size.y + obj.pos.y > entity.pos.y)
+			if (this.isIntersecting(entity, obj))
 			{
 				collisions.push(obj);
 			}
 		});
 		return collisions;
 	};
+
+	private isIntersecting = (obj1: Entity, obj2: Entity): boolean => {
+		let newPos: Victor;
+		let newPos2: Victor;
+		if (obj1.type === "BUG" && (obj1 as Bug).direction.x > 0)
+		{
+			newPos = obj1.pos.clone().subtractScalarX(obj1.size.x - 1)
+		}
+		if (obj2.type === "BUG" && (obj2 as Bug).direction.x > 0)
+		{
+			newPos2 = obj2.pos.clone().subtractScalarX(obj2.size.x - 1)
+		}
+
+		const pos1 = newPos || obj1.pos;
+		const size1 = obj1.size;
+		const pos2 = newPos2 || obj2.pos;
+		const size2 = obj2.size;
+		if (obj2 !== obj1 &&
+			pos2.x < pos1.x + size1.x &&
+			pos2.x + size2.x > pos1.x &&
+			pos2.y < pos1.y + size1.y &&
+			size2.y + pos2.y > pos1.y)
+		{
+			return true;
+		}
+		return false;
+	}
 }
