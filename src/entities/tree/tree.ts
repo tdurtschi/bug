@@ -113,11 +113,3 @@ const rangeDecimal2 = (mean: number, variance: number, places: number) => {
 
 	return range2(mean * multiplier, variance * multiplier) / multiplier
 }
-
-const range = (min: number, max: number) => Math.floor(Math.random() * (max - min)) + min
-
-const rangeDecimal = (min: number, max: number, places: number) => {
-	const multiplier = Math.pow(10, places)
-
-	return range(min * multiplier, max * multiplier) / multiplier
-}
