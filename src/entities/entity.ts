@@ -4,6 +4,7 @@ export default interface Entity extends EntityState {
 	id: number
 	type: string
 	update: (input: any) => any
+	updateSpeed: number
 }
 
 export interface EntityState {

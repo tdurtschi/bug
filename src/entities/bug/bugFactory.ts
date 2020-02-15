@@ -12,7 +12,7 @@ export default class BugFactory {
 	build(initialState?: Partial<BugState>): Bug {
 		const newState = Object.assign({
 			spontaneous: this.spontaneous,
-			direction: new Victor(randInt(-5, 5), randInt(-5, 5)).norm(),
+			direction: new Victor(randInt(-5, 5), randInt(-5, 5)).norm()
 		}, initialState);
 		return new Bug(this.generateId(), newState);
 	}

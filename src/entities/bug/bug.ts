@@ -2,7 +2,8 @@ import Entity, { EntityState } from "../entity"
 import Victor from "victor"
 import { BugMode } from "./bugConstants"
 import { randBool } from "../../util"
-import Tree, { ITreeStruct } from "../tree/tree"
+import Tree from "../tree/tree"
+import { ITreeStruct } from "../tree/ITreeStruct"
 
 export interface BugState extends EntityState {
 	direction: Victor
@@ -30,6 +31,7 @@ class Bug implements Entity, BugState {
 	public type: string = "BUG"
 	id: number
 	state: BugState
+	updateSpeed: number = 4
 
 	constructor(id?: number, initialState?: Partial<BugState>) {
 		this.id = id ? id : 0
@@ -102,8 +104,8 @@ class Bug implements Entity, BugState {
 	}
 
 	private beginClimbing(tree: Tree) {
-		this.pos = new Victor(tree.pos.x, this.size.x)
-		this.direction = new Victor(0, 1)
+		this.direction = tree.graph.node.clone().norm()
+		this.pos = new Victor(tree.pos.x, 0).add(this.direction.clone().multiplyScalar(this.size.x))
 		this.climbingOn = {
 			tree,
 			branch: tree.graph

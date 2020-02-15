@@ -7,6 +7,7 @@ class Wall implements Entity, EntityState {
 	public id = 0
 	public type = "WALL"
 	public state: EntityState
+	updateSpeed: 0
 
 	constructor(id?: number, initialState?: Partial<EntityState>) {
 		this.id = id ? id : 0

@@ -15,12 +15,8 @@ export default class EntityUpdater {
 
 	public updateAllEntities() {
 		const entities = this.entityManager.getEntities();
-		entities.forEach(entity => {
-			if (this.frame % 4 == 0 && entity.type == "BUG")
-			{
-				entity.update(this.getCollisions(entity, entities))
-			}
-			if (this.frame % 2 == 0 && entity.type == "TREE")
+		entities.forEach((entity: Entity) => {
+			if (entity.updateSpeed !== 0 && this.frame % entity.updateSpeed == 0)
 			{
 				entity.update(this.getCollisions(entity, entities))
 			}

@@ -1,11 +1,12 @@
 import BugUI from "./renderers/bug/bug-ui";
-import Tree, { ITreeStruct } from "../entities/tree/tree";
+import Tree from "../entities/tree/tree";
 import Entity from "../entities/entity"
 import Bug from "../entities/bug/bug"
 import { UIEntity } from "../core/game-engine";
 import EntityManager from "../core/entity-manager";
 import { fixY } from "./canvas-helpers";
 import bugRenderer from "./renderers/bug/bug-renderer";
+import treeRenderer from "./renderers/tree/tree-renderer";
 
 export interface GameUIOptions {
 	target: string
@@ -102,34 +103,8 @@ class CanvasUI implements IGameUI {
 		}
 		else if (entity.type === "TREE")
 		{
-			const { pos } = entity
-			const tree = (entity as Tree).graph
-			ctx.save()
-			ctx.strokeStyle = "green";
-			ctx.translate(pos.x, fixY(ctx, pos.y))
-			this.renderTree(tree, ctx)
-			ctx.restore()
+			treeRenderer((entity as Tree), ctx)
 		}
-	}
-
-	renderTree(root: ITreeStruct, ctx: CanvasRenderingContext2D) {
-		const x = Math.floor(root.node.x),
-			y = Math.floor(root.node.y)
-		ctx.moveTo(0, 0)
-		ctx.lineTo(x, -y)
-		ctx.stroke()
-
-		ctx.save()
-		ctx.translate(x, -y)
-		if (root.left)
-		{
-			this.renderTree(root.left, ctx)
-		}
-		if (root.right)
-		{
-			this.renderTree(root.right, ctx)
-		}
-		ctx.restore()
 	}
 
 	findUIEntity(entity: Entity) {

@@ -4,7 +4,7 @@ import Wall from "../wall/wall"
 import { vectorEquals, multi } from "../../util"
 import Victor from "victor"
 import { BugMode } from "./bugConstants"
-import Tree, { ITreeStruct } from "../tree/tree"
+import Tree from "../tree/tree"
 import TreeBuilder from "../tree/treeBuilder"
 
 describe("Bug", () => {

@@ -46,6 +46,6 @@ export const randFromNormalDist = (): number => {
 export const normalRange = (min: number, max: number) => {
 	const range = max - min;
 	const num = (range * randFromNormalDist()) + min;
-	console.log(num)
+	window.DEBUG && console.log(num)
 	return Math.floor(num);
 }

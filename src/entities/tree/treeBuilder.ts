@@ -1,6 +1,6 @@
 // Builds trees (used for testing)
-import { ITreeStruct } from "./tree"
 import Victor = require("victor")
+import { ITreeStruct } from "./ITreeStruct"
 
 export default class TreeBuilder {
 	private static defaultNode: ITreeStruct = {

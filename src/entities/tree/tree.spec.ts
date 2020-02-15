@@ -1,7 +1,9 @@
-import Tree, { TreeStruct } from "./tree";
+import Tree from "./tree";
 import TreeBuilder from "./treeBuilder";
 import { vectorEquals } from "../../util";
 import Victor = require("victor");
+import { TreeStruct } from "./treeStruct";
+import { ITreeStruct } from "./ITreeStruct";
 
 describe("Tree", () => {
 	it("Starts as a single node", () => {
@@ -56,7 +58,7 @@ describe("Tree", () => {
 
 		updateALot(tree, 1000)
 
-		const maxDepth = (tree: TreeStruct): number => {
+		const maxDepth = (tree: ITreeStruct): number => {
 			let values = [tree.depth]
 			if (tree.left)
 				values.push(maxDepth(tree.left))

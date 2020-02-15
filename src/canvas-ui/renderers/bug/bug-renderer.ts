@@ -1,5 +1,5 @@
 import BugUI from "./bug-ui"
-import { fixY } from "../../canvas-helpers"
+import { fixY, circle } from "../../canvas-helpers"
 import Victor = require("victor")
 
 export default (uiBug: BugUI, ctx: CanvasRenderingContext2D) => {
@@ -27,12 +27,4 @@ export default (uiBug: BugUI, ctx: CanvasRenderingContext2D) => {
 	}
 
 	ctx.restore()
-}
-
-// Draws a circle at 0,0. Useful for debugging bug rendering
-const circle = (ctx: CanvasRenderingContext2D, size: number) => {
-	ctx.beginPath();
-	ctx.arc(0, 0, size, 0, 2 * Math.PI, false);
-	ctx.fillStyle = "rgb(0, 0, 255)";
-	ctx.fill();
 }
