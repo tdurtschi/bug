@@ -3,7 +3,7 @@ import { Game } from '../../core/game-engine'
 import Victor from "victor"
 import BugFactory from '../../entities/bug/bugFactory'
 import TreeFactory from '../../entities/tree/treeFactory'
-import { randBool } from '../../util'
+import { randBool, randInt } from '../../util'
 import { BugMode } from '../../entities/bug/bugConstants'
 import { Debugger } from './Debugger'
 
@@ -79,12 +79,14 @@ class App extends React.Component<Props, State> {
 	private addBug = () => {
 		const { game, bugFactory } = this.props
 
+		const scaleFactor = randInt(5, 10)
 		const pos = new Victor(this.randomX(), 0)
 		const direction = randBool() ? new Victor(1, 0) : new Victor(-1, 0)
-		const size = new Victor(30, 20)
+		const size = new Victor(3, 2).multiplyScalar(scaleFactor)
 		const mode = BugMode.WALKING
+		const speed = scaleFactor / 10
 
-		const bug = bugFactory.build({ pos, direction, size, mode })
+		const bug = bugFactory.build({ pos, direction, size, mode, speed })
 		this.setState({ bug })
 		game.addEntity(bug)
 	}
