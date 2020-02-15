@@ -2,8 +2,8 @@ import Entity, { EntityState } from "../entity"
 import Victor from "victor"
 import { BugMode } from "./bugConstants"
 import { randBool } from "../../util"
-import Tree from "../tree/tree"
-import { ITreeStruct } from "../tree/ITreeStruct"
+import Plant from "../plant/plant"
+import { ITreeStruct } from "../plant/ITreeStruct"
 
 export interface BugState extends EntityState {
 	direction: Victor
@@ -15,7 +15,7 @@ export interface BugState extends EntityState {
 }
 
 export interface IClimbingOn {
-	tree: Tree
+	tree: Plant
 	branch: ITreeStruct
 }
 
@@ -56,7 +56,7 @@ class Bug implements Entity, BugState {
 			this.climb()
 		} else if (inputs.find(input => input.type === "TREE"))
 		{
-			const tree = (inputs.find(input => input.type === "TREE") as Tree)
+			const tree = (inputs.find(input => input.type === "TREE") as Plant)
 
 			this.beginClimbing(tree)
 		} else if (this.spontaneous())
@@ -103,7 +103,7 @@ class Bug implements Entity, BugState {
 		this.direction.multiplyScalar(-1)
 	}
 
-	private beginClimbing(tree: Tree) {
+	private beginClimbing(tree: Plant) {
 		this.direction = tree.graph.node.clone().norm()
 		this.pos = new Victor(tree.pos.x, 0).add(this.direction.clone().multiplyScalar(this.size.x))
 		this.climbingOn = {

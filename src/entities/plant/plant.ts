@@ -3,24 +3,24 @@ import Victor from "victor"
 import { TreeStruct } from "./treeStruct"
 import { ITreeStruct } from "./ITreeStruct"
 
-export interface TreeState extends EntityState {
+export interface PlantState extends EntityState {
 	graph: ITreeStruct
 }
 
-interface TreeStateInternal extends TreeState {
+interface PlantStateInternal extends PlantState {
 	graph: TreeStruct
 }
 
-export default class Tree implements Entity, TreeState {
+export default class Plant implements Entity, PlantState {
 	graph: TreeStruct
 	pos: Victor
 	size: Victor
 	id: number
 	type: string = "TREE"
-	state: TreeStateInternal
+	state: PlantStateInternal
 	updateSpeed: number = 4
 
-	constructor(id?: number, initialState?: Partial<TreeState>) {
+	constructor(id?: number, initialState?: Partial<PlantState>) {
 		this.id = id ? id : 0
 
 		Object.assign(

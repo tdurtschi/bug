@@ -12,7 +12,7 @@ import BugFactory from './entities/bug/bugFactory';
 import { generateId } from './core/id-generator';
 import Spontaneous from './core/spontaneous';
 import { range } from './util';
-import TreeFactory from './entities/tree/treeFactory';
+import PlantFactory from './entities/plant/plantFactory';
 
 const HEIGHT = window.innerHeight
 const WIDTH = window.innerWidth
@@ -35,7 +35,7 @@ const game = new GameEngine({
 const spontaneous = new Spontaneous(() => range(8000, 4000), () => range(10, 4)).get
 
 const bugFactory = new BugFactory(generateId, spontaneous)
-const treeFactory = new TreeFactory(generateId, spontaneous)
+const treeFactory = new PlantFactory(generateId, spontaneous)
 
 const appProps = {
 	game,

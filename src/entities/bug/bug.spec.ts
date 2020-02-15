@@ -4,8 +4,8 @@ import Wall from "../wall/wall"
 import { vectorEquals, multi } from "../../util"
 import Victor from "victor"
 import { BugMode } from "./bugConstants"
-import Tree from "../tree/tree"
-import TreeBuilder from "../tree/treeBuilder"
+import Plant from "../plant/plant"
+import TreeBuilder from "../plant/treeBuilder"
 
 describe("Bug", () => {
 	describe("Default bug", () => {
@@ -74,7 +74,7 @@ describe("Bug", () => {
 
 	describe("Climbing mode", () => {
 		it("Climbs up on a branch", () => {
-			const tree = new Tree(1, {
+			const tree = new Plant(1, {
 				pos: new Victor(0, 0),
 				graph: new TreeBuilder().node(0, 100).build()
 			})
@@ -109,7 +109,7 @@ describe("Bug", () => {
 					speed: 1,
 					pos: new Victor(0, 30),
 					climbingOn: {
-						tree: new Tree(1, { pos: new Victor(0, 0), graph: tree }),
+						tree: new Plant(1, { pos: new Victor(0, 0), graph: tree }),
 						branch: tree
 					},
 					direction: new Victor(0, 1)
@@ -132,7 +132,7 @@ describe("Bug", () => {
 				mode: BugMode.WALKING,
 				pos: new Victor(0, 30),
 				climbingOn: {
-					tree: new Tree(1, { pos: new Victor(0, 0), graph: tree }),
+					tree: new Plant(1, { pos: new Victor(0, 0), graph: tree }),
 					branch: tree
 				},
 				direction: new Victor(0, 1)
@@ -158,7 +158,7 @@ describe("Bug", () => {
 				speed: 1,
 				pos: new Victor(0, 30),
 				climbingOn: {
-					tree: new Tree(1, { pos: new Victor(0, 0), graph: tree }),
+					tree: new Plant(1, { pos: new Victor(0, 0), graph: tree }),
 					branch: tree.left
 				},
 				direction: direction
@@ -183,7 +183,7 @@ describe("Bug", () => {
 				speed: 1,
 				pos: new Victor(0, 0),
 				climbingOn: {
-					tree: new Tree(1, { pos: new Victor(0, 0), graph: tree }),
+					tree: new Plant(1, { pos: new Victor(0, 0), graph: tree }),
 					branch: tree
 				},
 				direction: direction
@@ -221,7 +221,7 @@ describe("Bug", () => {
 		})
 
 		it("will change to climbing mode when it reaches a tree", () => {
-			const input = [new Tree(1, { pos: new Victor(20, 0) })]
+			const input = [new Plant(1, { pos: new Victor(20, 0) })]
 			const bug = new Bug(0, {
 				pos: new Victor(10, 0),
 				size: new Victor(30, 20),

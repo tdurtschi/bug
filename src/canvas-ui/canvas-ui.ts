@@ -1,12 +1,12 @@
 import BugUI from "./renderers/bug/bug-ui";
-import Tree from "../entities/tree/tree";
+import Plant from "../entities/plant/plant";
 import Entity from "../entities/entity"
 import Bug from "../entities/bug/bug"
 import { UIEntity } from "../core/game-engine";
 import EntityManager from "../core/entity-manager";
 import { fixY } from "./canvas-helpers";
 import bugRenderer from "./renderers/bug/bug-renderer";
-import treeRenderer from "./renderers/tree/tree-renderer";
+import plantRenderer from "./renderers/tree/plant-renderer";
 
 export interface GameUIOptions {
 	target: string
@@ -101,9 +101,9 @@ class CanvasUI implements IGameUI {
 			ctx.fillRect(0, 0, size.x, size.y)
 			ctx.restore()
 		}
-		else if (entity.type === "TREE")
+		else if (entity instanceof Plant)
 		{
-			treeRenderer((entity as Tree), ctx)
+			plantRenderer((entity as Plant), ctx)
 		}
 	}
 

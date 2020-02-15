@@ -1,13 +1,12 @@
 import { fixY } from "../../canvas-helpers"
-import Victor = require("victor")
-import Tree from "../../../entities/tree/tree"
-import { ITreeStruct } from "../../../entities/tree/ITreeStruct"
-import { PlantagoStruct } from "../../../entities/tree/plantagoStruct"
+import Plant from "../../../entities/plant/plant"
+import { ITreeStruct } from "../../../entities/plant/ITreeStruct"
+import { PlantagoStruct } from "../../../entities/plant/plantagoStruct"
 const leafReference = require("./Leaf.png")
 const leaf = new Image();
 leaf.src = leafReference
 
-export default (tree: Tree, ctx: CanvasRenderingContext2D) => {
+export default (tree: Plant, ctx: CanvasRenderingContext2D) => {
 	const { pos } = tree
 	ctx.save()
 	ctx.strokeStyle = "green";

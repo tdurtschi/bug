@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Game } from '../../core/game-engine'
 import Victor from "victor"
 import BugFactory from '../../entities/bug/bugFactory'
-import TreeFactory from '../../entities/tree/treeFactory'
+import PlantFactory from '../../entities/plant/plantFactory'
 import { randBool, randInt } from '../../util'
 import { BugMode } from '../../entities/bug/bugConstants'
 import { Debugger } from './Debugger'
@@ -12,7 +12,7 @@ interface Props {
 	height: number,
 	width: number,
 	bugFactory: BugFactory,
-	treeFactory: TreeFactory,
+	treeFactory: PlantFactory,
 }
 
 interface State {
@@ -40,8 +40,8 @@ class App extends React.Component<Props, State> {
 					<button id="add-bug" onClick={() => this.addBug()}>
 						Add Bug
 					</button>
-					<button id="add-tree" onClick={() => this.addTree()}>
-						Add Tree
+					<button id="add-tree" onClick={() => this.addPlant()}>
+						Add Plant
 					</button>
 				</div>
 				<Debugger game={this.props.game} />
@@ -58,7 +58,7 @@ class App extends React.Component<Props, State> {
 				this.addBug()
 				break
 			case "t":
-				this.addTree()
+				this.addPlant()
 				break
 		}
 	}
@@ -68,7 +68,7 @@ class App extends React.Component<Props, State> {
 		this.forceUpdate();
 	}
 
-	private addTree = (): void => {
+	private addPlant = (): void => {
 		const { game, treeFactory } = this.props
 
 		const pos = new Victor(this.randomX(), 0)
