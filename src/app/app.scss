@@ -1,4 +1,4 @@
-$HEIGHT: 100vh;
+$HEIGHT:90vh;
 $WIDTH: 100vw;
 $BORDER: 0px;
 
@@ -16,14 +16,23 @@ $BORDER: 0px;
 	z-index: 0;
 	height: $HEIGHT;
 	width: $WIDTH;
-	border-bottom: 5px solid #3f2c1d;
 	background: rgb(248,255,247);
 	background: linear-gradient(0deg, rgba(248,255,247,0) 0%, rgba(172,241,255,1) 94%, rgba(145,236,255,1) 100%);
 }
 
+#ground {
+	position: fixed;
+	width: $WIDTH;
+	bottom: $BORDER;
+	left: $BORDER;
+	background-color: #3f2c1d;
+	height: 5px;
+	z-index: 2;
+}
+
 #bug-ui{
-	position: absolute;
-	top: $BORDER;
+	position: fixed;
+	bottom: $BORDER;
 	left: $BORDER;
 	z-index: 1;
 	height: $HEIGHT;
