@@ -6,6 +6,7 @@ import Victor from "victor"
 import { BugMode } from "./bugConstants"
 import Plant from "../plant/plant"
 import TreeBuilder from "../plant/treeBuilder"
+import { expectEquals } from "../../testutil"
 
 describe("Bug", () => {
 	describe("Default bug", () => {
@@ -167,7 +168,7 @@ describe("Bug", () => {
 			bug.update()
 
 			expect(bug.climbingOn.branch).toBe(tree)
-			expect(vectorEquals(bug.direction, new Victor(0, -1))).toBeTruthy()
+			expectEquals(bug.direction, new Victor(0, -1))
 		})
 
 		it("Returns to the ground if no parent branch", () => {
@@ -196,28 +197,35 @@ describe("Bug", () => {
 		})
 	})
 
-	describe("inputs", () => {
+	describe("Inputs", () => {
 		it("will turn around when there is an obstruction ahead", () => {
 			const input = [new Wall()]
+
 			const bug = new Bug(0, {
+				size: new Victor(2, 1),
+				pos: new Victor(0, 0),
 				mode: BugMode.WALKING,
 				direction: new Victor(1, 0)
 			})
 
-			expect(vectorEquals(bug.update(input).direction, new Victor(-1, 0))).toBeTruthy()
+			bug.update(input)
+			expectEquals(bug.direction, new Victor(-1, 0))
 		})
 
 		it("Turns around along its x-axis", () => {
-			const input = [new Wall()]
+			const input = [new Wall(1, {
+				pos: new Victor(0, 0),
+				size: new Victor(10, 50)
+			})]
 			const bug = new Bug(0, {
-				pos: new Victor(10, 0),
+				pos: new Victor(0, 0),
 				size: new Victor(10, 0),
 				mode: BugMode.WALKING,
 				direction: new Victor(1, 0)
 			})
-			const bugPos = bug.update(input).pos
+			bug.update(input)
 
-			expect(vectorEquals(bugPos, new Victor(0, 0))).toBeTruthy()
+			expectEquals(bug.pos, new Victor(-11, 0))
 		})
 
 		it("will change to climbing mode when it reaches a tree", () => {
@@ -232,9 +240,9 @@ describe("Bug", () => {
 			bug.update(input)
 			const direction = bug.direction
 			expect(bug.climbingOn.tree).toEqual(input[0])
-			expect(vectorEquals(direction, new Victor(0, 1))).toBeTruthy()
+			expectEquals(direction, new Victor(0, 1))
 
-			expect(vectorEquals(bug.pos, new Victor(20, 30))).toBeTruthy()
+			expectEquals(bug.pos, new Victor(20, 30))
 		})
 
 		it("fails gracefully when given bad input", () => {

@@ -98,7 +98,7 @@ class Bug implements Entity, BugState {
 	}
 
 	private turnAround() {
-		const subtractVector = this.direction.clone().norm().multiplyScalar(this.size.x)
+		const subtractVector = this.direction.clone().norm().multiplyScalar(this.size.x + 1)
 		this.pos.subtract(subtractVector)
 		this.direction.multiplyScalar(-1)
 	}
