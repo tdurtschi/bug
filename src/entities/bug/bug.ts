@@ -103,15 +103,6 @@ class Bug implements Entity, BugState {
 		this.direction.multiplyScalar(-1)
 	}
 
-	private beginClimbing(tree: Plant) {
-		this.direction = tree.graph.node.clone().norm()
-		this.pos = new Victor(tree.pos.x, 0).add(this.direction.clone().multiplyScalar(this.size.x))
-		this.climbingOn = {
-			tree,
-			branch: tree.graph
-		}
-	}
-
 	private climb() {
 		const currentBranch = this.climbingOn.branch
 		const branchPosition = this.climbingOn.tree.getAbsolutePos(currentBranch)
@@ -132,8 +123,7 @@ class Bug implements Entity, BugState {
 					this.direction = this.climbingOn.branch.node.clone().norm().multiplyScalar(-1)
 				} else
 				{
-					this.climbingOn = undefined
-					this.direction = new Victor(randBool() ? 1 : -1, 0)
+					this.endClimbing()
 				}
 			}
 		} else if (branchOffset.magnitude() >= currentBranch.node.magnitude())
@@ -154,6 +144,23 @@ class Bug implements Entity, BugState {
 		}
 
 		this.walk()
+	}
+
+
+	private beginClimbing(tree: Plant) {
+		this.direction = tree.graph.node.clone().norm()
+		this.pos = new Victor(tree.pos.x, 0).add(this.direction.clone().multiplyScalar(this.size.x))
+		this.climbingOn = {
+			tree,
+			branch: tree.graph
+		}
+	}
+
+	private endClimbing() {
+		this.direction = new Victor(randBool() ? 1 : -1, 0)
+		const newX = this.climbingOn.tree.pos.x + (this.direction.x > 0 ? (this.size.x + 1) : -(this.size.x + 1))
+		this.pos = new Victor(newX, this.climbingOn.tree.pos.y)
+		this.climbingOn = undefined
 	}
 
 	private climbBranch(branch: ITreeStruct, direction: Direction = Direction.UP) {
@@ -177,7 +184,6 @@ class Bug implements Entity, BugState {
 	}
 
 	private isClimbing = () => this.climbingOn && this.mode === BugMode.WALKING
-
 }
 
 enum Direction { UP, DOWN }

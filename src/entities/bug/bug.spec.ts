@@ -171,7 +171,7 @@ describe("Bug", () => {
 			expectEquals(bug.direction, new Victor(0, -1))
 		})
 
-		it("Returns to the ground if no parent branch", () => {
+		it("Returns to the ground if no parent branch", multi(5, () => {
 			const tree = new TreeBuilder()
 				.node(0, 30)
 				.build()
@@ -183,6 +183,7 @@ describe("Bug", () => {
 				mode: BugMode.WALKING,
 				speed: 1,
 				pos: new Victor(0, 0),
+				size: new Victor(30, 20),
 				climbingOn: {
 					tree: new Plant(1, { pos: new Victor(0, 0), graph: tree }),
 					branch: tree
@@ -194,7 +195,8 @@ describe("Bug", () => {
 
 			expect(bug.climbingOn).toBeUndefined()
 			expect(bug.direction.y).toEqual(0)
-		})
+			expect(Math.abs(bug.pos.x)).toBeGreaterThan(bug.size.x)
+		}))
 	})
 
 	describe("Inputs", () => {
