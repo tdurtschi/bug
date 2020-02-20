@@ -2,11 +2,12 @@ import BugUI from "./renderers/bug/bug-ui";
 import Plant from "../entities/plant/plant";
 import Entity from "../entities/entity"
 import Bug from "../entities/bug/bug"
-import { UIEntity } from "../core/game-engine";
+import { UIEntity } from "./ui-entity";
 import EntityManager from "../core/entity-manager";
-import { fixY } from "./canvas-helpers";
 import bugRenderer from "./renderers/bug/bug-renderer";
 import plantRenderer from "./renderers/tree/plant-renderer";
+import Wall from "../entities/wall/wall";
+import { wallRenderer } from "./renderers/wall/wall-renderer";
 
 export interface GameUIOptions {
 	target: string
@@ -53,7 +54,7 @@ class CanvasUI implements IGameUI {
 	public render = (): void => {
 		this.updateUIEntities()
 
-		this.clear()
+		this.clearCanvas()
 		this.entityManager.getEntities().forEach(entity => {
 			this.renderEntity(entity)
 		})
@@ -79,7 +80,7 @@ class CanvasUI implements IGameUI {
 		window.requestAnimationFrame(this.beginLoop)
 	}
 
-	clear() {
+	clearCanvas() {
 		var ctx = this.ctx
 		ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
 		ctx.rect(0, 0, this.canvas.width, this.canvas.height)
@@ -87,23 +88,17 @@ class CanvasUI implements IGameUI {
 	}
 
 	renderEntity(entity: Entity) {
-		const ctx = this.ctx
-		if (entity.type === "BUG")
+		if (entity instanceof Bug)
 		{
-			bugRenderer(this.findUIEntity(entity), ctx)
+			bugRenderer(this.findUIEntity(entity), this.ctx)
 		}
-		else if (entity.type === "WALL")
+		else if (entity instanceof Wall)
 		{
-			const { pos, size } = entity
-			ctx.save()
-			ctx.translate(pos.x, fixY(ctx, pos.y))
-			ctx.translate(0, -size.y)
-			ctx.fillRect(0, 0, size.x, size.y)
-			ctx.restore()
+			wallRenderer((entity as Wall), this.ctx)
 		}
 		else if (entity instanceof Plant)
 		{
-			plantRenderer((entity as Plant), ctx)
+			plantRenderer((entity as Plant), this.ctx)
 		}
 	}
 

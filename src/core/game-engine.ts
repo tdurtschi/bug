@@ -8,11 +8,6 @@ export interface GameEngineOptions {
 	entityManager: EntityManager
 }
 
-export interface UIEntity {
-	id: number
-	update: (frame: number) => any
-}
-
 export interface Game {
 	togglePause: () => void
 	isPaused: boolean

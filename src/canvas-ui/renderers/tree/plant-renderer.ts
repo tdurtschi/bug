@@ -2,6 +2,7 @@ import { fixY } from "../../canvas-helpers"
 import Plant from "../../../entities/plant/plant"
 import { ITreeStruct } from "../../../entities/plant/ITreeStruct"
 import { PlantagoStruct } from "../../../entities/plant/plantagoStruct"
+
 const leafReference = require("./Leaf.png")
 const leaf = new Image();
 leaf.src = leafReference

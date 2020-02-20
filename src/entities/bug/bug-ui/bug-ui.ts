@@ -1,4 +1,4 @@
-import { UIEntity } from "../../../core/game-engine";
+import { UIEntity } from "../../../canvas-ui/ui-entity";
 import Bug from "../../../entities/bug/bug";
 import { BugMode } from "../../../entities/bug/bugConstants";
 

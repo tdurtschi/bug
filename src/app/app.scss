@@ -25,18 +25,20 @@ $BORDER: 0px;
 	width: $WIDTH;
 	bottom: $BORDER;
 	left: $BORDER;
-	background-color: #3f2c1d;
+	background-color: #7a4a25;
 	height: 5px;
-	z-index: 2;
+	z-index: 0;
 }
 
 #bug-ui{
+	box-sizing: border-box;
 	position: fixed;
 	bottom: $BORDER;
 	left: $BORDER;
 	z-index: 1;
 	height: $HEIGHT;
 	width: $WIDTH;
+	margin-bottom: 2px;
 }
 
 #bug-controls{
