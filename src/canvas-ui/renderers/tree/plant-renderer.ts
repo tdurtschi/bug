@@ -10,7 +10,8 @@ leaf.src = leafReference
 export default (tree: Plant, ctx: CanvasRenderingContext2D) => {
 	const { pos } = tree
 	ctx.save()
-	ctx.strokeStyle = "green";
+	ctx.strokeStyle = "#381600";
+	ctx.lineWidth = 10;
 	ctx.translate(pos.x, fixY(ctx, pos.y))
 	renderTree(tree.graph, ctx)
 	ctx.restore()
@@ -27,7 +28,6 @@ const renderTree = (root: ITreeStruct, ctx: CanvasRenderingContext2D) => {
 		ctx.moveTo(0, 0)
 		ctx.lineTo(x, -y)
 		ctx.stroke()
-		ctx.drawImage(leaf, 0, 0, 42, 182)
 
 		ctx.save()
 		ctx.translate(x, -y)
@@ -44,6 +44,7 @@ const renderTree = (root: ITreeStruct, ctx: CanvasRenderingContext2D) => {
 }
 
 const renderPlantago = (root: ITreeStruct, ctx: CanvasRenderingContext2D) => {
+	ctx.save()
 	if (window.DEBUG)
 	{
 		ctx.moveTo(0, 0)
@@ -52,4 +53,5 @@ const renderPlantago = (root: ITreeStruct, ctx: CanvasRenderingContext2D) => {
 	}
 	ctx.rotate(-root.node.angle() + Math.PI / 2)
 	ctx.drawImage(leaf, -24, -173, 42, 178)
+	ctx.restore()
 }

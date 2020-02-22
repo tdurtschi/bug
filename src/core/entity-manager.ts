@@ -14,6 +14,7 @@ export default class EntityManager implements IEntityManager {
 	}
 
 	public getEntities = () => this.entities;
+	
 	public addEntity = (entity: Entity) => {
 		this.entities.push(entity)
 		if (entity instanceof Bug)
