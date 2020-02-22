@@ -2,6 +2,7 @@ import Entity from "../entities/entity";
 import Bug from "../entities/bug/bug";
 import EntityManager from "./entity-manager";
 import Wall from "../entities/wall/wall";
+import Plant from "../entities/plant/plant";
 
 describe("Entity Manager", () => {
 	it("Accepts an initial state", () => {
@@ -19,5 +20,21 @@ describe("Entity Manager", () => {
 		entityManager.addEntity(entity);
 
 		expect(entityManager.getEntities()).toContain(entity);
+	})
+
+	it("Sorts entities by z-index when it receives an event", () => {
+		const plant = new Plant(0);
+		const bug = new Bug(1, { climbingOn: { tree: plant, branch: plant.graph } });
+		const entities = [
+			bug,
+			plant,
+		]
+
+		const entityManager = new EntityManager(entities);
+		bug.zIndexChanged.next()
+		
+		const newList = entityManager.getEntities();
+		expect(newList[0]).toBe(entities[1])
+		expect(newList[1]).toBe(entities[0])
 	})
 })
