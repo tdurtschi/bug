@@ -41,6 +41,7 @@
     "husky": "^3.1.0",
     "node-sass": "^4.13.0",
     "puppeteer": "^2.0.0",
+    "rxjs": "^6.5.4",
     "sass-loader": "^8.0.0",
     "source-map-loader": "^0.2.4",
     "start-server-and-test": "^1.10.6",

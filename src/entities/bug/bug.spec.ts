@@ -197,6 +197,30 @@ describe("Bug", () => {
 			expect(bug.direction.y).toEqual(0)
 			expect(Math.abs(bug.pos.x)).toBeGreaterThan(bug.size.x)
 		}))
+
+		it("Emits an event when it returns to the ground", (done: DoneFn) => {
+			const tree = new TreeBuilder()
+				.node(0, 30)
+				.build()
+
+			const climbingBranch = tree
+			const direction = climbingBranch.node.clone().norm().multiplyScalar(-1)
+
+			const bug = new Bug(0, {
+				mode: BugMode.WALKING,
+				speed: 1,
+				pos: new Victor(0, 0),
+				size: new Victor(30, 20),
+				climbingOn: {
+					tree: new Plant(1, { pos: new Victor(0, 0), graph: tree }),
+					branch: tree
+				},
+				direction: direction
+			})
+
+			bug.zIndexChanged.subscribe(done)
+			bug.update()
+		})
 	})
 
 	describe("Inputs", () => {
@@ -245,6 +269,20 @@ describe("Bug", () => {
 			expectEquals(direction, new Victor(0, 1))
 
 			expectEquals(bug.pos, new Victor(20, 30))
+		})
+
+		it("Emits an event when it starts climbing a tree", (done: DoneFn) => {
+			const input = [new Plant(1, { pos: new Victor(20, 0) })]
+			const bug = new Bug(0, {
+				pos: new Victor(10, 0),
+				size: new Victor(30, 20),
+				mode: BugMode.WALKING,
+				direction: new Victor(-1, 0)
+			})
+
+			bug.zIndexChanged.subscribe(done)
+
+			bug.update(input)
 		})
 
 		it("fails gracefully when given bad input", () => {

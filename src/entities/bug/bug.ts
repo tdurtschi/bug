@@ -4,6 +4,8 @@ import { BugMode } from "./bugConstants"
 import { randBool } from "../../util"
 import Plant from "../plant/plant"
 import { ITreeStruct } from "../plant/ITreeStruct"
+import { Subject } from "rxjs"
+
 
 export interface BugState extends EntityState {
 	direction: Victor
@@ -32,6 +34,7 @@ class Bug implements Entity, BugState {
 	id: number
 	state: BugState
 	updateSpeed: number = 4
+	zIndexChanged: Subject<void> = new Subject<void>()
 
 	constructor(id?: number, initialState?: Partial<BugState>) {
 		this.id = id ? id : 0
@@ -154,6 +157,8 @@ class Bug implements Entity, BugState {
 			tree,
 			branch: tree.graph
 		}
+
+		this.zIndexChanged.next()
 	}
 
 	private endClimbing() {
@@ -161,6 +166,8 @@ class Bug implements Entity, BugState {
 		const newX = this.climbingOn.tree.pos.x + (this.direction.x > 0 ? (this.size.x + 1) : -(this.size.x + 1))
 		this.pos = new Victor(newX, this.climbingOn.tree.pos.y)
 		this.climbingOn = undefined
+
+		this.zIndexChanged.next()
 	}
 
 	private climbBranch(branch: ITreeStruct, direction: Direction = Direction.UP) {
