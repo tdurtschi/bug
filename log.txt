@@ -5,7 +5,10 @@ Goals for this project:
 
 Tasks
 	- Make the tests more performant when not running UI test
-	- The bug climbs on a 90 degree line
+	- Lots of images/stuff to render each frame. How to optimize (MDN article. maybe layered canvases?)
+	- Bugs have more interesting behavior
+	- Plantago dynamic size
+	- Plantago can be mirrored
 
 Aspects
 	- Portability
