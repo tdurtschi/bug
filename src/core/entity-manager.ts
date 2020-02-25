@@ -14,7 +14,7 @@ export default class EntityManager implements IEntityManager {
 	}
 
 	public getEntities = () => this.entities;
-	
+
 	public addEntity = (entity: Entity) => {
 		this.entities.push(entity)
 		if (entity instanceof Bug)
@@ -39,6 +39,8 @@ export default class EntityManager implements IEntityManager {
 		this.entities = this.flatten([...plants, ...otherEntities].sort((a, b) => {
 			return a[0].id - b[0].id
 		}));
+
+		window.DEBUG && console.log(this.entities)
 	}
 
 	flatten = (list: any[]): any[] => list.reduce(

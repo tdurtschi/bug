@@ -69,12 +69,14 @@ class App extends React.Component<Props, State> {
 		this.forceUpdate();
 	}
 
+	private plantPosCursor: Victor
 	private addPlant = (): void => {
 		const { game, treeFactory } = this.props
 
-		const pos = new Victor(this.randomX(), 0)
+		if (!this.plantPosCursor) this.plantPosCursor = new Victor(this.randomX(), 0)
+		this.plantPosCursor.x = (this.plantPosCursor.x + randInt(this.props.width / 2, this.props.width / 3)) % this.props.width
 
-		game.addEntity(treeFactory.build({ pos }))
+		game.addEntity(treeFactory.build({ pos: this.plantPosCursor.clone() }))
 	}
 
 	private addBug = () => {
