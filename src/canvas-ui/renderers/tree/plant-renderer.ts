@@ -44,11 +44,14 @@ const renderTree = (root: ITreeStruct, ctx: CanvasRenderingContext2D) => {
 }
 
 const renderPlantago = (root: ITreeStruct, ctx: CanvasRenderingContext2D) => {
+	const x = Math.floor(root.node.x),
+		y = Math.floor(root.node.y)
+
 	ctx.save()
 	if (window.DEBUG)
 	{
 		ctx.moveTo(0, 0)
-		ctx.lineTo(root.node.x, -root.node.y)
+		ctx.lineTo(x, -y)
 		ctx.stroke()
 	}
 	ctx.rotate(-root.node.angle() + Math.PI / 2)
