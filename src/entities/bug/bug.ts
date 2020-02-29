@@ -5,12 +5,14 @@ import { randBool } from "../../util"
 import Plant from "../plant/plant"
 import { ITreeStruct } from "../plant/ITreeStruct"
 import { Subject } from "rxjs"
-
+import { turnAround } from "./behaviors/turnAround"
+import { Pause } from "./behaviors/pause"
+import { BugBehavior } from "./behaviors/BugBehavior"
+import { GroundWalk } from "./behaviors/GroundWalk"
 
 export interface BugState extends EntityState {
 	direction: Victor
 	speed: number
-	behaviorQueue: any
 	mode: BugMode
 	spontaneous: () => boolean
 	climbingOn?: IClimbingOn
@@ -24,7 +26,6 @@ export interface IClimbingOn {
 class Bug implements Entity, BugState {
 	direction: Victor
 	speed: number
-	behaviorQueue: any
 	mode: BugMode
 	spontaneous: () => boolean
 	climbingOn?: IClimbingOn
@@ -35,6 +36,7 @@ class Bug implements Entity, BugState {
 	state: BugState
 	updateSpeed: number = 4
 	zIndexChanged: Subject<void> = new Subject<void>()
+	behaviorQueue: BugBehavior[] = []
 
 	constructor(id?: number, initialState?: Partial<BugState>) {
 		this.id = id ? id : 0
@@ -54,23 +56,32 @@ class Bug implements Entity, BugState {
 	}
 
 	public update(inputs: Entity[] = []): Bug {
-		if (this.isClimbing())
+		if (this.behaviorQueue && this.behaviorQueue.length > 0)
 		{
-			this.climb()
-		} else if (inputs.find(input => input.type === "TREE"))
+			this.behaviorQueue[0].do(inputs)
+		} else
 		{
-			const tree = (inputs.find(input => input.type === "TREE") as Plant)
-
-			this.beginClimbing(tree)
-		} else if (this.spontaneous())
-		{
-			randBool() ? this.turnAround() : this.changeMode()
-		} else if (this.mode == BugMode.WALKING)
-		{
-			this.walk(inputs)
+			if (this.spontaneous())
+			{
+				randBool() ? turnAround(this) : this.changeMode()
+			} else if (this.mode == BugMode.WALKING)
+			{
+				this.queueBehavior(new GroundWalk(this))
+			} else
+			{
+				this.queueBehavior(new Pause(this, 100))
+			}
 		}
 
 		return this
+	}
+
+	public queueBehavior = (behavior: BugBehavior) => {
+		this.behaviorQueue.push(behavior);
+	}
+
+	public finishBehavior() {
+		this.behaviorQueue.shift()
 	}
 
 	private changeMode() {
@@ -82,117 +93,6 @@ class Bug implements Entity, BugState {
 			this.mode = BugMode.WALKING
 		}
 	}
-
-	private walk(inputs?: Entity[]) {
-		const {
-			direction,
-			speed,
-			pos
-		} = this
-
-		if (inputs && inputs.find(i => i.type === "WALL"))
-		{
-			this.turnAround()
-		} else
-		{
-			pos.addScalarX(direction.x * speed)
-			pos.addScalarY(direction.y * speed)
-		}
-	}
-
-	private turnAround() {
-		const subtractVector = this.direction.clone().norm().multiplyScalar(this.size.x + 1)
-		this.pos.subtract(subtractVector)
-		this.direction.multiplyScalar(-1)
-	}
-
-	private climb() {
-		const currentBranch = this.climbingOn.branch
-		const branchPosition = this.climbingOn.tree.getAbsolutePos(currentBranch)
-		const branchOffset = this.pos.clone().subtract(branchPosition)
-
-		const diffBetweenBranchAndDirection = Math.abs(currentBranch.node.direction() - this.direction.direction())
-		const isGoingDown = diffBetweenBranchAndDirection > 3
-		if (isGoingDown)
-		{
-			const directionDelta = Math.abs(branchOffset.direction() - currentBranch.node.direction())
-			if (directionDelta > 0.3)
-			{
-				if (currentBranch.parent)
-				{
-					this.climbingOn.branch = currentBranch.parent
-					this.pos = this.climbingOn.tree.getAbsolutePos(this.climbingOn.branch)
-						.add(this.climbingOn.branch.node)
-					this.direction = this.climbingOn.branch.node.clone().norm().multiplyScalar(-1)
-				} else
-				{
-					this.endClimbing()
-				}
-			}
-		} else if (branchOffset.magnitude() >= currentBranch.node.magnitude())
-		{
-			const nextBranch = randBool() && currentBranch.left
-				? currentBranch.left
-				: currentBranch.right
-					? currentBranch.right
-					: undefined
-
-			if (nextBranch)
-			{
-				this.climbBranch(nextBranch)
-			} else
-			{
-				this.turnAround()
-			}
-		}
-
-		this.walk()
-	}
-
-
-	private beginClimbing(tree: Plant) {
-		this.direction = tree.graph.node.clone().norm()
-		this.pos = new Victor(tree.pos.x, 0).add(this.direction.clone().multiplyScalar(this.size.x))
-		this.climbingOn = {
-			tree,
-			branch: tree.graph
-		}
-
-		this.zIndexChanged.next()
-	}
-
-	private endClimbing() {
-		this.direction = new Victor(randBool() ? 1 : -1, 0)
-		const newX = this.climbingOn.tree.pos.x + (this.direction.x > 0 ? (this.size.x + 1) : -(this.size.x + 1))
-		this.pos = new Victor(newX, this.climbingOn.tree.pos.y)
-		this.climbingOn = undefined
-
-		this.zIndexChanged.next()
-	}
-
-	private climbBranch(branch: ITreeStruct, direction: Direction = Direction.UP) {
-		let offset: Victor;
-		if (direction === Direction.UP)
-		{
-			offset = new Victor(this.size.x / 3, 0)
-				.rotate(branch.node.direction())
-		} else
-		{
-			offset = branch.node
-		}
-
-		this.climbingOn.branch = branch
-		this.pos = this.climbingOn.tree
-			.getAbsolutePos(branch)
-			.add(offset)
-		this.direction = branch.node.clone()
-			.norm()
-			.multiplyScalar(direction === Direction.UP ? 1 : -1)
-	}
-
-	private isClimbing = () => this.climbingOn && this.mode === BugMode.WALKING
 }
-
-enum Direction { UP, DOWN }
 
 export default Bug

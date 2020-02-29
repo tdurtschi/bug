@@ -9,22 +9,25 @@ import { entityManagerStub } from "../../spec/entity-manager-stub";
 describe("Entity Updater", () => {
 	it("Updates all the Entities", () => {
 		const entities: Entity[] = [new Bug(0, { mode: BugMode.WALKING }), new Bug(0, { mode: BugMode.WALKING })]
+		entities[0].update = jasmine.createSpy("update1")
+		entities[1].update = jasmine.createSpy("update2")
 		const entityUpdater = new EntityUpdater(entityManagerStub(entities))
 		entityUpdater.update()
 
-		expect(entities[0].pos.x).toEqual(1)
-		expect(entities[1].pos.x).toEqual(1)
+		expect(entities[0].update).toHaveBeenCalled()
+		expect(entities[1].update).toHaveBeenCalled()
 	})
 
 	it("Updates bugs every 4 frames", () => {
 		const entities: Entity[] = [new Bug(0, { mode: BugMode.WALKING })]
+		entities[0].update = jasmine.createSpy("update")
 		const entityUpdater = new EntityUpdater(entityManagerStub(entities))
 
 		new Array(4).fill(0).forEach(_ => entityUpdater.update())
-		expect(entities[0].pos.x).toEqual(1)
+		expect(entities[0].update).toHaveBeenCalledTimes(1)
 
 		new Array(4).fill(0).forEach(_ => entityUpdater.update())
-		expect(entities[0].pos.x).toEqual(2)
+		expect(entities[0].update).toHaveBeenCalledTimes(2)
 	})
 
 	describe("Collision Detection", () => {
