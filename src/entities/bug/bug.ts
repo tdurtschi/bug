@@ -59,18 +59,15 @@ class Bug implements Entity, BugState {
 		if (this.behaviorQueue && this.behaviorQueue.length > 0)
 		{
 			this.behaviorQueue[0].do(inputs)
+		} else if (this.spontaneous())
+		{
+			randBool() ? turnAround(this) : this.changeMode()
+		} else if (this.mode == BugMode.WALKING)
+		{
+			this.queueBehavior(new GroundWalk(this))
 		} else
 		{
-			if (this.spontaneous())
-			{
-				randBool() ? turnAround(this) : this.changeMode()
-			} else if (this.mode == BugMode.WALKING)
-			{
-				this.queueBehavior(new GroundWalk(this))
-			} else
-			{
-				this.queueBehavior(new Pause(this, 100))
-			}
+			this.queueBehavior(new Pause(this, 100))
 		}
 
 		return this

@@ -1,20 +1,16 @@
 import "jasmine"
 import Bug from "./bug"
-import Wall from "../wall/wall"
-import { vectorEquals, multi } from "../../util"
+import { vectorEquals } from "../../util"
 import Victor from "victor"
 import { BugMode } from "./bugConstants"
-import Plant from "../plant/plant"
-import TreeBuilder from "../plant/treeBuilder"
 import { expectEquals } from "../../testutil"
-import { GroundWalk } from "./behaviors/GroundWalk"
-import { Climb } from "./behaviors/climb"
-
 describe("Bug", () => {
 	describe("Default bug", () => {
-		it("Is in stopped mode.", () => {
+		it("Is in paused mode.", () => {
 			const bug = new Bug()
-			expect(bug.mode).toEqual(BugMode.STOPPED)
+			const oldPos = bug.pos.clone()
+			bug.update()
+			expectEquals(oldPos, bug.pos)
 		})
 	})
 
@@ -33,17 +29,6 @@ describe("Bug", () => {
 		bug = bug.update().update().update()
 		expect(bug).toBeTruthy
 		expect(typeof (bug.update) === "function").toBe(true)
-	})
-
-
-	describe("Stopped mode", () => {
-		it("Doesn't change its coordinates", () => {
-			const bug = new Bug(0, {
-				mode: BugMode.STOPPED
-			})
-			expect(bug.update().pos.x).toEqual(0)
-			expect(bug.update().pos.y).toEqual(0)
-		})
 	})
 
 	describe("Inputs", () => {
