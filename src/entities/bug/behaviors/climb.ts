@@ -12,7 +12,7 @@ export class Climb extends BugBehavior {
 	public do(): void {
 		const bug = this.bug
 		const currentBranch = bug.climbingOn.branch
-		const branchPosition = bug.climbingOn.tree.getAbsolutePos(currentBranch)
+		const branchPosition = bug.climbingOn.plant.getAbsolutePos(currentBranch)
 		const branchOffset = bug.pos.clone().subtract(branchPosition)
 
 		const diffBetweenBranchAndDirection = Math.abs(currentBranch.node.direction() - bug.direction.direction())
@@ -25,7 +25,7 @@ export class Climb extends BugBehavior {
 				if (currentBranch.parent)
 				{
 					bug.climbingOn.branch = currentBranch.parent
-					bug.pos = bug.climbingOn.tree.getAbsolutePos(bug.climbingOn.branch)
+					bug.pos = bug.climbingOn.plant.getAbsolutePos(bug.climbingOn.branch)
 						.add(bug.climbingOn.branch.node)
 					bug.direction = bug.climbingOn.branch.node.clone().norm().multiplyScalar(-1)
 				} else
@@ -58,7 +58,7 @@ export const beginClimbing = (bug: Bug, tree: Plant) => {
 	bug.direction = tree.graph.node.clone().norm()
 	bug.pos = new Victor(tree.pos.x, 0).add(bug.direction.clone().multiplyScalar(bug.size.x))
 	bug.climbingOn = {
-		tree,
+		plant: tree,
 		branch: tree.graph
 	}
 
@@ -70,8 +70,8 @@ const endClimbing = (bug: Bug) => {
 	const sizeOffset = bug.direction.x > 0
 		? (bug.size.x + 1)
 		: -(bug.size.x + 1)
-	const newX = bug.climbingOn.tree.pos.x + sizeOffset
-	bug.pos = new Victor(newX, bug.climbingOn.tree.pos.y)
+	const newX = bug.climbingOn.plant.pos.x + sizeOffset
+	bug.pos = new Victor(newX, bug.climbingOn.plant.pos.y)
 	bug.climbingOn = undefined
 
 	bug.zIndexChanged.next()
@@ -90,7 +90,7 @@ const climbBranch = (bug: Bug, branch: ITreeStruct, direction: Direction = Direc
 	}
 
 	bug.climbingOn.branch = branch
-	bug.pos = bug.climbingOn.tree
+	bug.pos = bug.climbingOn.plant
 		.getAbsolutePos(branch)
 		.add(offset)
 	bug.direction = branch.node.clone()

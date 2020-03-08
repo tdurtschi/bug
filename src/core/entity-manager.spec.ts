@@ -24,7 +24,7 @@ describe("Entity Manager", () => {
 
 	it("Sorts entities by z-index when it receives an event", () => {
 		const plant = new Plant(0);
-		const bug = new Bug(1, { climbingOn: { tree: plant, branch: plant.graph } });
+		const bug = new Bug(1, { climbingOn: { plant: plant, branch: plant.graph } });
 		const entities = [
 			bug,
 			plant,

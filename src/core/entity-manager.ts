@@ -28,7 +28,7 @@ export default class EntityManager implements IEntityManager {
 		const climbingBugs: Bug[] = this.entities.filter(entity => entity instanceof Bug && entity.climbingOn) as Bug[]
 
 		climbingBugs.forEach(bug => {
-			const idx = plants.findIndex(plants => plants[0] === bug.climbingOn.tree)
+			const idx = plants.findIndex(plants => plants[0] === bug.climbingOn.plant)
 			plants[idx].push(bug)
 		})
 

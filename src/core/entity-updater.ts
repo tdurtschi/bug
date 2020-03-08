@@ -37,11 +37,11 @@ export default class EntityUpdater {
 	private isIntersecting = (obj1: Entity, obj2: Entity): boolean => {
 		let newPos: Victor;
 		let newPos2: Victor;
-		if (obj1.type === "BUG" && (obj1 as Bug).direction.x > 0)
+		if (obj1 instanceof Bug && (obj1 as Bug).direction.x > 0)
 		{
 			newPos = obj1.pos.clone().subtractScalarX(obj1.size.x - 1)
 		}
-		if (obj2.type === "BUG" && (obj2 as Bug).direction.x > 0)
+		if (obj2 instanceof Bug && (obj2 as Bug).direction.x > 0)
 		{
 			newPos2 = obj2.pos.clone().subtractScalarX(obj2.size.x - 1)
 		}

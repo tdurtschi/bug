@@ -5,7 +5,6 @@ class Wall implements Entity, EntityState {
 	pos: Victor;
 	size: Victor;
 	public id = 0
-	public type = "WALL"
 	public state: EntityState
 	updateSpeed: 0
 

@@ -17,7 +17,7 @@ describe("Climbing mode", () => {
 		const bug = new Bug(0, {
 			speed: 1,
 			pos: new Victor(0, 30),
-			climbingOn: { tree, branch: tree.graph },
+			climbingOn: { plant: tree, branch: tree.graph },
 			direction: new Victor(0, 1)
 		})
 
@@ -41,7 +41,7 @@ describe("Climbing mode", () => {
 				speed: 1,
 				pos: new Victor(0, 30),
 				climbingOn: {
-					tree: new Plant(1, { pos: new Victor(0, 0), graph: tree }),
+					plant: new Plant(1, { pos: new Victor(0, 0), graph: tree }),
 					branch: tree
 				},
 				direction: new Victor(0, 1)
@@ -63,7 +63,7 @@ describe("Climbing mode", () => {
 			speed: 1,
 			pos: new Victor(0, 30),
 			climbingOn: {
-				tree: new Plant(1, { pos: new Victor(0, 0), graph: tree }),
+				plant: new Plant(1, { pos: new Victor(0, 0), graph: tree }),
 				branch: tree
 			},
 			direction: new Victor(0, 1)
@@ -88,7 +88,7 @@ describe("Climbing mode", () => {
 			speed: 1,
 			pos: new Victor(0, 30),
 			climbingOn: {
-				tree: new Plant(1, { pos: new Victor(0, 0), graph: tree }),
+				plant: new Plant(1, { pos: new Victor(0, 0), graph: tree }),
 				branch: tree.left
 			},
 			direction: direction
@@ -113,7 +113,7 @@ describe("Climbing mode", () => {
 			pos: new Victor(0, 0),
 			size: new Victor(30, 20),
 			climbingOn: {
-				tree: new Plant(1, { pos: new Victor(0, 0), graph: tree }),
+				plant: new Plant(1, { pos: new Victor(0, 0), graph: tree }),
 				branch: tree
 			},
 			direction: direction
@@ -141,7 +141,7 @@ describe("Climbing mode", () => {
 			pos: new Victor(0, 0),
 			size: new Victor(30, 20),
 			climbingOn: {
-				tree: new Plant(1, { pos: new Victor(0, 0), graph: tree }),
+				plant: new Plant(1, { pos: new Victor(0, 0), graph: tree }),
 				branch: tree
 			},
 			direction: direction
