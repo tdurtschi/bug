@@ -1,18 +1,11 @@
-import BugUI from "./renderers/bug/bug-ui";
 import Plant from "../entities/plant/plant";
 import Entity from "../entities/entity"
 import Bug from "../entities/bug/bug"
-import { UIEntity } from "./ui-entity";
-import EntityManager from "../core/entity-manager";
+import { IEntityManager } from "../core/entity-manager";
 import bugRenderer from "./renderers/bug/bug-renderer";
 import plantRenderer from "./renderers/tree/plant-renderer";
 import Wall from "../entities/wall/wall";
 import { wallRenderer } from "./renderers/wall/wall-renderer";
-
-export interface GameUIOptions {
-	target: string
-	entityManager: EntityManager
-}
 
 export interface IGameUI {
 	render: () => void
@@ -23,29 +16,20 @@ export interface IGameUI {
 class CanvasUI implements IGameUI {
 	canvas: HTMLCanvasElement
 	ctx: CanvasRenderingContext2D
-	entityManager: EntityManager
 	isPaused: boolean = false
-	uiEntities: UIEntity[]
 	frame: number = 0
 
-	constructor(private options: GameUIOptions) {
+	constructor(
+		private target: string,
+		private entityManager: IEntityManager) {
 	}
 
 	public start = (): void => {
-		this.canvas = (document.getElementById(this.options.target) as HTMLCanvasElement)
+		this.createCanvas();
+
 		this.ctx = this.canvas.getContext("2d")
-		this.entityManager = this.options.entityManager
 
 		this.beginLoop = this.beginLoop.bind(this)
-
-		const entities = this.entityManager.getEntities()
-		this.uiEntities = entities.map((entity) => {
-			if (entity.type === "BUG")
-			{
-				return new BugUI(entity.id, (entity as Bug));
-			}
-			else return null;
-		}).filter((entity) => entity !== null);
 
 		this.beginLoop(0)
 	}
@@ -68,6 +52,15 @@ class CanvasUI implements IGameUI {
 		}
 
 		window.requestAnimationFrame(this.beginLoop)
+	}
+
+	createCanvas() {
+		const container = document.getElementById(this.target) as HTMLDivElement
+
+		this.canvas = document.createElement("canvas");
+		this.canvas.height = container.clientHeight
+		this.canvas.width = container.clientWidth
+		container.appendChild(this.canvas)
 	}
 
 	clearCanvas() {

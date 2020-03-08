@@ -25,10 +25,10 @@ const entities = [
 const entityManager = new EntityManager(entities)
 
 const game = new GameEngine({
-	gameUI: new CanvasUI({
-		target: "bug-ui",
+	gameUI: new CanvasUI(
+		"bug-ui",
 		entityManager
-	}),
+	),
 	entityManager
 })
 

@@ -28,7 +28,7 @@ class App extends React.Component<Props, State> {
 			<div>
 				<div id="bug-background"></div>
 				<div id="ground"></div>
-				<canvas id="bug-ui" height={this.props.height} width={this.props.width}></canvas>
+				<div id="bug-ui" style={{ height: this.props.height, width: this.props.width }}></div>
 				<div id="bug-controls">
 					<button
 						id="pause-button"
