@@ -2,13 +2,12 @@ import Bug from "../entities/bug/bug"
 import EntityUpdater from "./entity-updater"
 import Victor from "victor"
 import Entity from "../entities/entity";
-import { BugMode } from "../entities/bug/bugConstants";
 import Plant from "../entities/plant/plant";
 import { entityManagerStub } from "../../spec/entity-manager-stub";
 
 describe("Entity Updater", () => {
 	it("Updates all the Entities", () => {
-		const entities: Entity[] = [new Bug(0, { mode: BugMode.WALKING }), new Bug(0, { mode: BugMode.WALKING })]
+		const entities: Entity[] = [new Bug(), new Bug()]
 		entities[0].update = jasmine.createSpy("update1")
 		entities[1].update = jasmine.createSpy("update2")
 		const entityUpdater = new EntityUpdater(entityManagerStub(entities))
@@ -19,7 +18,7 @@ describe("Entity Updater", () => {
 	})
 
 	it("Updates bugs every 4 frames", () => {
-		const entities: Entity[] = [new Bug(0, { mode: BugMode.WALKING })]
+		const entities: Entity[] = [new Bug()]
 		entities[0].update = jasmine.createSpy("update")
 		const entityUpdater = new EntityUpdater(entityManagerStub(entities))
 

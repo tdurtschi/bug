@@ -1,6 +1,7 @@
 import BugFactory from "./bugFactory";
 import Bug from "./bug";
-import { BugMode } from "./bugConstants";
+import Victor = require("victor");
+import { expectEquals } from "../../testutil";
 
 describe("BugFactory", () => {
 	it("Creates a bug", () => {
@@ -9,8 +10,8 @@ describe("BugFactory", () => {
 	})
 
 	it("Passes initial state", () => {
-		const bug: Bug = new BugFactory(() => 0, () => false).build({ mode: BugMode.STOPPED })
-		expect(bug.mode).toEqual(BugMode.STOPPED)
+		const bug: Bug = new BugFactory(() => 0, () => false).build({ pos: new Victor(100, 100) })
+		expectEquals(bug.pos, new Victor(100, 100))
 	})
 
 	it("Applies the correct ID", () => {

@@ -1,6 +1,5 @@
 import { Pause } from "./pause"
 import Bug from "../bug"
-import { BugMode } from "../bugConstants";
 
 describe("Bug pause", () => {
 	it("finishes after a specified number of updates", () => {
@@ -15,9 +14,7 @@ describe("Bug pause", () => {
 	})
 
 	it("Doesn't change its coordinates", () => {
-		const bug = new Bug(0, {
-			mode: BugMode.STOPPED
-		})
+		const bug = new Bug(0, {})
 		expect(bug.update().pos.x).toEqual(0)
 		expect(bug.update().pos.y).toEqual(0)
 	})

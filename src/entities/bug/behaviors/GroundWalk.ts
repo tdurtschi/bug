@@ -3,12 +3,15 @@ import Bug from "../bug";
 import Entity from "../../entity";
 import { walk } from "./walk";
 import Plant from "../../plant/plant";
-import { turnAround } from "./turnAround";
+import { TurnAround } from "./turnAround";
 import Victor = require("victor");
 import { Climb } from "./climb";
 
 export class GroundWalk extends BugBehavior {
-	constructor(bug: Bug) {
+	constructor(
+		bug: Bug,
+		private countdown: number = 1,
+	) {
 		super(bug);
 	}
 
@@ -21,14 +24,25 @@ export class GroundWalk extends BugBehavior {
 		}
 		else if (inputs && inputs.find(i => i.type === "WALL"))
 		{
-			turnAround(this.bug)
+			new TurnAround(this.bug).do()
 		} else
 		{
-
 			walk(this.bug)
 		}
+
+		this.countDown()
 	}
+
+	private countDown() {
+		this.countdown--
+
+		if (this.countdown == 0)
+		{
+			this.bug.finishBehavior()
+		}
+	};
 }
+
 
 const beginClimbing = (bug: Bug, tree: Plant) => {
 	bug.direction = tree.graph.node.clone().norm()

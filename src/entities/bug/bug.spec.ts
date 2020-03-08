@@ -2,7 +2,6 @@ import "jasmine"
 import Bug from "./bug"
 import { vectorEquals } from "../../util"
 import Victor from "victor"
-import { BugMode } from "./bugConstants"
 import { expectEquals } from "../../testutil"
 describe("Bug", () => {
 	describe("Default bug", () => {
@@ -39,18 +38,17 @@ describe("Bug", () => {
 	})
 
 	describe("Spontaneous activity", () => {
-		it("reacts (changes mode) when it receives a spontaneous urge", () => {
+		it("reacts (turns around) when it receives a spontaneous urge", () => {
 			const direction = new Victor(1, 0)
 			const bug = new Bug(0, {
-				mode: BugMode.WALKING,
 				direction: direction.clone(),
 				spontaneous: () => true
 			});
 
 			bug.update();
 
-			expect(bug.mode == BugMode.STOPPED
-				|| !vectorEquals(bug.direction, direction, false)).toBeTruthy();
+			const bugChangedDirection = !vectorEquals(bug.direction, direction, false)
+			expect(bugChangedDirection).toBeTruthy();
 		})
 	})
 })

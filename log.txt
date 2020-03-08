@@ -4,8 +4,10 @@ Goals for this project:
 	- Remain as clean as possible.
 
 Tasks
+	- Plantago rendering performance (Don't need to re-render for every frame!)
+	  - Lots of images/stuff to render each frame. How to optimize (MDN article. maybe layered canvases?)
+	- Plantago bush doesn't render branches at proper z-index (Canvas bug/unknown behavior?)
 	- Make the tests more performant when not running UI test
-	- Lots of images/stuff to render each frame. How to optimize (MDN article. maybe layered canvases?)
 	- Bugs have more interesting behavior
 	- Plantago dynamic size
 	- Plantago can be mirrored

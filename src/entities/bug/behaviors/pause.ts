@@ -1,5 +1,4 @@
 import Bug from "../bug";
-import { BugMode } from "../bugConstants";
 import { BugBehavior } from "./BugBehavior";
 
 export class Pause extends BugBehavior {
@@ -11,7 +10,6 @@ export class Pause extends BugBehavior {
 	}
 
 	public do() {
-		this.bug.mode = BugMode.STOPPED
 		this.countdown--
 
 		if (this.countdown == 0)

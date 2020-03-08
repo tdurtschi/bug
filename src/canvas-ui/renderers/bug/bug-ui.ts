@@ -1,7 +1,7 @@
 import { UIEntity } from "../../ui-entity";
 import Bug from "../../../entities/bug/bug";
-import { BugMode } from "../../../entities/bug/bugConstants";
 import { randInt } from "../../../util";
+import { Pause } from "../../../entities/bug/behaviors/pause";
 
 export default class BugUI implements UIEntity {
 	imageIdx: number
@@ -20,7 +20,7 @@ export default class BugUI implements UIEntity {
 	}
 
 	public update(frame: number) {
-		if (this.bug.mode !== BugMode.STOPPED)
+		if (this.bug.behaviorQueue[0] && !(this.bug.behaviorQueue[0] instanceof Pause))
 		{
 			if ((frame + this.randomOffset) % 15 == 0)
 			{

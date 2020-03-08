@@ -4,7 +4,6 @@ import Victor from "victor"
 import BugFactory from '../../entities/bug/bugFactory'
 import PlantFactory from '../../entities/plant/plantFactory'
 import { randBool, randInt } from '../../util'
-import { BugMode } from '../../entities/bug/bugConstants'
 import { Debugger } from './Debugger'
 
 interface Props {
@@ -86,10 +85,9 @@ class App extends React.Component<Props, State> {
 		const pos = new Victor(this.randomX(), 0)
 		const direction = randBool() ? new Victor(1, 0) : new Victor(-1, 0)
 		const size = new Victor(3, 2).multiplyScalar(scaleFactor)
-		const mode = BugMode.WALKING
 		const speed = scaleFactor / 10
 
-		const bug = bugFactory.build({ pos, direction, size, mode, speed })
+		const bug = bugFactory.build({ pos, direction, size, speed })
 		this.setState({ bug })
 		game.addEntity(bug)
 	}

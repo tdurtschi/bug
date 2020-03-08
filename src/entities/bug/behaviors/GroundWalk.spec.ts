@@ -4,7 +4,6 @@ import { GroundWalk } from "./GroundWalk"
 import Wall from "../../wall/wall"
 import { expectEquals } from "../../../testutil"
 import Plant from "../../plant/plant"
-import { BugMode } from "../bugConstants"
 
 describe("Ground Walking", () => {
 	it("will turn around when there is an obstruction ahead", () => {
@@ -48,7 +47,7 @@ describe("Ground Walking", () => {
 
 		const direction = bug.direction
 		expect(bug.climbingOn.tree).toEqual(input[0])
-		
+
 		expectEquals(direction, new Victor(0, 1))
 		expectEquals(bug.pos, new Victor(20, 30))
 	})
@@ -58,7 +57,6 @@ describe("Ground Walking", () => {
 		const bug = new Bug(0, {
 			pos: new Victor(10, 0),
 			size: new Victor(30, 20),
-			mode: BugMode.WALKING,
 			direction: new Victor(-1, 0)
 		})
 
@@ -67,6 +65,16 @@ describe("Ground Walking", () => {
 		new GroundWalk(bug).do(input)
 	})
 
+	it("finishes after a specified number of updates", () => {
+		const bug = new Bug();
+		bug.finishBehavior = jasmine.createSpy("finishBehavior");
+		const groundWalk = new GroundWalk(bug, 3);
+		groundWalk.do([])
+		groundWalk.do([])
+		expect(bug.finishBehavior).not.toHaveBeenCalled()
+		groundWalk.do([])
+		expect(bug.finishBehavior).toHaveBeenCalled()
+	})
 })
 
 describe("Walking mode", () => {
@@ -76,7 +84,7 @@ describe("Walking mode", () => {
 			speed: 17
 		})
 		new GroundWalk(bug).do([])
-		expect(bug.update().pos.x).toEqual(17)
+		expect(bug.pos.x).toEqual(17)
 	})
 
 	describe("directions", () => {
@@ -86,7 +94,7 @@ describe("Walking mode", () => {
 			})
 
 			new GroundWalk(bug).do([])
-			expect(bug.update().pos.x).toEqual(1)
+			expect(bug.pos.x).toEqual(1)
 		})
 		it("travels in -x direction when 'direction' is (-1,0)", () => {
 			const bug = new Bug(0, {
@@ -94,7 +102,7 @@ describe("Walking mode", () => {
 			})
 
 			new GroundWalk(bug).do([])
-			expect(bug.update().pos.x).toEqual(-1)
+			expect(bug.pos.x).toEqual(-1)
 		})
 	})
 })

@@ -1,19 +1,17 @@
 import Entity, { EntityState } from "../entity"
 import Victor from "victor"
-import { BugMode } from "./bugConstants"
-import { randBool } from "../../util"
 import Plant from "../plant/plant"
 import { ITreeStruct } from "../plant/ITreeStruct"
 import { Subject } from "rxjs"
-import { turnAround } from "./behaviors/turnAround"
+import { TurnAround } from "./behaviors/turnAround"
 import { Pause } from "./behaviors/pause"
 import { BugBehavior } from "./behaviors/BugBehavior"
 import { GroundWalk } from "./behaviors/GroundWalk"
+import { randBool, randInt, normalRange } from "../../util"
 
 export interface BugState extends EntityState {
 	direction: Victor
 	speed: number
-	mode: BugMode
 	spontaneous: () => boolean
 	climbingOn?: IClimbingOn
 }
@@ -26,7 +24,6 @@ export interface IClimbingOn {
 class Bug implements Entity, BugState {
 	direction: Victor
 	speed: number
-	mode: BugMode
 	spontaneous: () => boolean
 	climbingOn?: IClimbingOn
 	pos: Victor
@@ -50,45 +47,41 @@ class Bug implements Entity, BugState {
 				direction: new Victor(1, 0),
 				speed: 1,
 				behaviorQueue: [],
-				mode: BugMode.STOPPED,
 				spontaneous: () => false
 			}, initialState)
+
+		this.queueBehavior(new Pause(this, randInt(25, 40)));
 	}
 
 	public update(inputs: Entity[] = []): Bug {
+		if (this.spontaneous())
+		{
+			this.queueBehavior(new TurnAround(this))
+		}
+
 		if (this.behaviorQueue && this.behaviorQueue.length > 0)
 		{
 			this.behaviorQueue[0].do(inputs)
-		} else if (this.spontaneous())
-		{
-			randBool() ? turnAround(this) : this.changeMode()
-		} else if (this.mode == BugMode.WALKING)
-		{
-			this.queueBehavior(new GroundWalk(this))
 		} else
 		{
-			this.queueBehavior(new Pause(this, 100))
+			const next = this.getNextBehavior()
+			next.do(inputs)
+			this.queueBehavior(next)
 		}
 
 		return this
 	}
 
+	private getNextBehavior(): BugBehavior {
+		return randBool() ? new Pause(this, randInt(20, 40)) : new GroundWalk(this, normalRange(60, 140))
+	}
+
 	public queueBehavior = (behavior: BugBehavior) => {
-		this.behaviorQueue.push(behavior);
+		this.behaviorQueue.unshift(behavior);
 	}
 
 	public finishBehavior() {
 		this.behaviorQueue.shift()
-	}
-
-	private changeMode() {
-		if (this.mode == BugMode.WALKING)
-		{
-			this.mode = BugMode.STOPPED
-		} else
-		{
-			this.mode = BugMode.WALKING
-		}
 	}
 }
 

@@ -1,12 +1,11 @@
 import { BugBehavior } from "./BugBehavior";
-import Entity from "../../entity";
 import { walk } from "./walk";
-import { turnAround } from "./turnAround";
 import Bug from "../bug";
 import { ITreeStruct } from "../../plant/ITreeStruct";
 import { randBool } from "../../../util";
 import Victor = require("victor");
 import Plant from "../../plant/plant";
+import { TurnAround } from "./turnAround";
 
 export class Climb extends BugBehavior {
 
@@ -47,7 +46,7 @@ export class Climb extends BugBehavior {
 				climbBranch(bug, nextBranch)
 			} else
 			{
-				turnAround(bug)
+				bug.queueBehavior(new TurnAround(bug))
 			}
 		}
 
@@ -76,6 +75,7 @@ const endClimbing = (bug: Bug) => {
 	bug.climbingOn = undefined
 
 	bug.zIndexChanged.next()
+	bug.finishBehavior()
 }
 
 const climbBranch = (bug: Bug, branch: ITreeStruct, direction: Direction = Direction.UP) => {

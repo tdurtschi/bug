@@ -4,8 +4,8 @@ import TreeBuilder from "../../plant/treeBuilder"
 import Bug from "../bug"
 import { Climb } from "./climb"
 import { multi, vectorEquals } from "../../../util"
-import { BugMode } from "../bugConstants"
 import { expectEquals } from "../../../testutil"
+import { TurnAround } from "./turnAround"
 
 describe("Climbing mode", () => {
 	it("Climbs up on a branch", () => {
@@ -38,7 +38,6 @@ describe("Climbing mode", () => {
 				.build()
 
 			const bug = new Bug(0, {
-				mode: BugMode.WALKING,
 				speed: 1,
 				pos: new Victor(0, 30),
 				climbingOn: {
@@ -62,7 +61,6 @@ describe("Climbing mode", () => {
 
 		const bug = new Bug(0, {
 			speed: 1,
-			mode: BugMode.WALKING,
 			pos: new Victor(0, 30),
 			climbingOn: {
 				tree: new Plant(1, { pos: new Victor(0, 0), graph: tree }),
@@ -72,7 +70,7 @@ describe("Climbing mode", () => {
 		})
 
 		new Climb(bug).do()
-		expect(bug.direction.y).toEqual(-1)
+		expect(bug.behaviorQueue[0] instanceof TurnAround).toBeTruthy()
 	})
 
 	it("Moves to the parent branch when climbing down", () => {
@@ -87,7 +85,6 @@ describe("Climbing mode", () => {
 		const direction = climbingBranch.node.clone().norm().multiplyScalar(-1)
 
 		const bug = new Bug(0, {
-			mode: BugMode.WALKING,
 			speed: 1,
 			pos: new Victor(0, 30),
 			climbingOn: {
@@ -112,7 +109,6 @@ describe("Climbing mode", () => {
 		const direction = climbingBranch.node.clone().norm().multiplyScalar(-1)
 
 		const bug = new Bug(0, {
-			mode: BugMode.WALKING,
 			speed: 1,
 			pos: new Victor(0, 0),
 			size: new Victor(30, 20),
@@ -122,12 +118,14 @@ describe("Climbing mode", () => {
 			},
 			direction: direction
 		})
+		bug.finishBehavior = jasmine.createSpy()
 
 		new Climb(bug).do()
 
 		expect(bug.climbingOn).toBeUndefined()
 		expect(bug.direction.y).toEqual(0)
 		expect(Math.abs(bug.pos.x)).toBeGreaterThan(bug.size.x)
+		expect(bug.finishBehavior).toHaveBeenCalled()
 	}))
 
 	it("Emits an event when it returns to the ground", (done: DoneFn) => {
@@ -139,7 +137,6 @@ describe("Climbing mode", () => {
 		const direction = climbingBranch.node.clone().norm().multiplyScalar(-1)
 
 		const bug = new Bug(0, {
-			mode: BugMode.WALKING,
 			speed: 1,
 			pos: new Victor(0, 0),
 			size: new Victor(30, 20),
