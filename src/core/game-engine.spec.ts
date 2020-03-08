@@ -12,7 +12,6 @@ describe("Game Engine", () => {
 		fakeUI = {
 			render: jasmine.createSpy("render"),
 			togglePause: jasmine.createSpy("pause"),
-			updateUIEntities: jasmine.createSpy("updateUI"),
 			start: jasmine.createSpy("start")
 		}
 	})

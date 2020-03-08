@@ -1,10 +1,23 @@
 import BugUI from "./bug-ui"
 import { fixY, circle } from "../../canvas-helpers"
 import Victor = require("victor")
+import Bug from "../../../entities/bug/bug";
 
-export default (uiBug: BugUI, ctx: CanvasRenderingContext2D) => {
-	const bug = uiBug.bug
-	const image = uiBug.getImage()
+const bugUIs: BugUI[] = [];
+
+const createNewBug = (bug: Bug) => {
+	const bugUI = new BugUI(bug.id, bug)
+	bugUIs[bug.id] = bugUI
+	return bugUI
+}
+
+const getUIBug = (bug: Bug) => {
+	return bugUIs[bug.id] || createNewBug(bug)
+}
+
+export default (bug: Bug, ctx: CanvasRenderingContext2D) => {
+	const uiBug = getUIBug(bug)
+	uiBug.update()
 	const climbingYOffset = bug.climbingOn ? 3 : 0
 	const { direction, size } = bug
 
@@ -17,14 +30,18 @@ export default (uiBug: BugUI, ctx: CanvasRenderingContext2D) => {
 	{
 		ctx.rotate(-direction.angle())
 		ctx.scale(-1, 1)
-		ctx.drawImage(image, 0, -size.y + climbingYOffset, size.x, size.y)
 	} else
 	{
 		const newDir = direction.clone().multiplyScalarX(-1)
 
 		ctx.rotate(newDir.angle())
-		ctx.drawImage(image, 0, -size.y + climbingYOffset, size.x, size.y)
 	}
+
+	ctx.drawImage(
+		uiBug.getImage(),
+		0, -size.y + climbingYOffset,
+		size.x, size.y
+	)
 
 	ctx.restore()
 }

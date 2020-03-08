@@ -7,6 +7,7 @@ export default class BugUI implements UIEntity {
 	imageIdx: number
 	static images: HTMLImageElement[] = BugUI.getBugImages()
 	randomOffset: number
+	frame = 0
 
 	constructor(
 		public id: number,
@@ -19,10 +20,10 @@ export default class BugUI implements UIEntity {
 		return BugUI.images[this.imageIdx]
 	}
 
-	public update(frame: number) {
+	public update() {
 		if (this.bug.behaviorQueue[0] && !(this.bug.behaviorQueue[0] instanceof Pause))
 		{
-			if ((frame + this.randomOffset) % 15 == 0)
+			if ((this.frame++ + this.randomOffset) % 15 == 0)
 			{
 				this.imageIdx = (this.imageIdx + 1) % 2
 			}

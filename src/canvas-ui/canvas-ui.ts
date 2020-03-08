@@ -17,7 +17,6 @@ export interface GameUIOptions {
 export interface IGameUI {
 	render: () => void
 	togglePause: () => void
-	updateUIEntities: () => void
 	start: () => void
 }
 
@@ -52,8 +51,6 @@ class CanvasUI implements IGameUI {
 	}
 
 	public render = (): void => {
-		this.updateUIEntities()
-
 		this.clearCanvas()
 		this.entityManager.getEntities().forEach(entity => {
 			this.renderEntity(entity)
@@ -62,13 +59,6 @@ class CanvasUI implements IGameUI {
 
 	public togglePause = (): void => {
 		this.isPaused = !this.isPaused;
-	}
-
-	public updateUIEntities = (): void => {
-		this.frame++
-		this.uiEntities.forEach(entity => {
-			entity.update(this.frame)
-		})
 	}
 
 	beginLoop(timeMs: number) {
@@ -90,7 +80,7 @@ class CanvasUI implements IGameUI {
 	renderEntity(entity: Entity) {
 		if (entity instanceof Bug)
 		{
-			bugRenderer(this.findUIEntity(entity), this.ctx)
+			bugRenderer(entity as Bug, this.ctx)
 		}
 		else if (entity instanceof Wall)
 		{
@@ -100,19 +90,6 @@ class CanvasUI implements IGameUI {
 		{
 			plantRenderer((entity as Plant), this.ctx)
 		}
-	}
-
-	findUIEntity(entity: Entity) {
-		let uiEntity = this.uiEntities.find(ui => ui.id == entity.id) as BugUI
-		if (!uiEntity)
-		{
-			if (entity.type === "BUG")
-			{
-				uiEntity = new BugUI(entity.id, (entity as Bug))
-				this.uiEntities.push(uiEntity)
-			}
-		}
-		return uiEntity
 	}
 }
 
