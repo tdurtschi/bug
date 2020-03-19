@@ -10,7 +10,6 @@ describe("Game Engine", () => {
 	let fakeUI: IGameUI
 	beforeEach(() => {
 		fakeUI = {
-			render: jasmine.createSpy("render"),
 			togglePause: jasmine.createSpy("pause"),
 			start: jasmine.createSpy("start")
 		}

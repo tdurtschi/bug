@@ -6,15 +6,14 @@ import bugRenderer from "./renderers/bug/bug-renderer";
 import plantRenderer from "./renderers/tree/plant-renderer";
 import Wall from "../entities/wall/wall";
 import { wallRenderer } from "./renderers/wall/wall-renderer";
+import { clearCanvas } from "./canvas-helpers";
 
 export interface IGameUI {
-	render: () => void
 	togglePause: () => void
 	start: () => void
 }
 
 class CanvasUI implements IGameUI {
-	canvas: HTMLCanvasElement
 	ctx: CanvasRenderingContext2D
 	isPaused: boolean = false
 	frame: number = 0
@@ -25,9 +24,8 @@ class CanvasUI implements IGameUI {
 	}
 
 	public start = (): void => {
-		this.createCanvas();
-
-		this.ctx = this.canvas.getContext("2d")
+		const canvas = this.createCanvas();
+		this.ctx = canvas.getContext("2d")
 
 		this.beginLoop = this.beginLoop.bind(this)
 
@@ -35,9 +33,9 @@ class CanvasUI implements IGameUI {
 	}
 
 	public render = (): void => {
-		this.clearCanvas()
+		clearCanvas(this.ctx)
 		this.entityManager.getEntities().forEach(entity => {
-			this.renderEntity(entity)
+			this.renderEntity(entity, this.ctx)
 		})
 	}
 
@@ -57,31 +55,26 @@ class CanvasUI implements IGameUI {
 	createCanvas() {
 		const container = document.getElementById(this.target) as HTMLDivElement
 
-		this.canvas = document.createElement("canvas");
-		this.canvas.height = container.clientHeight
-		this.canvas.width = container.clientWidth
-		container.appendChild(this.canvas)
+		const canvas = document.createElement("canvas");
+		canvas.height = container.clientHeight
+		canvas.width = container.clientWidth
+		container.appendChild(canvas)
+
+		return canvas
 	}
 
-	clearCanvas() {
-		var ctx = this.ctx
-		ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
-		ctx.rect(0, 0, this.canvas.width, this.canvas.height)
-		ctx.beginPath()
-	}
-
-	renderEntity(entity: Entity) {
+	renderEntity(entity: Entity, ctx: CanvasRenderingContext2D) {
 		if (entity instanceof Bug)
 		{
-			bugRenderer(entity as Bug, this.ctx)
+			bugRenderer(entity as Bug, ctx)
 		}
 		else if (entity instanceof Wall)
 		{
-			wallRenderer((entity as Wall), this.ctx)
+			wallRenderer((entity as Wall), ctx)
 		}
 		else if (entity instanceof Plant)
 		{
-			plantRenderer((entity as Plant), this.ctx)
+			plantRenderer((entity as Plant), ctx)
 		}
 	}
 }

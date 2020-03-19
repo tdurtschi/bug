@@ -37,4 +37,8 @@ describe("Entity Manager", () => {
 		expect(newList[0]).toBe(entities[1])
 		expect(newList[1]).toBe(entities[0])
 	})
+
+	it("Segments entities based on sets of dead/alive entities", () => {
+		
+	})
 })
