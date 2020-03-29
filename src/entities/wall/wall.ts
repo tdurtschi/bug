@@ -2,6 +2,7 @@ import Entity, { EntityState } from "../entity";
 import Victor from "victor"
 
 class Wall implements Entity, EntityState {
+	isAlive = false;
 	pos: Victor;
 	size: Victor;
 	public id = 0

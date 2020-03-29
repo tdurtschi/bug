@@ -12,6 +12,7 @@ interface PlantStateInternal extends PlantState {
 }
 
 export default class Plant implements Entity, PlantState {
+	isAlive = false
 	graph: TreeStruct
 	pos: Victor
 	size: Victor

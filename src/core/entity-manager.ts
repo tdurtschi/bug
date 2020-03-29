@@ -43,8 +43,8 @@ export default class EntityManager implements IEntityManager {
 		window.DEBUG && console.log(this.entities)
 	}
 
-	getSegmentedEntities = () => {
-		
+	getSegmentedEntities = (): Entity[][] => {
+
 	}
 
 	flatten = (list: any[]): any[] => list.reduce(

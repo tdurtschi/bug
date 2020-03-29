@@ -32,13 +32,17 @@ describe("Entity Manager", () => {
 
 		const entityManager = new EntityManager(entities);
 		bug.zIndexChanged.next()
-		
+
 		const newList = entityManager.getEntities();
 		expect(newList[0]).toBe(entities[1])
 		expect(newList[1]).toBe(entities[0])
 	})
 
 	it("Segments entities based on sets of dead/alive entities", () => {
-		
+		const entities = [new Wall(0), new Wall(1), new Bug(2)]
+		const entityManager = new EntityManager(entities);
+		expect(entityManager.getSegmentedEntities()[0][0]).toEqual(entities[0])
+		expect(entityManager.getSegmentedEntities()[0][1]).toEqual(entities[1])
+		expect(entityManager.getSegmentedEntities()[1][0]).toEqual(entities[2])
 	})
 })

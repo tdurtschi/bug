@@ -22,6 +22,7 @@ export interface IClimbingOn {
 }
 
 class Bug implements Entity, BugState {
+	isAlive = true
 	direction: Victor
 	speed: number
 	spontaneous: () => boolean
