@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "webpack": "./node_modules/.bin/webpack",
-    "build": "webpack",
+    "build": "webpack --mode=production",
     "deploy": "yarn build && cf push bug -p dist",
     "start": "./node_modules/.bin/webpack-dev-server",
     "startExpress": "node ./src/server",
