@@ -16,7 +16,6 @@ export default class Plant implements Entity, PlantState {
 	pos: Victor
 	size: Victor
 	id: number
-	type: string = "TREE"
 	state: PlantStateInternal
 	updateSpeed: number = 4
 

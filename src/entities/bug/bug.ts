@@ -17,7 +17,7 @@ export interface BugState extends EntityState {
 }
 
 export interface IClimbingOn {
-	tree: Plant
+	plant: Plant
 	branch: ITreeStruct
 }
 
@@ -28,7 +28,6 @@ class Bug implements Entity, BugState {
 	climbingOn?: IClimbingOn
 	pos: Victor
 	size: Victor
-	public type: string = "BUG"
 	id: number
 	state: BugState
 	updateSpeed: number = 4

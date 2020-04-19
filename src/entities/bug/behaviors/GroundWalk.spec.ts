@@ -46,7 +46,7 @@ describe("Ground Walking", () => {
 		new GroundWalk(bug).do(input)
 
 		const direction = bug.direction
-		expect(bug.climbingOn.tree).toEqual(input[0])
+		expect(bug.climbingOn.plant).toEqual(input[0])
 
 		expectEquals(direction, new Victor(0, 1))
 		expectEquals(bug.pos, new Victor(20, 30))

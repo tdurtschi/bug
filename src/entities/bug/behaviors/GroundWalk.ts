@@ -6,6 +6,7 @@ import Plant from "../../plant/plant";
 import { TurnAround } from "./turnAround";
 import Victor = require("victor");
 import { Climb } from "./climb";
+import Wall from "../../wall/wall";
 
 export class GroundWalk extends BugBehavior {
 	constructor(
@@ -22,7 +23,7 @@ export class GroundWalk extends BugBehavior {
 
 			beginClimbing(this.bug, plant)
 		}
-		else if (inputs && inputs.find(i => i.type === "WALL"))
+		else if (inputs && inputs.find(i => i instanceof Wall))
 		{
 			new TurnAround(this.bug).do()
 		} else
@@ -48,7 +49,7 @@ const beginClimbing = (bug: Bug, tree: Plant) => {
 	bug.direction = tree.graph.node.clone().norm()
 	bug.pos = new Victor(tree.pos.x, 0).add(bug.direction.clone().multiplyScalar(bug.size.x))
 	bug.climbingOn = {
-		tree,
+		plant: tree,
 		branch: tree.graph
 	}
 

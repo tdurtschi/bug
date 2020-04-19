@@ -10,7 +10,7 @@ leaf.src = leafReference
 export default (tree: Plant, ctx: CanvasRenderingContext2D) => {
 	const { pos } = tree
 	ctx.save()
-	ctx.strokeStyle = "#381600";
+	ctx.strokeStyle = "#a56a27";
 	ctx.lineWidth = 10;
 	ctx.translate(pos.x, fixY(ctx, pos.y))
 	renderTree(tree.graph, ctx)
@@ -18,11 +18,9 @@ export default (tree: Plant, ctx: CanvasRenderingContext2D) => {
 }
 
 const renderTree = (root: ITreeStruct, ctx: CanvasRenderingContext2D) => {
-	if (root instanceof PlantagoStruct)
-	{
+	if (root instanceof PlantagoStruct) {
 		renderPlantago(root, ctx)
-	} else
-	{
+	} else {
 		const x = Math.floor(root.node.x),
 			y = Math.floor(root.node.y)
 		ctx.moveTo(0, 0)
@@ -31,12 +29,10 @@ const renderTree = (root: ITreeStruct, ctx: CanvasRenderingContext2D) => {
 
 		ctx.save()
 		ctx.translate(x, -y)
-		if (root.left)
-		{
+		if (root.left) {
 			renderTree(root.left, ctx)
 		}
-		if (root.right)
-		{
+		if (root.right) {
 			renderTree(root.right, ctx)
 		}
 		ctx.restore()
@@ -48,8 +44,7 @@ const renderPlantago = (root: ITreeStruct, ctx: CanvasRenderingContext2D) => {
 		y = Math.floor(root.node.y)
 
 	ctx.save()
-	if (window.DEBUG)
-	{
+	if (window.DEBUG) {
 		ctx.moveTo(0, 0)
 		ctx.lineTo(x, -y)
 		ctx.stroke()
