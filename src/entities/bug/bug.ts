@@ -7,7 +7,7 @@ import { TurnAround } from "./behaviors/turnAround"
 import { Pause } from "./behaviors/pause"
 import { BugBehavior } from "./behaviors/BugBehavior"
 import { GroundWalk } from "./behaviors/GroundWalk"
-import { randBool, randInt, normalRange, randChance, randFromWeighted } from "../../util"
+import { randInt, normalRange, randFromWeighted } from "../../util"
 import { Climb } from "./behaviors/climb"
 
 export interface BugState extends EntityState {
@@ -69,33 +69,46 @@ class Bug implements Entity, BugState {
 		return this
 	}
 
-	public getNextBehavior(): BugBehavior {
-		const currentBehavior = this.behaviorQueue[0]
-		if (!currentBehavior) {
-
-			return this.climbingOn ? new Climb(this)
-				: randBool() ? new Pause(this, randInt(20, 40))
-					: new GroundWalk(this, normalRange(60, 140))
-		}
-
-		if (currentBehavior instanceof Climb) {
-			const action = randFromWeighted([294, 5, 1])
-			if (action == 0) {
-				return undefined
-			} else if (action == 1) {
+	getNextBehavior(currentBehavior?: BugBehavior): BugBehavior {
+		if (currentBehavior) {
+			if (currentBehavior instanceof Pause) {
+				enum Choices { PAUSE, TURN_AROUND, WALK }
+				const action = (randFromWeighted([3, 4, 2]) as Choices)
+				switch (action) {
+					case Choices.PAUSE: return new Pause(this, randInt(10, 20));
+					case Choices.TURN_AROUND: return new TurnAround(this);
+					default: return this.climbingOn ? new Climb(this) : new GroundWalk(this, normalRange(60, 140));
+				}
+			} else if (currentBehavior instanceof TurnAround) {
+				return new Pause(this, 10)
+			} else if (currentBehavior instanceof Climb) {
 				return new Pause(this, randInt(20, 50))
 			} else {
-				return new TurnAround(this)
+				return new Pause(this, 10)
 			}
+		} else {
+			return this.climbingOn ? new Climb(this)
+				: randFromWeighted([1, 3]) ? new Pause(this, randInt(20, 40))
+					: new GroundWalk(this, normalRange(60, 140))
 		}
 	}
 
 	public queueBehavior = (behavior: BugBehavior) => {
+		if (behavior === undefined) {
+			throw new Error("Behavior Undefined");
+		}
+
 		this.behaviorQueue.push(behavior);
 	}
 
 	public finishBehavior() {
-		this.behaviorQueue.shift()
+		if (this.behaviorQueue.length == 1) {
+			const nextBehavior = this.getNextBehavior(this.behaviorQueue[0])
+			this.behaviorQueue.shift()
+			this.queueBehavior(nextBehavior);
+		} else {
+			this.behaviorQueue.shift()
+		}
 	}
 }
 

@@ -2,7 +2,7 @@ import { BugBehavior } from "./BugBehavior";
 import { walk } from "./walk";
 import Bug from "../bug";
 import { ITreeStruct } from "../../plant/ITreeStruct";
-import { randBool, randChance } from "../../../util";
+import { randBool, randChance, randFromWeighted } from "../../../util";
 import Victor = require("victor");
 import Plant from "../../plant/plant";
 import { TurnAround } from "./turnAround";
@@ -12,7 +12,12 @@ export class Climb extends BugBehavior {
 
 	public do(): void {
 		const bug = this.bug
-		const currentBranch = bug.climbingOn.branch
+		if (!bug.climbingOn) {
+			bug.finishBehavior()
+			return
+		}
+
+		const currentBranch = bug.climbingOn.branch //bug?
 		const branchPosition = bug.climbingOn.plant.getAbsolutePos(currentBranch)
 		const branchOffset = bug.pos.clone().subtract(branchPosition)
 
@@ -42,12 +47,12 @@ export class Climb extends BugBehavior {
 			}
 		}
 
-		const newBehavior = bug.getNextBehavior()
-		if (newBehavior) {
-			bug.queueBehavior(newBehavior)
+		if (randFromWeighted([394, 6])) {
 			bug.finishBehavior()
 		}
-		walk(bug)
+		else {
+			walk(bug)
+		}
 	}
 }
 

@@ -3,6 +3,7 @@ import Bug from "./bug"
 import { vectorEquals } from "../../util"
 import Victor from "victor"
 import { expectEquals } from "../../testutil"
+import { Pause } from "./behaviors/pause"
 describe("Bug", () => {
 	describe("Default bug", () => {
 		it("Is in paused mode.", () => {
@@ -35,6 +36,15 @@ describe("Bug", () => {
 			const bug = new Bug()
 			expect(bug.update(undefined)).toBeTruthy()
 		})
+	})
+
+	it("Adds a new action when none is queued", () => {
+		const bug = new Bug()
+		const pause = new Pause(bug, 0);
+		bug.queueBehavior(pause)
+		bug.update(undefined)
+		expect(bug.behaviorQueue[0]).toBeDefined();
+		expect(bug.behaviorQueue[0]).not.toEqual(pause);
 	})
 
 	// TODO does this mmake sense anymore?
