@@ -5,5 +5,7 @@ export const gameStub = () => ({
 	togglePause: jasmine.createSpy("togglePause"),
 	addEntity: (): any => null,
 	start: jasmine.createSpy("start"),
-	entityManager: entityManagerStub([])
+	entityManager: entityManagerStub([]),
+	height: 0,
+	width: 0
 })

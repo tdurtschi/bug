@@ -2,8 +2,7 @@ import Victor from "victor"
 
 export const vectorEquals = (a: Victor, b: Victor, debug: boolean = true) => {
 	const result = a.x === b.x && a.y === b.y
-	if (!result && debug)
-	{
+	if (!result && debug) {
 		console.log("Testing for vector equality but failed.")
 		console.log(a)
 		console.log(b)
@@ -12,8 +11,28 @@ export const vectorEquals = (a: Victor, b: Victor, debug: boolean = true) => {
 }
 
 export const randInt = (min: number, max: number) =>
-	Math.floor(Math.random() * (max - min) + min + 0.49)
+	Math.floor(Math.random() * (max - min) + min + 0.49);
 
+export const randChance = (numerator: number, denominator: number) => {
+	return Math.random() < numerator / denominator
+}
+
+export const randFromWeighted = (list: number[]) => {
+	const total = list.reduce((a, b) => a + b, 0)
+	let result = Math.floor(Math.random() * total) + 1
+	//console.log("random seed: ", result)
+	for (let i = 0; i < list.length; i++) {
+		if (list[i] >= result) {
+			//console.log(list[i], "greater than equal to", result)
+			return i
+		} else {
+			//console.log(list[i], "Less than", result)
+			result -= list[i]
+		}
+	}
+	return list.length - 1
+}
+(window as any).r = randFromWeighted;
 export const randBool = () => randInt(0, 1) === 1
 
 export const range = (mean: number, variance: number) =>
@@ -26,8 +45,7 @@ export const rangeDecimal = (mean: number, variance: number, places: number) => 
 }
 
 export const multi = (times: number, functionArg: (i: number) => any) => () => {
-	for (let i = 0; i < times - 1; i++)
-	{
+	for (let i = 0; i < times - 1; i++) {
 		functionArg(i)
 	}
 	return functionArg(times - 1)

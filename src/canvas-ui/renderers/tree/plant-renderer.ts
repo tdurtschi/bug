@@ -10,12 +10,9 @@ export default (plant: Plant, ctx: CanvasRenderingContext2D) => {
   if (preRenderedPlants[plant.id]) {
     drawPreRenderedPlant(plant, ctx)
   } else {
-    const offscreenCanvas = new OffscreenCanvas(
-      ctx.canvas.width,
-      ctx.canvas.height
-    )
-    drawPlantToCanvas(plant, offscreenCanvas.getContext("2d"))
+    const offscreenCanvas = new OffscreenCanvas(ctx.canvas.width, ctx.canvas.height)
     preRenderedPlants[plant.id] = offscreenCanvas
+    drawPlantToCanvas(plant, offscreenCanvas.getContext("2d") as OffscreenCanvasRenderingContext2D)
   }
 }
 

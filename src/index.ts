@@ -4,7 +4,6 @@ import Victor from "victor"
 
 import App from "./app/components/App"
 import { GameEngine } from "./core/game-engine"
-import Wall from "./entities/wall/wall"
 import EntityManager from "./core/entity-manager"
 import CanvasUI from "./canvas-ui/canvas-ui"
 import "./app/app.scss"
@@ -19,22 +18,13 @@ const WIDTH = window.innerWidth
 
 console.info("Starting Bug app...")
 
-const entities = [
-  new Wall(generateId(), {
-    pos: new Victor(-10, 0),
-    size: new Victor(10, HEIGHT),
-  }),
-  new Wall(generateId(), {
-    pos: new Victor(WIDTH, 0),
-    size: new Victor(10, HEIGHT),
-  }),
-]
-
-const entityManager = new EntityManager(entities)
+const entityManager = new EntityManager([])
 
 const game = new GameEngine({
-  gameUI: new CanvasUI("bug-ui", entityManager),
+  gameUI: new CanvasUI("#bug-ui", entityManager),
   entityManager,
+  height: HEIGHT,
+  width: WIDTH
 })
 
 const spontaneous = new Spontaneous(
@@ -42,8 +32,8 @@ const spontaneous = new Spontaneous(
   () => range(10, 4)
 ).get
 
-const bugFactory = new BugFactory(generateId, spontaneous)
-const treeFactory = new PlantFactory(generateId, spontaneous)
+const bugFactory = new BugFactory(generateId, spontaneous, WIDTH)
+const treeFactory = new PlantFactory(generateId, spontaneous, WIDTH)
 
 const appProps = {
   game,
@@ -59,5 +49,5 @@ ReactDOM.render(
   document.getElementById("root")
 )
 
-;(window as any).Victor = Victor
+window.Victor = Victor
 window.DEBUG = false

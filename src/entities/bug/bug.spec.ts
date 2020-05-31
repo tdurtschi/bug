@@ -37,18 +37,19 @@ describe("Bug", () => {
 		})
 	})
 
-	describe("Spontaneous activity", () => {
-		it("reacts (turns around) when it receives a spontaneous urge", () => {
-			const direction = new Victor(1, 0)
-			const bug = new Bug(0, {
-				direction: direction.clone(),
-				spontaneous: () => true
-			});
+	// TODO does this mmake sense anymore?
+	// describe("Spontaneous activity", () => {
+	// 	it("reacts (turns around) when it receives a spontaneous urge", () => {
+	// 		const direction = new Victor(1, 0)
+	// 		const bug = new Bug(0, {
+	// 			direction: direction.clone(),
+	// 			spontaneous: () => true
+	// 		});
 
-			bug.update();
+	// 		bug.update();
 
-			const bugChangedDirection = !vectorEquals(bug.direction, direction, false)
-			expect(bugChangedDirection).toBeTruthy();
-		})
-	})
+	// 		const bugChangedDirection = !vectorEquals(bug.direction, direction, false)
+	// 		expect(bugChangedDirection).toBeTruthy();
+	// 	})
+	// })
 })

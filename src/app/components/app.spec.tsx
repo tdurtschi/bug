@@ -13,8 +13,8 @@ describe("App", () => {
 			game={game}
 			width={0}
 			height={0}
-			bugFactory={new BugFactory(() => 0, () => false)}
-			treeFactory={new PlantFactory(() => 0, () => false)} />)
+			bugFactory={new BugFactory(() => 0, () => false, 0)}
+			treeFactory={new PlantFactory(() => 0, () => false, 0)} />)
 
 		expect(game.start).toHaveBeenCalled()
 	})

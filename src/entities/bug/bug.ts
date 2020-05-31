@@ -7,7 +7,8 @@ import { TurnAround } from "./behaviors/turnAround"
 import { Pause } from "./behaviors/pause"
 import { BugBehavior } from "./behaviors/BugBehavior"
 import { GroundWalk } from "./behaviors/GroundWalk"
-import { randBool, randInt, normalRange } from "../../util"
+import { randBool, randInt, normalRange, randChance, randFromWeighted } from "../../util"
+import { Climb } from "./behaviors/climb"
 
 export interface BugState extends EntityState {
 	direction: Victor
@@ -53,16 +54,13 @@ class Bug implements Entity, BugState {
 	}
 
 	public update(inputs: Entity[] = []): Bug {
-		if (this.spontaneous())
-		{
+		if (this.spontaneous()) {
 			this.queueBehavior(new TurnAround(this))
 		}
 
-		if (this.behaviorQueue && this.behaviorQueue.length > 0)
-		{
+		if (this.behaviorQueue && this.behaviorQueue.length > 0) {
 			this.behaviorQueue[0].do(inputs)
-		} else
-		{
+		} else {
 			const next = this.getNextBehavior()
 			next.do(inputs)
 			this.queueBehavior(next)
@@ -71,12 +69,29 @@ class Bug implements Entity, BugState {
 		return this
 	}
 
-	private getNextBehavior(): BugBehavior {
-		return randBool() ? new Pause(this, randInt(20, 40)) : new GroundWalk(this, normalRange(60, 140))
+	public getNextBehavior(): BugBehavior {
+		const currentBehavior = this.behaviorQueue[0]
+		if (!currentBehavior) {
+
+			return this.climbingOn ? new Climb(this)
+				: randBool() ? new Pause(this, randInt(20, 40))
+					: new GroundWalk(this, normalRange(60, 140))
+		}
+
+		if (currentBehavior instanceof Climb) {
+			const action = randFromWeighted([294, 5, 1])
+			if (action == 0) {
+				return undefined
+			} else if (action == 1) {
+				return new Pause(this, randInt(20, 50))
+			} else {
+				return new TurnAround(this)
+			}
+		}
 	}
 
 	public queueBehavior = (behavior: BugBehavior) => {
-		this.behaviorQueue.unshift(behavior);
+		this.behaviorQueue.push(behavior);
 	}
 
 	public finishBehavior() {

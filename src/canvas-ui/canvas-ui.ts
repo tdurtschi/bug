@@ -44,8 +44,7 @@ class CanvasUI implements IGameUI {
 	}
 
 	beginLoop(timeMs: number) {
-		if (!this.isPaused)
-		{
+		if (!this.isPaused) {
 			this.render()
 		}
 
@@ -53,7 +52,7 @@ class CanvasUI implements IGameUI {
 	}
 
 	createCanvas() {
-		const container = document.getElementById(this.target) as HTMLDivElement
+		const container = document.querySelector(this.target) as HTMLDivElement
 
 		const canvas = document.createElement("canvas");
 		canvas.height = container.clientHeight
@@ -64,16 +63,13 @@ class CanvasUI implements IGameUI {
 	}
 
 	renderEntity(entity: Entity, ctx: CanvasRenderingContext2D) {
-		if (entity instanceof Bug)
-		{
+		if (entity instanceof Bug) {
 			bugRenderer(entity as Bug, ctx)
 		}
-		else if (entity instanceof Wall)
-		{
+		else if (entity instanceof Wall) {
 			wallRenderer((entity as Wall), ctx)
 		}
-		else if (entity instanceof Plant)
-		{
+		else if (entity instanceof Plant) {
 			plantRenderer((entity as Plant), ctx)
 		}
 	}
