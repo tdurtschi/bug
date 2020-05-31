@@ -1,26 +1,27 @@
-import { fixY } from "../../canvas-helpers"
+import { fixY, EitherCanvasContext } from "../../canvas-helpers"
 import Plant from "../../../entities/plant/plant"
 import { ITreeStruct } from "../../../entities/plant/ITreeStruct"
 import { PlantagoStruct } from "../../../entities/plant/plantagoStruct"
 
-const leafReference = require("./Leaf.png")
-const leaf = new Image()
-leaf.src = leafReference
-
+const leaf = loadLeafAsset()
 const preRenderedPlants: OffscreenCanvas[] = []
-
-type EitherCanvasContext =
-  | OffscreenCanvasRenderingContext2D
-  | CanvasRenderingContext2D
 
 export default (plant: Plant, ctx: CanvasRenderingContext2D) => {
   if (preRenderedPlants[plant.id]) {
     drawPreRenderedPlant(plant, ctx)
   } else {
-    const plantCanvas = new OffscreenCanvas(ctx.canvas.width, ctx.canvas.height)
-    preRenderedPlants[plant.id] = plantCanvas
-    drawPlantToCanvas(plant, plantCanvas.getContext("2d"))
+    const offscreenCanvas = new OffscreenCanvas(
+      ctx.canvas.width,
+      ctx.canvas.height
+    )
+    drawPlantToCanvas(plant, offscreenCanvas.getContext("2d"))
+    preRenderedPlants[plant.id] = offscreenCanvas
   }
+}
+
+const drawPreRenderedPlant = (plant: Plant, ctx: CanvasRenderingContext2D) => {
+  const rendered = preRenderedPlants[plant.id]
+  ctx.drawImage(rendered, 0, 0, ctx.canvas.width, ctx.canvas.height)
 }
 
 const drawPlantToCanvas = (plant: Plant, ctx: EitherCanvasContext) => {
@@ -29,20 +30,19 @@ const drawPlantToCanvas = (plant: Plant, ctx: EitherCanvasContext) => {
   ctx.strokeStyle = "#a56a27"
   ctx.lineWidth = 10
   ctx.translate(pos.x, fixY(ctx, pos.y))
-  renderTree(plant.graph, ctx)
+  renderPlantRecursively(plant.graph, ctx)
   ctx.restore()
 }
 
-const drawPreRenderedPlant = (plant: Plant, ctx: CanvasRenderingContext2D) => {
-  const rendered = preRenderedPlants[plant.id]
-  ctx.drawImage(rendered, 0, 0, ctx.canvas.width, ctx.canvas.height)
-}
-
-const renderTree = (root: ITreeStruct, ctx: EitherCanvasContext) => {
+const renderPlantRecursively = (
+  root: ITreeStruct,
+  ctx: EitherCanvasContext
+) => {
   if (root instanceof PlantagoStruct) {
     renderLeaf(root, ctx)
   } else {
     renderBranch(root, ctx)
+    renderBranchChildren(root, ctx)
   }
 }
 
@@ -52,14 +52,18 @@ const renderBranch = (root: ITreeStruct, ctx: EitherCanvasContext) => {
   ctx.moveTo(0, 0)
   ctx.lineTo(x, -y)
   ctx.stroke()
+}
 
+const renderBranchChildren = (root: ITreeStruct, ctx: EitherCanvasContext) => {
+  const x = Math.floor(root.node.x),
+    y = Math.floor(root.node.y)
   ctx.save()
   ctx.translate(x, -y)
   if (root.left) {
-    renderTree(root.left, ctx)
+    renderPlantRecursively(root.left, ctx)
   }
   if (root.right) {
-    renderTree(root.right, ctx)
+    renderPlantRecursively(root.right, ctx)
   }
   ctx.restore()
 }
@@ -77,4 +81,10 @@ const renderLeaf = (root: ITreeStruct, ctx: EitherCanvasContext) => {
   ctx.rotate(-root.node.angle() + Math.PI / 2)
   ctx.drawImage(leaf, -24, -173, 42, 178)
   ctx.restore()
+}
+
+function loadLeafAsset(): HTMLImageElement {
+  const leaf = new Image()
+  leaf.src = require("./Leaf.png")
+  return leaf
 }

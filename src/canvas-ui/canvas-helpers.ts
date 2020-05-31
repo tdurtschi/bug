@@ -1,13 +1,12 @@
-export function fixY(
-  ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D,
-  y: number
-) {
+export type EitherCanvasContext =
+  | OffscreenCanvasRenderingContext2D
+  | CanvasRenderingContext2D
+
+export function fixY(ctx: EitherCanvasContext, y: number) {
   return ctx.canvas.height - y
 }
 
-export const clearCanvas = (
-  ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D
-) => {
+export const clearCanvas = (ctx: EitherCanvasContext) => {
   ctx.canvas
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
   ctx.rect(0, 0, ctx.canvas.width, ctx.canvas.height)
@@ -15,10 +14,7 @@ export const clearCanvas = (
 }
 
 // Draws a circle at 0,0. Useful for debugging bug rendering
-export const circle = (
-  ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D,
-  size: number
-) => {
+export const circle = (ctx: EitherCanvasContext, size: number) => {
   ctx.beginPath()
   ctx.fillStyle = "rgb(0, 0, 255)"
   ctx.arc(0, 0, size, 0, 2 * Math.PI, false)
