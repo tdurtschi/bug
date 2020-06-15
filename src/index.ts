@@ -9,7 +9,6 @@ import CanvasUI from "./canvas-ui/canvas-ui"
 import "./app/app.scss"
 import BugFactory from "./entities/bug/bugFactory"
 import { generateId } from "./core/id-generator"
-import Spontaneous from "./core/spontaneous"
 import { range } from "./util"
 import PlantFactory from "./entities/plant/plantFactory"
 
@@ -24,16 +23,11 @@ const game = new GameEngine({
   gameUI: new CanvasUI("#bug-ui", entityManager),
   entityManager,
   height: HEIGHT,
-  width: WIDTH
+  width: WIDTH,
 })
 
-const spontaneous = new Spontaneous(
-  () => range(8000, 4000),
-  () => range(10, 4)
-).get
-
-const bugFactory = new BugFactory(generateId, spontaneous, WIDTH)
-const treeFactory = new PlantFactory(generateId, spontaneous, WIDTH)
+const bugFactory = new BugFactory(generateId, WIDTH)
+const treeFactory = new PlantFactory(generateId, WIDTH)
 
 const appProps = {
   game,

@@ -1,26 +1,22 @@
-import Bug, { BugState } from "./bug";
-import Victor = require("victor");
-import { randBool } from "../../util";
-
+import Bug, { BugState } from "./bug"
+import Victor = require("victor")
+import { randBool } from "../../util"
 
 export default class BugFactory {
-	constructor(
-		private generateId: () => number,
-		private spontaneous: () => boolean,
-		private width: number
-	) { }
+  constructor(private generateId: () => number, private width: number) {}
 
-	build(initialState?: Partial<BugState>): Bug {
-		const newState = Object.assign({
-			spontaneous: this.spontaneous,
-			direction: randBool() ? new Victor(1, 0) : new Victor(-1, 0),
-			pos: this.randomX()
-		}, initialState);
-		return new Bug(this.generateId(), newState);
+  build(initialState?: Partial<BugState>): Bug {
+    const newState = Object.assign(
+      {
+        direction: randBool() ? new Victor(1, 0) : new Victor(-1, 0),
+        pos: this.randomX(),
+      },
+      initialState
+    )
+    return new Bug(this.generateId(), newState)
+  }
 
-	}
-
-	private randomX() {
-		return new Victor(Math.floor(Math.random() * this.width - 40), 0)
-	}
+  private randomX() {
+    return new Victor(Math.floor(Math.random() * this.width - 40), 0)
+  }
 }
