@@ -1,0 +1,77 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>tdurtschi.com</title>
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-111893401-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || []
+        function gtag() {
+            dataLayer.push(arguments)
+        }
+        gtag("js", new Date())
+
+        gtag("config", "UA-111893401-1")
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;display=swap" rel="stylesheet">
+    <link href="/index.css" rel="stylesheet" type="text/css">
+    <style>
+        #root {
+            width: 100vw;
+            height: calc(100vh - 31px);
+            position: fixed;
+            bottom: 31px;
+            left: 0px;
+        }
+
+        #earth {
+            background-image: linear-gradient(180deg,
+                    #221e12 0%,
+                    #221e12 60%,
+                    #0d0d05 100%);
+            position: fixed;
+            bottom: 0px;
+            left: 0px;
+            width: 100%;
+            height: 35px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header">
+        <a href="/" id="logo-text">tdurtschi.com</a>
+        <a class="link" href="about.html">About</a>
+    </div>
+    <div id="root"><canvas height="1178" width="725"></canvas></div>
+    <div id="earth"></div>
+    <footer class="noselect">
+        <p>
+            Last updated May 2020 <br>
+            <a onclick="addBug()" href="#">Add Bug</a>
+            <span>|</span>
+            <a onclick="addPlant()" href="#">Add Plant</a>
+            <span>|</span>
+            <a href="/">Go Back</a>
+        </p>
+    </footer>
+    <script src="bugjs.bundle.js"></script>
+    <script>
+        window.b = Game("#root");
+        b.game.start();
+
+        function addBug() {
+            var bug = b.bugFactory.build();
+            b.game.addEntity(bug);
+        }
+
+        function addPlant() {
+            var plant = b.plantFactory.build();
+            b.game.addEntity(plant);
+        }
+    </script>
+</body>
+
+</html>

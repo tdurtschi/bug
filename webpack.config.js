@@ -1,4 +1,5 @@
 const path = require('path');
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
 	devtool: 'inline-source-map',
@@ -6,6 +7,15 @@ module.exports = {
 		main: './src/index.ts',
 		bugjs: "./src/bugjs.ts"
 	},
+	plugins: [
+		new HtmlWebpackPlugin({
+			chunks: ['main']
+		}),
+		new HtmlWebpackPlugin({
+			chunks: ['bugjs'],
+			filename: 'test.html'
+		})
+	],
 	module: {
 		rules: [
 			{
