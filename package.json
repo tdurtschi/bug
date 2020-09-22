@@ -1,10 +1,12 @@
 {
   "name": "bug",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "author": "Teagan Durtschi",
   "license": "MIT",
   "scripts": {
+    "prepublish": "tsc",
     "webpack": "./node_modules/.bin/webpack",
     "build": "webpack --mode=production",
     "deploy": "yarn build && cf push bug -p dist",
