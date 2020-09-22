@@ -1,13 +1,14 @@
 {
-  "name": "bug",
+  "name": "@tdurtschi/bug",
   "version": "1.0.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "author": "Teagan Durtschi",
   "license": "MIT",
   "scripts": {
+    "clean": "rm -rf ./dist/",
     "copy-assets": "copyfiles src/**/*.png dist/",
-    "prepublish": "tsc && yarn copy-assets",
+    "prepublish": "yarn clean && tsc && yarn copy-assets",
     "webpack": "./node_modules/.bin/webpack",
     "build": "webpack --mode=production",
     "deploy": "yarn build && cf push bug -p dist",
