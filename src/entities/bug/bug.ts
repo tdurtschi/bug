@@ -3,7 +3,6 @@ import Victor from "victor"
 import Plant from "../plant/plant"
 import { ITreeStruct } from "../plant/ITreeStruct"
 import { Subject } from "rxjs"
-import { TurnAround } from "./behaviors/turnAround"
 import { Pause } from "./behaviors/pause"
 import { BugBehavior } from "./behaviors/BugBehavior"
 import { GroundWalk } from "./behaviors/GroundWalk"
@@ -48,8 +47,6 @@ class Bug implements Entity, BugState {
       },
       initialState
     )
-
-    //this.queueBehavior(new Pause(this, randInt(25, 40)))
   }
 
   public update(inputs: Entity[] = []): Bug {

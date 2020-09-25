@@ -2,12 +2,10 @@ import { BugBehavior } from "./BugBehavior"
 import { walk } from "./walk"
 import Bug from "../bug"
 import { ITreeStruct } from "../../plant/ITreeStruct"
-import { randBool, randChance, randFromWeighted, randInt } from "../../../util"
+import { randBool, randFromWeighted } from "../../../util"
 import Victor = require("victor")
-import Plant from "../../plant/plant"
 import { TurnAround } from "./turnAround"
 import { PlantagoBushStruct } from "../../plant/plantagoBushStruct"
-import { Pause } from "./pause"
 
 export class Climb extends BugBehavior {
   public do(): void {
@@ -55,10 +53,10 @@ export class Climb extends BugBehavior {
       }
     }
 
-    if (randFromWeighted([394, 6])) {
-      bug.finishBehavior()
-    } else {
+    if (!randFromWeighted([394, 6])) {
       walk(bug)
+    } else {
+      bug.finishBehavior()
     }
   }
 }
@@ -82,19 +80,6 @@ const getNextBranch = (currentBranch: ITreeStruct) => {
   return randBool() && currentBranch.left
     ? currentBranch.left
     : currentBranch.right
-}
-
-export const beginClimbing = (bug: Bug, tree: Plant) => {
-  bug.direction = tree.graph.node.clone().norm()
-  bug.pos = new Victor(tree.pos.x, 0).add(
-    bug.direction.clone().multiplyScalar(bug.size.x)
-  )
-  bug.climbingOn = {
-    plant: tree,
-    branch: tree.graph,
-  }
-
-  bug.zIndexChanged.next()
 }
 
 const endClimbing = (bug: Bug) => {

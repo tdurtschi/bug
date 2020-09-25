@@ -20,13 +20,10 @@ export const randChance = (numerator: number, denominator: number) => {
 export const randFromWeighted = (list: number[]) => {
 	const total = list.reduce((a, b) => a + b, 0)
 	let result = Math.floor(Math.random() * total) + 1
-	//console.log("random seed: ", result)
 	for (let i = 0; i < list.length; i++) {
 		if (list[i] >= result) {
-			//console.log(list[i], "greater than equal to", result)
 			return i
 		} else {
-			//console.log(list[i], "Less than", result)
 			result -= list[i]
 		}
 	}

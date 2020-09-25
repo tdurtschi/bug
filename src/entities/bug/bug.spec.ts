@@ -2,7 +2,7 @@ import "jasmine"
 import Bug from "./bug"
 import Victor from "victor"
 import { expectEquals } from "../../testutil"
-import { Pause } from "./behaviors/pause"
+
 describe("Bug", () => {
   describe("Default bug", () => {
     it("Is in paused mode.", () => {
