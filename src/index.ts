@@ -1,16 +1,17 @@
+// Entry point for development SPA
 import * as React from "react"
 import * as ReactDOM from "react-dom"
 import Victor from "victor"
 
+import "./app/app.scss"
 import App from "./app/components/App"
 import { GameEngine } from "./core/game-engine"
 import EntityManager from "./core/entity-manager"
 import CanvasUI from "./canvas-ui/canvas-ui"
-import "./app/app.scss"
 import BugFactory from "./entities/bug/bugFactory"
 import { generateId } from "./core/id-generator"
-import { range } from "./util"
 import PlantFactory from "./entities/plant/plantFactory"
+import { createDivInBodyWithId } from "./dom-util"
 
 const HEIGHT = window.innerHeight
 const WIDTH = window.innerWidth
@@ -38,9 +39,15 @@ const appProps = {
   entityManager, // TODO - Reduce # of components holding ref to this.
 }
 
+const targetDivId = "root"
+
+if (!document.getElementById(targetDivId)) {
+  createDivInBodyWithId(targetDivId)
+}
+
 ReactDOM.render(
   React.createElement(App, appProps),
-  document.getElementById("root")
+  document.getElementById(targetDivId)
 )
 
 window.Victor = Victor
