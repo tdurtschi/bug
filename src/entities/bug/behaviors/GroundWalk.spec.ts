@@ -35,13 +35,15 @@ describe("Ground Walking", () => {
 		expectEquals(bug.pos, new Victor(-11, 0))
 	})
 
-	it("will change to climbing mode when it reaches a tree", () => {
+	it("will change to climbing mode when it reaches a tree if toggle is true", () => {
 		const input = [new Plant(1, { pos: new Victor(20, 0) })]
 		const bug = new Bug(0, {
 			pos: new Victor(10, 0),
 			size: new Victor(30, 20),
-			direction: new Victor(-1, 0)
+			direction: new Victor(-1, 0),
 		})
+
+		bug.bugInstinct = { WillClimb: true };
 
 		new GroundWalk(bug).do(input)
 
@@ -52,6 +54,25 @@ describe("Ground Walking", () => {
 		expectEquals(bug.pos, new Victor(20, 30))
 	})
 
+	it("will stay on the ground when it reaches a tree if toggle is false", () => {
+		const input = [new Plant(1, { pos: new Victor(20, 0) })]
+		const bug = new Bug(0, {
+			pos: new Victor(10, 0),
+			size: new Victor(30, 20),
+			direction: new Victor(-1, 0),
+		})
+
+		bug.bugInstinct = { WillClimb: false };
+
+		new GroundWalk(bug).do(input)
+
+		const direction = bug.direction
+		expect(bug.climbingOn).not.toBeDefined()
+
+		expectEquals(direction, new Victor(-1, 0))
+		expectEquals(bug.pos, new Victor(9, 0))
+	})
+
 	it("Emits an event when it starts climbing a tree", (done: DoneFn) => {
 		const input = [new Plant(1, { pos: new Victor(20, 0) })]
 		const bug = new Bug(0, {
@@ -59,6 +80,8 @@ describe("Ground Walking", () => {
 			size: new Victor(30, 20),
 			direction: new Victor(-1, 0)
 		})
+
+		bug.bugInstinct = { WillClimb: true }
 
 		bug.zIndexChanged.subscribe(done)
 

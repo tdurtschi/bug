@@ -8,6 +8,7 @@ import { BugBehavior } from "./behaviors/BugBehavior"
 import { GroundWalk } from "./behaviors/GroundWalk"
 import { randInt, normalRange, randFromWeighted } from "../../util"
 import { Climb } from "./behaviors/climb"
+import BugInstinct, { IBugInstinct } from "./behaviors/BugInstinct"
 
 export interface BugState extends EntityState {
   direction: Victor
@@ -21,6 +22,7 @@ export interface IClimbingOn {
 }
 
 class Bug implements Entity, BugState {
+  bugInstinct: IBugInstinct = new BugInstinct()
   direction: Victor
   speed: number
   climbingOn?: IClimbingOn

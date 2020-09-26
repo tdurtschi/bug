@@ -5,6 +5,8 @@ import Entity from "../entities/entity";
 import Plant from "../entities/plant/plant";
 import { entityManagerStub } from "../../spec/entity-manager-stub";
 
+const intersectionsForEntity = (entity: Entity): any[] => (entity.update as jasmine.Spy).calls.mostRecent().args[0]
+
 describe("Entity Updater", () => {
 	it("Updates all the Entities", () => {
 		const entities: Entity[] = [new Bug(), new Bug()]
@@ -37,30 +39,53 @@ describe("Entity Updater", () => {
 				new Bug(1, { pos: new Victor(0, 0) }),
 				new Bug(2, { pos: new Victor(100000, 100000) })
 			]
-			entities[0].update = jasmine.createSpy()
-			entities[1].update = jasmine.createSpy()
-			entities[2].update = jasmine.createSpy()
+			entities.forEach(e => e.update = jasmine.createSpy());
 
 			new EntityUpdater(entityManagerStub(entities)).update()
 
-			expect((entities[0].update as jasmine.Spy).calls.mostRecent().args[0][0]).toEqual(entities[1])
-			expect((entities[1].update as jasmine.Spy).calls.mostRecent().args[0][0]).toEqual(entities[0])
-			expect((entities[2].update as jasmine.Spy).calls.mostRecent().args[0].length).toEqual(0)
+			expect(intersectionsForEntity(entities[0])).toContain(entities[1])
+			expect(intersectionsForEntity(entities[1])).toContain(entities[0])
+			expect(intersectionsForEntity(entities[2]).length).toBe(0)
+		})
+
+		it("Two bugs that are facing each other at the same x-coord are intersecting", () => {
+			const entities = [
+				new Bug(0, { pos: new Victor(0, 0), direction: new Victor(1, 0) }),
+				new Bug(1, { pos: new Victor(0, 0), direction: new Victor(-1, 0) }),
+			]
+			entities.forEach(e => e.update = jasmine.createSpy());
+
+			new EntityUpdater(entityManagerStub(entities)).update()
+
+			expect(intersectionsForEntity(entities[0])).toContain(entities[1])
+			expect(intersectionsForEntity(entities[1])).toContain(entities[0])
+		})
+
+		it("Two bugs that are facing each other but separated are not intersecting", () => {
+			const entities = [
+				new Bug(0, { pos: new Victor(0, 0), direction: new Victor(1, 0) }),
+				new Bug(2, { pos: new Victor(1, 0), direction: new Victor(-1, 0) })
+			]
+			entities.forEach(e => e.update = jasmine.createSpy());
+
+			new EntityUpdater(entityManagerStub(entities)).update()
+
+			expect(intersectionsForEntity(entities[0]).length).toBe(0)
+			expect(intersectionsForEntity(entities[1]).length).toBe(0)
 		})
 
 
 		it("Will tell a bug that it's intersecting a tree", () => {
 			const entities = [
-				new Bug(0, { pos: new Victor(1, 1), direction: new Victor(-1, 0) }), // Moving left
-				new Bug(0, { pos: new Victor(11, 1), direction: new Victor(1, 0) }), // Moving right
+				new Bug(0, { pos: new Victor(10, 1), direction: new Victor(-1, 0) }), // Moving left
+				new Bug(0, { pos: new Victor(10, 1), direction: new Victor(1, 0) }), // Moving right
 				new Plant(1, { pos: new Victor(10, 1) })
 			]
-			entities[0].update = jasmine.createSpy()
-			entities[1].update = jasmine.createSpy()
+			entities.forEach(e => e.update = jasmine.createSpy());
 
 			new EntityUpdater(entityManagerStub(entities)).update()
-			expect((entities[0].update as jasmine.Spy).calls.mostRecent().args[0]).toContain(entities[1])
-			expect((entities[1].update as jasmine.Spy).calls.mostRecent().args[0]).toContain(entities[2])
+			expect(intersectionsForEntity(entities[0])).toContain(entities[2])
+			expect(intersectionsForEntity(entities[1])).toContain(entities[2])
 		})
 	})
 })

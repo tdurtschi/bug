@@ -22,6 +22,7 @@ describe("Climbing mode", () => {
     })
 
     new Climb(bug).do()
+    // TODO this fails sometimes because the bug just... doesn't want to walk? Need to use a new pattern for random behaviors.
     expect(bug.pos.y).toEqual(31)
   })
 

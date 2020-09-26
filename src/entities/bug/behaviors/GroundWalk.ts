@@ -17,17 +17,14 @@ export class GroundWalk extends BugBehavior {
 	}
 
 	public do(inputs: Entity[]): void {
-		if (inputs.find(input => input instanceof Plant))
-		{
+		if (inputs.find(input => input instanceof Plant) && this.bug.bugInstinct.WillClimb) {
 			const plant = (inputs.find(input => input instanceof Plant) as Plant)
 
 			beginClimbing(this.bug, plant)
 		}
-		else if (inputs && inputs.find(i => i instanceof Wall))
-		{
+		else if (inputs && inputs.find(i => i instanceof Wall)) {
 			new TurnAround(this.bug).do()
-		} else
-		{
+		} else {
 			walk(this.bug)
 		}
 
@@ -37,8 +34,7 @@ export class GroundWalk extends BugBehavior {
 	private countDown() {
 		this.countdown--
 
-		if (this.countdown == 0)
-		{
+		if (this.countdown == 0) {
 			this.bug.finishBehavior()
 		}
 	};
