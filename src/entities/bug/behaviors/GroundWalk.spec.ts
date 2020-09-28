@@ -4,6 +4,7 @@ import { GroundWalk } from "./GroundWalk"
 import Wall from "../../wall/wall"
 import { expectEquals } from "../../../testutil"
 import Plant from "../../plant/plant"
+import BugInstinct, { DummyBugInstinct } from "./BugInstinct"
 
 describe("Ground Walking", () => {
 	it("will turn around when there is an obstruction ahead", () => {
@@ -43,7 +44,7 @@ describe("Ground Walking", () => {
 			direction: new Victor(-1, 0),
 		})
 
-		bug.bugInstinct = { WillClimb: true };
+		bug.bugInstinct = new DummyBugInstinct({ WillClimb: true });
 
 		new GroundWalk(bug).do(input)
 
@@ -62,7 +63,7 @@ describe("Ground Walking", () => {
 			direction: new Victor(-1, 0),
 		})
 
-		bug.bugInstinct = { WillClimb: false };
+		bug.bugInstinct = new DummyBugInstinct({ WillClimb: false });
 
 		new GroundWalk(bug).do(input)
 
@@ -81,7 +82,7 @@ describe("Ground Walking", () => {
 			direction: new Victor(-1, 0)
 		})
 
-		bug.bugInstinct = { WillClimb: true }
+		bug.bugInstinct = new DummyBugInstinct({ WillClimb: true })
 
 		bug.zIndexChanged.subscribe(done)
 

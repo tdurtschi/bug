@@ -6,6 +6,7 @@ import { Climb } from "./climb"
 import { multi, vectorEquals } from "../../../util"
 import { expectEquals } from "../../../testutil"
 import { TurnAround } from "./turnAround"
+import { DummyBugInstinct } from "./BugInstinct"
 
 describe("Climbing mode", () => {
   it("Climbs up on a branch", () => {
@@ -22,7 +23,6 @@ describe("Climbing mode", () => {
     })
 
     new Climb(bug).do()
-    // TODO this fails sometimes because the bug just... doesn't want to walk? Need to use a new pattern for random behaviors.
     expect(bug.pos.y).toEqual(31)
   })
 
@@ -71,6 +71,7 @@ describe("Climbing mode", () => {
       },
       direction: new Victor(0, 1),
     })
+    bug.bugInstinct = new DummyBugInstinct({ IsTiredOfClimbing: false })
     const climb = new Climb(bug)
     bug.queueBehavior(climb)
     bug.update()

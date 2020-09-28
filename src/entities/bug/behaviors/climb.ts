@@ -53,9 +53,9 @@ export class Climb extends BugBehavior {
       }
     }
 
-    if (!randFromWeighted([394, 6])) {
-      walk(bug)
-    } else {
+    walk(bug)
+
+    if (bug.bugInstinct.IsTiredOfClimbing) {
       bug.finishBehavior()
     }
   }
