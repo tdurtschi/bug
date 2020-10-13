@@ -5,12 +5,15 @@ import Entity from "../entities/entity";
 import Wall from "../entities/wall/wall";
 import { generateId } from "./id-generator";
 import Victor from "victor";
+import Bug from "../entities/bug/bug";
+import * as bugSerializer from "../entities/bug/bugSerializer"
 
 export interface GameEngineOptions {
 	gameUI: IGameUI
 	entityManager: EntityManager
 	height: number
 	width: number
+	initialState?: string
 }
 
 export interface Game {
@@ -21,6 +24,7 @@ export interface Game {
 	entityManager: IEntityManager
 	width: number
 	height: number
+	exportCurrentState: () => string
 }
 
 export class GameEngine implements Game {
@@ -34,12 +38,12 @@ export class GameEngine implements Game {
 
 	constructor(args: GameEngineOptions) {
 		this.gameUI = args.gameUI
-		this.entityManager = args.entityManager
+		this.entityManager = args.entityManager // wtf? The game should manage its own entities maybe?
 		this.height = args.height
 		this.width = args.width
 
 		this.entityUpdater = new EntityUpdater(args.entityManager)
-		this.createInitialGameState();
+		this.createInitialGameState(args.initialState);
 	}
 
 	public start() {
@@ -66,18 +70,44 @@ export class GameEngine implements Game {
 		}
 	}
 
-	createInitialGameState() {
-		this.entityManager.addEntity(
-			new Wall(generateId(), {
-				pos: new Victor(-10, 0),
-				size: new Victor(10, this.height),
-			}))
-		this.entityManager.addEntity(
-			new Wall(generateId(), {
-				pos: new Victor(this.width, 0),
-				size: new Victor(10, this.height),
+	createInitialGameState(initialState?: string) {
+		if (initialState !== undefined) {
+			const entities = rehydrateEntitiesFromString(initialState)
+			entities.forEach((entity) => {
+				console.log(entity)
+				this.entityManager.addEntity(entity)
 			})
-		)
+		} else {
+			this.entityManager.addEntity(
+				new Wall(generateId(), {
+					pos: new Victor(-10, 0),
+					size: new Victor(10, this.height),
+				}))
+			this.entityManager.addEntity(
+				new Wall(generateId(), {
+					pos: new Victor(this.width, 0),
+					size: new Victor(10, this.height),
+				})
+			)
+		}
 	}
+
+	exportCurrentState() {
+		const entities = this.entityManager.getEntities()
+
+		const entityData = entities
+			.filter(entity => entity instanceof Bug)
+			.map(bug => bugSerializer.toJson(bug as Bug))
+
+		return JSON.stringify(entityData)
+	};
 }
 
+function rehydrateEntitiesFromString(state: string): Entity[] {
+	const entityData: any[] = JSON.parse(state)
+
+	const entities = entityData
+		.map((entity: any) => bugSerializer.fromJson(entity as string))
+
+	return entities
+}

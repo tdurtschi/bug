@@ -2,6 +2,7 @@ import { GameEngine } from "./game-engine";
 import EntityManager, { IEntityManager } from "./entity-manager";
 import Bug from "../entities/bug/bug";
 import { IGameUI } from "../canvas-ui/canvas-ui";
+import newFakeUI from "../../spec/fixtures/fakeUI";
 
 describe("Game Engine", () => {
 	beforeEach(() => jasmine.clock().install())
@@ -12,10 +13,7 @@ describe("Game Engine", () => {
 
 	let fakeUI: IGameUI
 	beforeEach(() => {
-		fakeUI = {
-			togglePause: jasmine.createSpy("pause"),
-			start: jasmine.createSpy("start")
-		}
+		fakeUI = newFakeUI()
 	})
 
 	it("Creates as an unstarted game", () => {

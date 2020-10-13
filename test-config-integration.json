@@ -1,0 +1,9 @@
+{
+	"spec_dir": "spec/integration",
+	"spec_files": [
+		"**/*[sS]pec.ts",
+		"**/*[sS]pec.tsx"
+	],
+	"helpers": [],
+	"stopSpecOnExpectationFailure": false
+}

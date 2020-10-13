@@ -29,7 +29,7 @@ export const randFromWeighted = (list: number[]) => {
 	}
 	return list.length - 1
 }
-(window as any).r = randFromWeighted;
+
 export const randBool = () => randInt(0, 1) === 1
 
 export const range = (mean: number, variance: number) =>
