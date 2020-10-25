@@ -7,13 +7,13 @@ import { generateId } from "./id-generator";
 import Victor from "victor";
 import Bug from "../entities/bug/bug";
 import * as bugSerializer from "../entities/bug/bugSerializer"
+import { IGameState } from "../persistence/gameStateRepository";
 
 export interface GameEngineOptions {
 	gameUI: IGameUI
 	entityManager: EntityManager
 	height: number
 	width: number
-	initialState?: string
 }
 
 export interface Game {
@@ -24,7 +24,8 @@ export interface Game {
 	entityManager: IEntityManager
 	width: number
 	height: number
-	exportCurrentState: () => string
+	exportCurrentState: () => IGameState
+	loadFromState: (state: IGameState) => void
 }
 
 export class GameEngine implements Game {
@@ -43,7 +44,7 @@ export class GameEngine implements Game {
 		this.width = args.width
 
 		this.entityUpdater = new EntityUpdater(args.entityManager)
-		this.createInitialGameState(args.initialState);
+		this.createInitialGameState();
 	}
 
 	public start() {
@@ -70,26 +71,12 @@ export class GameEngine implements Game {
 		}
 	}
 
-	createInitialGameState(initialState?: string) {
-		if (initialState !== undefined) {
-			const entities = rehydrateEntitiesFromString(initialState)
-			entities.forEach((entity) => {
-				console.log(entity)
-				this.entityManager.addEntity(entity)
-			})
-		} else {
-			this.entityManager.addEntity(
-				new Wall(generateId(), {
-					pos: new Victor(-10, 0),
-					size: new Victor(10, this.height),
-				}))
-			this.entityManager.addEntity(
-				new Wall(generateId(), {
-					pos: new Victor(this.width, 0),
-					size: new Victor(10, this.height),
-				})
-			)
-		}
+	loadFromState(gameState: IGameState) {
+		this.entityManager.clearAll()
+		const entities = rehydrateEntitiesFromString(gameState.state)
+		entities.forEach((entity) => {
+			this.entityManager.addEntity(entity)
+		})
 	}
 
 	exportCurrentState() {
@@ -99,8 +86,25 @@ export class GameEngine implements Game {
 			.filter(entity => entity instanceof Bug)
 			.map(bug => bugSerializer.toJson(bug as Bug))
 
-		return JSON.stringify(entityData)
-	};
+		return {
+			id: 0,
+			state: JSON.stringify(entityData)
+		}
+	}
+
+	private createInitialGameState() {
+		this.entityManager.addEntity(
+			new Wall(generateId(), {
+				pos: new Victor(-10, 0),
+				size: new Victor(10, this.height),
+			}))
+		this.entityManager.addEntity(
+			new Wall(generateId(), {
+				pos: new Victor(this.width, 0),
+				size: new Victor(10, this.height),
+			})
+		)
+	}
 }
 
 function rehydrateEntitiesFromString(state: string): Entity[] {

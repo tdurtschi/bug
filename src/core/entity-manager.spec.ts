@@ -37,4 +37,15 @@ describe("Entity Manager", () => {
 		expect(newList[0]).toBe(entities[1])
 		expect(newList[1]).toBe(entities[0])
 	})
+
+	it("Resets its state", () => {
+		const entities = [
+			new Plant()
+		]
+
+		const entityManager = new EntityManager(entities);
+		entityManager.clearAll()
+
+		expect(entityManager.getEntities().length).toEqual(0)
+	})
 })

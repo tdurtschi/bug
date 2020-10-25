@@ -12,6 +12,7 @@ import BugFactory from "./entities/bug/bugFactory"
 import { generateId } from "./core/id-generator"
 import PlantFactory from "./entities/plant/plantFactory"
 import { createDivInBodyWithId } from "./dom-util"
+import gameStateRepository, { LocalStorageAdapter } from "./persistence/gameStateRepository"
 
 const HEIGHT = window.innerHeight
 const WIDTH = window.innerWidth
@@ -37,6 +38,7 @@ const appProps = {
   bugFactory,
   treeFactory,
   entityManager, // TODO - Reduce # of components holding ref to this.
+  gameStateRepository: new gameStateRepository(new LocalStorageAdapter())
 }
 
 const targetDivId = "root"

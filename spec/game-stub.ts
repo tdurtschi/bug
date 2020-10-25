@@ -9,5 +9,6 @@ export const gameStub = (): Game => ({
 	entityManager: entityManagerStub([]),
 	height: 0,
 	width: 0,
-	exportCurrentState: jasmine.createSpy("exportCurrentState")
+	exportCurrentState: jasmine.createSpy("exportCurrentState"),
+	loadFromState: jasmine.createSpy("loadFromState")
 })

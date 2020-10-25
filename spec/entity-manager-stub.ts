@@ -4,5 +4,6 @@ import Entity from "../src/entities/entity";
 export const entityManagerStub: (entities: Entity[]) => IEntityManager =
 	entities => ({
 		getEntities: () => entities,
-		addEntity: () => { }
+		addEntity: () => { },
+		clearAll: () => { }
 	})

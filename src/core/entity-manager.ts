@@ -5,6 +5,7 @@ import Plant from "../entities/plant/plant";
 export interface IEntityManager {
 	getEntities: () => Entity[]
 	addEntity: (entity: Entity) => void
+	clearAll: () => void
 }
 
 export default class EntityManager implements IEntityManager {
@@ -12,6 +13,10 @@ export default class EntityManager implements IEntityManager {
 	constructor(initialEntities: Entity[]) {
 		initialEntities.forEach(this.addEntity);
 	}
+
+	public clearAll = () => {
+		this.entities.splice(0, this.entities.length)
+	};
 
 	public getEntities = () => this.entities;
 

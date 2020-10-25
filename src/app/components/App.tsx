@@ -3,8 +3,9 @@ import { Game } from '../../core/game-engine'
 import Victor from "victor"
 import BugFactory from '../../entities/bug/bugFactory'
 import PlantFactory from '../../entities/plant/plantFactory'
-import { randBool, randInt } from '../../util'
+import { randInt } from '../../util'
 import { Debugger } from './Debugger'
+import { IGameStateRepository } from '../../persistence/gameStateRepository'
 
 interface Props {
 	game: Game,
@@ -12,6 +13,7 @@ interface Props {
 	width: number,
 	bugFactory: BugFactory,
 	treeFactory: PlantFactory,
+	gameStateRepository?: IGameStateRepository
 }
 
 interface State {
@@ -43,9 +45,33 @@ class App extends React.Component<Props, State> {
 					<button id="add-tree" onClick={() => this.addPlant()}>
 						Add Plant
 					</button>
+					<button id="save" onClick={() => this.save()}>
+						Save
+					</button>
+					<button id="load" onClick={() => this.load()}>
+						Load
+					</button>
 				</div>
 				<Debugger game={this.props.game} />
 			</div >);
+	}
+
+	private load(): void {
+		if (this.props.gameStateRepository) {
+			const gameState = this.props.gameStateRepository.load(0)
+			this.props.game.loadFromState(gameState)
+		} else {
+			throw new Error("GameStateRepository not provided.")
+		}
+	}
+
+	private save(): void {
+		if (this.props.gameStateRepository) {
+			const gameState = this.props.game.exportCurrentState()
+			this.props.gameStateRepository.save(gameState)
+		} else {
+			throw new Error("GameStateRepository not provided.")
+		}
 	}
 
 	private handleKeyDown = (e: KeyboardEvent) => {
