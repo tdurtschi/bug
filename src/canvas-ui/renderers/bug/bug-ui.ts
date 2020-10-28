@@ -1,17 +1,15 @@
-import { UIEntity } from "../../ui-entity";
 import Bug from "../../../entities/bug/bug";
 import { randInt } from "../../../util";
 import { Pause } from "../../../entities/bug/behaviors/pause";
 
-export default class BugUI implements UIEntity {
+export default class BugUI {
 	imageIdx: number
 	static images: HTMLImageElement[] = BugUI.getBugImages()
 	randomOffset: number
 	frame = 0
 
 	constructor(
-		public id: number,
-		public bug: Bug) {
+		public id: number) {
 		this.imageIdx = 0
 		this.randomOffset = randInt(0, 15);
 	}
@@ -20,11 +18,9 @@ export default class BugUI implements UIEntity {
 		return BugUI.images[this.imageIdx]
 	}
 
-	public update() {
-		if (this.bug.behaviorQueue[0] && !(this.bug.behaviorQueue[0] instanceof Pause))
-		{
-			if ((this.frame++ + this.randomOffset) % 15 == 0)
-			{
+	public update(bug: Bug) {
+		if (bug.behaviorQueue[0] && !(bug.behaviorQueue[0] instanceof Pause)) {
+			if ((this.frame++ + this.randomOffset) % 15 == 0) {
 				this.imageIdx = (this.imageIdx + 1) % 2
 			}
 		}

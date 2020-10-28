@@ -5,19 +5,19 @@ import Bug from "../../../entities/bug/bug";
 
 const bugUIs: BugUI[] = [];
 
-const createNewBug = (bug: Bug) => {
-	const bugUI = new BugUI(bug.id, bug)
-	bugUIs[bug.id] = bugUI
+const createNewBug = (bugId: number) => {
+	const bugUI = new BugUI(bugId)
+	bugUIs[bugId] = bugUI
 	return bugUI
 }
 
-const getUIBug = (bug: Bug) => {
-	return bugUIs[bug.id] || createNewBug(bug)
+const getUIBugById = (bugId: number) => {
+	return bugUIs[bugId] || createNewBug(bugId)
 }
 
 export default (bug: Bug, ctx: CanvasRenderingContext2D) => {
-	const uiBug = getUIBug(bug)
-	uiBug.update()
+	const uiBug = getUIBugById(bug.id)
+	uiBug.update(bug)
 	const climbingYOffset = bug.climbingOn ? 3 : 0
 	const { direction, size } = bug
 
@@ -26,12 +26,10 @@ export default (bug: Bug, ctx: CanvasRenderingContext2D) => {
 	ctx.save()
 	ctx.translate(pos.x, pos.y)
 	window.DEBUG && circle(ctx, 5)
-	if (direction.x > 0)
-	{
+	if (direction.x > 0) {
 		ctx.rotate(-direction.angle())
 		ctx.scale(-1, 1)
-	} else
-	{
+	} else {
 		const newDir = direction.clone().multiplyScalarX(-1)
 
 		ctx.rotate(newDir.angle())
