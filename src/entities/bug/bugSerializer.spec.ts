@@ -1,8 +1,7 @@
-import "jasmine"
 import Victor from "victor"
 import { expectEquals } from "../../testutil"
 import Bug from "./bug"
-import { fromJson, toJson } from "./bugSerializer"
+import bugSerializer from "./bugSerializer"
 
 describe("BugSerializer", () => {
     describe("Serialization & Deserialization", () => {
@@ -15,7 +14,7 @@ describe("BugSerializer", () => {
                 direction: new Victor(24, 25)
             })
 
-            const clonedBug = fromJson(toJson(bug))
+            const clonedBug = bugSerializer.fromSnapshot(bugSerializer.getSnapshot(bug))
 
             expect(bug.id).toEqual(clonedBug.id)
             expectEquals(bug.pos, clonedBug.pos)

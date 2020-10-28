@@ -1,7 +1,7 @@
 import Victor from "victor";
 import Bug from "./bug";
 
-export function toJson(bug: Bug): string {
+function getSnapshot(bug: Bug): object {
     const bugData: object = {
         id: bug.id,
         size: bug.size,
@@ -9,14 +9,17 @@ export function toJson(bug: Bug): string {
         pos: bug.pos
     }
 
-    return JSON.stringify(bugData);
+    return bugData;
 }
 
-export function fromJson(json: string): Bug {
-    const bugData = JSON.parse(json)
-    const bug = new Bug(bugData.id)
-    bug.size = new Victor(bugData.size.x, bugData.size.y)
-    bug.direction = new Victor(bugData.direction.x, bugData.direction.y)
-    bug.pos = new Victor(bugData.pos.x, bugData.pos.y)
+function fromSnapshot(snapshot: any): Bug {
+    const bug = new Bug(snapshot.id)
+    bug.size = new Victor(snapshot.size.x, snapshot.size.y)
+    bug.direction = new Victor(snapshot.direction.x, snapshot.direction.y)
+    bug.pos = new Victor(snapshot.pos.x, snapshot.pos.y)
     return bug
+}
+
+export default {
+    getSnapshot, fromSnapshot
 }

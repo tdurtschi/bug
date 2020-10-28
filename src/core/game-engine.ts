@@ -5,9 +5,8 @@ import Entity from "../entities/entity";
 import Wall from "../entities/wall/wall";
 import { generateId } from "./id-generator";
 import Victor from "victor";
-import Bug from "../entities/bug/bug";
-import * as bugSerializer from "../entities/bug/bugSerializer"
 import { IGameState } from "../persistence/gameStateRepository";
+import { entitiesFromString, gameStateFromEntities } from "../persistence/entityToGameStateConverter";
 
 export interface GameEngineOptions {
 	gameUI: IGameUI
@@ -73,23 +72,15 @@ export class GameEngine implements Game {
 
 	loadFromState(gameState: IGameState) {
 		this.entityManager.clearAll()
-		const entities = rehydrateEntitiesFromString(gameState.state)
+		const entities = entitiesFromString(gameState.state)
 		entities.forEach((entity) => {
 			this.entityManager.addEntity(entity)
 		})
 	}
 
 	exportCurrentState() {
-		const entities = this.entityManager.getEntities()
-
-		const entityData = entities
-			.filter(entity => entity instanceof Bug)
-			.map(bug => bugSerializer.toJson(bug as Bug))
-
-		return {
-			id: 0,
-			state: JSON.stringify(entityData)
-		}
+		const entities = this.entityManager.getEntities();
+		return gameStateFromEntities(entities, 0);
 	}
 
 	private createInitialGameState() {
@@ -105,13 +96,4 @@ export class GameEngine implements Game {
 			})
 		)
 	}
-}
-
-function rehydrateEntitiesFromString(state: string): Entity[] {
-	const entityData: any[] = JSON.parse(state)
-
-	const entities = entityData
-		.map((entity: any) => bugSerializer.fromJson(entity as string))
-
-	return entities
 }
