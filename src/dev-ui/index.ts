@@ -5,48 +5,32 @@ import Victor from "victor"
 
 import "./global.scss"
 import App from "./components/App"
-import { GameEngine } from "../core/game-engine"
-import EntityManager from "../core/entity-manager"
-import CanvasUI from "../core/canvas-ui/canvas-ui"
-import BugFactory from "../core/entities/bug/bugFactory"
-import { generateId } from "../core/util/id-generator"
-import PlantFactory from "../core/entities/plant/plantFactory"
+import { Game } from "../../index"
+
+console.info("Starting Bug app...")
 
 const HEIGHT = window.innerHeight
 const WIDTH = window.innerWidth
 
-console.info("Starting Bug app...")
-
-const entityManager = new EntityManager([])
-
-const game = new GameEngine({
-  gameUI: new CanvasUI("#bug-ui", entityManager),
-  entityManager,
-  height: HEIGHT,
-  width: WIDTH,
-})
-
-const bugFactory = new BugFactory(generateId, WIDTH)
-const treeFactory = new PlantFactory(generateId, WIDTH)
+const game = Game("#bug-ui", HEIGHT, WIDTH);
 
 const appProps = {
-  game,
+  game: game.game,
   height: HEIGHT,
   width: WIDTH,
-  bugFactory,
-  treeFactory,
-  entityManager, // TODO - Reduce # of components holding ref to this.
+  bugFactory: game.bugFactory,
+  plantFactory: game.plantFactory,
 }
 
-const targetDivId = "root"
+const TARGET_DIV_ID = "root"
 
-if (!document.getElementById(targetDivId)) {
-  createDivInBodyWithId(targetDivId)
+if (!document.getElementById(TARGET_DIV_ID)) {
+  createDivInBodyWithId(TARGET_DIV_ID)
 }
 
 ReactDOM.render(
   React.createElement(App, appProps),
-  document.getElementById(targetDivId)
+  document.getElementById(TARGET_DIV_ID)
 )
 
 window.Victor = Victor

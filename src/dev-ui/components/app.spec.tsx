@@ -15,7 +15,7 @@ describe("App", () => {
         width={0}
         height={0}
         bugFactory={new BugFactory(() => 0, 0)}
-        treeFactory={new PlantFactory(() => 0, 0)}
+        plantFactory={new PlantFactory(() => 0, 0)}
       />
     )
 

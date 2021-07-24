@@ -3,7 +3,7 @@ import PlantFactory from "./plantFactory"
 import Victor from "victor"
 import { vectorEquals } from "../../util/vectors"
 
-describe("TreeFactory", () => {
+describe("PlantFactory", () => {
   it("Creates a tree", () => {
     const tree: Plant = new PlantFactory(() => 0, 0).build()
     expect(tree)

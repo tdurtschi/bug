@@ -11,6 +11,7 @@ const entityManager = new EntityManager([])
 export const Game = (target: string, height?: number, width?: number) => {
     height = height || document.querySelector(target).clientHeight
     width = width || document.querySelector(target).clientWidth
+    
     return {
         game: new GameEngine({
             gameUI: new CanvasUI(target, entityManager),

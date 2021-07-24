@@ -3,7 +3,7 @@ import { Game } from '../../core/game-engine'
 import Victor from "victor"
 import BugFactory from '../../core/entities/bug/bugFactory'
 import PlantFactory from '../../core/entities/plant/plantFactory'
-import { randBool, randInt } from '../../core/util/stats'
+import { randInt } from '../../core/util/stats'
 import { Debugger } from './Debugger'
 
 interface Props {
@@ -11,7 +11,7 @@ interface Props {
 	height: number,
 	width: number,
 	bugFactory: BugFactory,
-	treeFactory: PlantFactory,
+	plantFactory: PlantFactory,
 }
 
 interface State {
@@ -68,9 +68,9 @@ class App extends React.Component<Props, State> {
 	}
 
 	private addPlant = (): void => {
-		const { game, treeFactory } = this.props
+		const { game, plantFactory: plantFactory } = this.props
 
-		game.addEntity(treeFactory.build())
+		game.addEntity(plantFactory.build())
 	}
 
 	private addBug = () => {
