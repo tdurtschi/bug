@@ -1,8 +1,8 @@
-import Bug from "../entities/bug/bug"
+import Bug from "./entities/bug/bug"
 import EntityUpdater from "./entity-updater"
 import Victor from "victor"
-import Entity from "../entities/entity";
-import Plant from "../entities/plant/plant";
+import Entity from "./entities/entity";
+import Plant from "./entities/plant/plant";
 import { entityManagerStub } from "../../spec/entity-manager-stub";
 
 const intersectionsForEntity = (entity: Entity): any[] => (entity.update as jasmine.Spy).calls.mostRecent().args[0]

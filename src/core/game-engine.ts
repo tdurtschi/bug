@@ -1,12 +1,12 @@
 import EntityUpdater from "./entity-updater";
-import { IGameUI } from "../canvas-ui/canvas-ui"
+import { IGameUI } from "./canvas-ui/canvas-ui"
 import EntityManager, { IEntityManager } from "./entity-manager";
-import Entity from "../entities/entity";
-import Wall from "../entities/wall/wall";
-import { generateId } from "./id-generator";
+import Entity from "./entities/entity";
+import Wall from "./entities/wall/wall";
+import { generateId } from "./util/id-generator";
 import Victor from "victor";
-import Bug from "../entities/bug/bug";
-import * as bugSerializer from "../entities/bug/bugSerializer"
+import Bug from "./entities/bug/bug";
+import * as bugSerializer from "./entities/bug/bugSerializer"
 
 export interface GameEngineOptions {
 	gameUI: IGameUI

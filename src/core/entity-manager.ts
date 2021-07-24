@@ -1,6 +1,6 @@
-import Entity from "../entities/entity";
-import Bug from "../entities/bug/bug";
-import Plant from "../entities/plant/plant";
+import Entity from "./entities/entity";
+import Bug from "./entities/bug/bug";
+import Plant from "./entities/plant/plant";
 
 export interface IEntityManager {
 	getEntities: () => Entity[]

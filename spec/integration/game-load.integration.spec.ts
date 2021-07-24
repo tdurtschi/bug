@@ -1,8 +1,8 @@
 import { Game } from "../.."
-import { IGameUI } from "../../src/canvas-ui/canvas-ui"
+import { IGameUI } from "../../src/core/canvas-ui/canvas-ui"
 import EntityManager from "../../src/core/entity-manager"
 import { GameEngine, GameEngineOptions } from "../../src/core/game-engine"
-import Bug from "../../src/entities/bug/bug"
+import Bug from "../../src/core/entities/bug/bug"
 import fakeUI from "../fixtures/fakeUI"
 
 describe("Game Saving & Loading", () => {

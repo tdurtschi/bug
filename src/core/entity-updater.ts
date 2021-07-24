@@ -1,6 +1,6 @@
-import Entity from "../entities/entity";
+import Entity from "./entities/entity";
 import { IEntityManager } from "./entity-manager";
-import Bug from "../entities/bug/bug";
+import Bug from "./entities/bug/bug";
 import Victor = require("victor");
 
 export default class EntityUpdater {

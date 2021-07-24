@@ -1,8 +1,8 @@
-import Entity from "../entities/entity";
-import Bug from "../entities/bug/bug";
+import Entity from "./entities/entity";
+import Bug from "./entities/bug/bug";
 import EntityManager from "./entity-manager";
-import Wall from "../entities/wall/wall";
-import Plant from "../entities/plant/plant";
+import Wall from "./entities/wall/wall";
+import Plant from "./entities/plant/plant";
 
 describe("Entity Manager", () => {
 	it("Accepts an initial state", () => {
