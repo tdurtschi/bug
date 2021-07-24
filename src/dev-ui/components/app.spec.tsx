@@ -3,7 +3,7 @@ import { render } from "@testing-library/react"
 import App from "./App"
 import BugFactory from "../../core/entities/bug/bugFactory"
 import PlantFactory from "../../core/entities/plant/plantFactory"
-import { gameStub } from "../../../spec/game-stub"
+import { gameStub } from "../../../spec/fixtures/game-stub"
 
 describe("App", () => {
   it("Starts the game upon rendering.", () => {

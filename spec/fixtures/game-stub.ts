@@ -1,5 +1,5 @@
-import { Game } from "../src/core/game-engine";
-import { entityManagerStub } from "./entity-manager-stub";
+import { Game } from "../../src/core/game-engine";
+import { entityManagerStub } from "../entity-manager-stub";
 
 export const gameStub = (): Game => ({
 	isPaused: false,

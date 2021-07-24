@@ -13,8 +13,8 @@
     "build": "webpack --mode=production",
     "deploy": "yarn build && cf push bug -p dist",
     "start": "./node_modules/.bin/webpack-dev-server",
-    "test": "ts-node node_modules/jasmine/bin/jasmine",
-    "test-all": "npm-run-all test test-integration test-browser",
+    "test": "npm-run-all test-unit test-integration test-browser",
+    "test-unit": "ts-node node_modules/jasmine/bin/jasmine",
     "test-integration": "ts-node node_modules/jasmine/bin/jasmine JASMINE_CONFIG_PATH=test-config-integration.json",
     "test-browser": "start-server-and-test start http://localhost:9000 test-browser-run",
     "test-browser-run": "ts-node node_modules/jasmine/bin/jasmine JASMINE_CONFIG_PATH=test-config-browser.json"

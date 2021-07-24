@@ -6,11 +6,13 @@ Bug is a simulation that models a weevil walking around in an HTML canvas.
 * NodeJS
 * Yarn
 ### Install Dependencies
-from terminal, run `yarn` to install all node dependencies.
+run `yarn` to install all node dependencies.
 
 ## Run it
-from terminal, `yarn start` to run a dev server.
+`yarn start` to run a dev server.
 
 ## Tests
-from terminal, `yarn test` to run the jasmine test suite.
-from terminal, `yarn test-browser` to run the browser smoke test suite.
+`yarn test` to run the test suite.
+`yarn test-browser` to run the browser smoke test suite.
+`yarn test-unit` to run jasmine unit test suite.
+`yarn test-integration` to run jasmine integration test suite.
