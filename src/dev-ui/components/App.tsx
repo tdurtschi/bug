@@ -5,6 +5,8 @@ import BugFactory from '../../core/entities/bug/bugFactory'
 import PlantFactory from '../../core/entities/plant/plantFactory'
 import { randInt } from '../../core/util/stats'
 import { Debugger } from './Debugger'
+import { BugForm } from './BugForm'
+import { BugState } from '../../core/entities/bug/bug'
 
 interface Props {
 	game: Game,
@@ -44,6 +46,7 @@ class App extends React.Component<Props, State> {
 						Add Plant
 					</button>
 				</div>
+				<BugForm addBug={this.addBug} />
 				<Debugger game={this.props.game} />
 			</div >);
 	}
@@ -73,14 +76,14 @@ class App extends React.Component<Props, State> {
 		game.addEntity(plantFactory.build())
 	}
 
-	private addBug = () => {
+	private addBug = (initialState?: Partial<BugState>) => {
 		const { game, bugFactory } = this.props
 
 		const scaleFactor = randInt(5, 10)
 		const size = new Victor(3, 2).multiplyScalar(scaleFactor)
 		const speed = scaleFactor / 10
 
-		const bug = bugFactory.build({ size, speed })
+		const bug = bugFactory.build(initialState ?? { size, speed })
 		this.setState({ bug })
 		game.addEntity(bug)
 	}

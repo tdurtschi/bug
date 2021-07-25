@@ -11,6 +11,7 @@ import { Climb } from "./behaviors/climb"
 import BugInstinct, { IBugInstinct } from "./behaviors/BugInstinct"
 
 export interface BugState extends EntityState {
+  [index: string]: any
   direction: Victor
   speed: number
   climbingOn?: IClimbingOn
@@ -20,6 +21,14 @@ export interface IClimbingOn {
   plant: Plant
   branch: ITreeStruct
 }
+
+export const defaultState = () =>  ({
+  //Position: the front of the bug at foot level
+  pos: new Victor(0, 0),
+  size: new Victor(30, 20),
+  direction: new Victor(1, 0),
+  speed: 1
+})
 
 class Bug implements Entity, BugState {
   bugInstinct: IBugInstinct = new BugInstinct()
@@ -39,14 +48,7 @@ class Bug implements Entity, BugState {
 
     Object.assign(
       this,
-      {
-        //Position: the front of the bug at foot level
-        pos: new Victor(0, 0),
-        size: new Victor(30, 20),
-        direction: new Victor(1, 0),
-        speed: 1,
-        behaviorQueue: [],
-      },
+      defaultState(),
       initialState
     )
   }

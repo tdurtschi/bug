@@ -1,70 +1,88 @@
-$HEIGHT:90vh;
+$HEIGHT: 90vh;
 $WIDTH: 100vw;
 $BORDER: 0px;
 
-.debug{
-	margin-top:100px;
-	z-index: 2;
-	position: absolute;
+.debug {
+  margin-top: 100px;
+  z-index: 2;
+  position: absolute;
 }
 
-#bug-background{
-	position: absolute;
-	box-sizing: border-box;
-	top: 0px;
-	left: 0px;
-	z-index: 0;
-	height: $HEIGHT;
-	width: $WIDTH;
-	background: rgb(248,255,247);
-	background: linear-gradient(0deg, rgba(248,255,247,0) 0%, rgba(172,241,255,1) 94%, rgba(145,236,255,1) 100%);
+#bug-background {
+  position: absolute;
+  box-sizing: border-box;
+  top: 0px;
+  left: 0px;
+  z-index: -1;
+  height: $HEIGHT;
+  width: $WIDTH;
+  background: rgb(248, 255, 247);
+  background: linear-gradient(
+    0deg,
+    rgba(248, 255, 247, 0) 0%,
+    rgba(172, 241, 255, 1) 94%,
+    rgba(145, 236, 255, 1) 100%
+  );
 }
 
 #ground {
-	position: fixed;
-	width: $WIDTH;
-	bottom: $BORDER;
-	left: $BORDER;
-	background-color: #7a4a25;
-	height: 5px;
-	z-index: 0;
+  position: fixed;
+  width: $WIDTH;
+  bottom: $BORDER;
+  left: $BORDER;
+  background-color: #7a4a25;
+  height: 5px;
+  z-index: -1;
 }
 
-#bug-ui{
-	box-sizing: border-box;
-	position: fixed;
-	bottom: $BORDER;
-	left: $BORDER;
-	z-index: 1;
-	height: $HEIGHT;
-	width: $WIDTH;
-	margin-bottom: 2px;
+#bug-ui {
+  box-sizing: border-box;
+  position: fixed;
+  bottom: $BORDER;
+  left: $BORDER;
+  z-index: -1;
+  height: $HEIGHT;
+  width: $WIDTH;
+  margin-bottom: 2px;
 }
 
-#bug-controls{
-	box-sizing: border-box;
-	position: absolute;
-	top: $BORDER;
-	left: $BORDER;
-	z-index: 2;
-	width:400px;
-	display:flex;
-	justify-content:space-evenly;
-	padding-top: 10px;
-	width: $WIDTH;
+#bug-controls {
+  box-sizing: border-box;
+  position: absolute;
+  top: $BORDER;
+  right: $BORDER;
+  z-index: 2;
+  display: flex;
+  justify-content: space-evenly;
+  padding-top: 10px;
 
-	button{
-		font-size: 16px;
-		border-radius:6px;
-		outline: none;
+  button {
+    font-size: 16px;
+    border-radius: 6px;
+    outline: none;
+    margin: 4px;
 
-		:active{
-			background-color: #101010;
-		}
+    :active {
+      background-color: #101010;
+    }
 
-		&.paused{
-			border-style: inset;
-			background-color: #FFFF88;
-		}
-	}
+    &.paused {
+      border-style: inset;
+      background-color: #ffff88;
+    }
+  }
+}
+
+#bug-form {
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+  width: 500px;
+  margin: 4px;
+
+  > div {
+    display: flex;
+    justify-content: space-between;
+    margin: 4px 0px;
+  }
 }
