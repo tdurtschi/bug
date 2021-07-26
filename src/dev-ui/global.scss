@@ -46,21 +46,36 @@ $BORDER: 0px;
   margin-bottom: 2px;
 }
 
+#bug-tabs {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  > li {
+    cursor: pointer;
+  }
+}
+
 #bug-controls {
   box-sizing: border-box;
   position: absolute;
   top: $BORDER;
-  right: $BORDER;
+  left: $BORDER;
   z-index: 2;
   display: flex;
   justify-content: space-evenly;
-  padding-top: 10px;
+  border: 1px solid black;
 
-  button {
+  li {
     font-size: 16px;
-    border-radius: 6px;
     outline: none;
-    margin: 4px;
+    padding: 4px;
+    border: 1px solid black;
+    background-color: white;
+    text-transform: uppercase;
+    display: block;
 
     :active {
       background-color: #101010;
@@ -78,11 +93,20 @@ $BORDER: 0px;
   flex-direction: column;
   z-index: 10;
   width: 500px;
-  margin: 4px;
+  padding: 4px;
+  border: 1px solid black;
 
   > div {
+    width: 100%;
     display: flex;
-    justify-content: space-between;
     margin: 4px 0px;
+
+    button {
+      width: 50%;
+    }
+  }
+
+  .input-row {
+    justify-content: space-between;
   }
 }

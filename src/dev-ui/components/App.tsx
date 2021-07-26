@@ -7,6 +7,7 @@ import { randInt } from '../../core/util/stats'
 import { Debugger } from './Debugger'
 import { BugForm } from './BugForm'
 import { BugState } from '../../core/entities/bug/bug'
+import { useEffect, useState } from 'react'
 
 interface Props {
 	game: Game,
@@ -16,77 +17,82 @@ interface Props {
 	plantFactory: PlantFactory,
 }
 
-interface State {
+enum CurrentForm {
+	NONE,
+	BUG,
+	PLANT
 }
 
-class App extends React.Component<Props, State> {
-	componentDidMount() {
-		this.props.game.start()
-		document.addEventListener("keydown", this.handleKeyDown)
-	}
+const App = (props: Props) => {
+	const [currentForm, setCurrentForm] = useState(CurrentForm.NONE);
+	const [isPaused, setIsPaused] = useState(false);
 
-	render() {
-		return (
-			<div>
-				<div id="bug-background"></div>
-				<div id="ground"></div>
-				<div id="bug-ui" style={{ height: this.props.height, width: this.props.width }}></div>
-				<div id="bug-controls">
-					<button
-						id="pause-button"
-						className={this.props.game.isPaused ? "paused" : ""}
-						onClick={this.pause}
-					>
-						PAUSE
-					</button>
-					<button id="add-bug" onClick={() => this.addBug()}>
-						Add Bug
-					</button>
-					<button id="add-tree" onClick={() => this.addPlant()}>
-						Add Plant
-					</button>
-				</div>
-				<BugForm addBug={this.addBug} />
-				<Debugger game={this.props.game} />
-			</div >);
-	}
+	useEffect(() => {
+		props.game.start()
+		document.addEventListener("keydown", handleKeyDown)
+	}, []);
 
-	private handleKeyDown = (e: KeyboardEvent) => {
+	const handleKeyDown = (e: KeyboardEvent) => {
 		switch (e.key) {
 			case "p":
-				this.pause()
+				pause()
 				break
 			case "b":
-				this.addBug()
+				addBug()
 				break
 			case "t":
-				this.addPlant()
+				addPlant()
 				break
 		}
 	}
 
-	private pause = () => {
-		this.props.game.togglePause();
-		this.forceUpdate();
+	const pause = () => {
+		props.game.togglePause();
+		setIsPaused(!isPaused);
 	}
 
-	private addPlant = (): void => {
-		const { game, plantFactory: plantFactory } = this.props
+	const addPlant = (): void => {
+		const { game, plantFactory: plantFactory } = props
 
 		game.addEntity(plantFactory.build())
 	}
 
-	private addBug = (initialState?: Partial<BugState>) => {
-		const { game, bugFactory } = this.props
+	const addBug = (initialState?: Partial<BugState>) => {
+		const { game, bugFactory } = props
 
 		const scaleFactor = randInt(5, 10)
 		const size = new Victor(3, 2).multiplyScalar(scaleFactor)
 		const speed = scaleFactor / 10
 
 		const bug = bugFactory.build(initialState ?? { size, speed })
-		this.setState({ bug })
 		game.addEntity(bug)
 	}
+
+	return (
+		<div>
+			<div id="bug-background"></div>
+			<div id="ground"></div>
+			<div id="bug-ui" style={{ height: props.height, width: props.width }}></div>
+			<div id="bug-controls">
+				<ul id="bug-tabs">
+					<li id="add-bug" onClick={() => setCurrentForm(CurrentForm.BUG)}>
+						Add Bug
+					</li>
+					<li id="add-tree" onClick={() => addPlant()}>
+						Add Plant
+					</li>
+					<li
+						id="pause-button"
+						className={props.game.isPaused ? "paused" : ""}
+						onClick={pause}
+					>
+						PAUSE
+					</li>
+				</ul>
+				{currentForm == CurrentForm.BUG && <BugForm addBug={addBug} />}
+			</div>
+			<Debugger game={props.game} />
+		</div >);
 }
 
 export default App
