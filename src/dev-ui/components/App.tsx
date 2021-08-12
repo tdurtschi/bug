@@ -5,9 +5,11 @@ import BugFactory from '../../core/entities/bug/bugFactory'
 import PlantFactory from '../../core/entities/plant/plantFactory'
 import { randInt } from '../../core/util/stats'
 import { Debugger } from './Debugger'
-import { BugForm } from './BugForm'
+import { BugForm } from './forms/BugForm'
 import { BugState } from '../../core/entities/bug/bug'
 import { useEffect, useState } from 'react'
+import { PlantForm } from './forms/PlantForm'
+import { PlantState } from '../../core/entities/plant/plant'
 
 interface Props {
 	game: Game,
@@ -51,10 +53,10 @@ const App = (props: Props) => {
 		setIsPaused(!isPaused);
 	}
 
-	const addPlant = (): void => {
+	const addPlant = (initialState?: Partial<PlantState>): void => {
 		const { game, plantFactory: plantFactory } = props
 
-		game.addEntity(plantFactory.build())
+		game.addEntity(plantFactory.build(initialState))
 	}
 
 	const addBug = (initialState?: Partial<BugState>) => {
@@ -78,7 +80,7 @@ const App = (props: Props) => {
 					<li id="add-bug" onClick={() => setCurrentForm(CurrentForm.BUG)}>
 						Add Bug
 					</li>
-					<li id="add-tree" onClick={() => addPlant()}>
+					<li id="add-plant" onClick={() => setCurrentForm(CurrentForm.PLANT)}>
 						Add Plant
 					</li>
 					<li
@@ -90,6 +92,7 @@ const App = (props: Props) => {
 					</li>
 				</ul>
 				{currentForm == CurrentForm.BUG && <BugForm addBug={addBug} />}
+				{currentForm == CurrentForm.PLANT && <PlantForm addPlant={addPlant} />}
 			</div>
 			<Debugger game={props.game} />
 		</div >);

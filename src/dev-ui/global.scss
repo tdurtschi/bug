@@ -86,27 +86,26 @@ $BORDER: 0px;
       background-color: #ffff88;
     }
   }
-}
 
-#bug-form {
-  display: flex;
-  flex-direction: column;
-  z-index: 10;
-  width: 500px;
-  padding: 4px;
-  border: 1px solid black;
-
-  > div {
-    width: 100%;
+  form {
     display: flex;
-    margin: 4px 0px;
+    flex-direction: column;
+    z-index: 10;
+    width: 500px;
+    padding: 4px;
 
-    button {
-      width: 50%;
+    > div {
+      width: 100%;
+      display: flex;
+      margin: 4px 0px;
+
+      button {
+        width: 50%;
+      }
     }
-  }
 
-  .input-row {
-    justify-content: space-between;
+    .input-row {
+      justify-content: space-between;
+    }
   }
 }

@@ -11,7 +11,6 @@ import { Climb } from "./behaviors/climb"
 import BugInstinct, { IBugInstinct } from "./behaviors/BugInstinct"
 
 export interface BugState extends EntityState {
-  [index: string]: any
   direction: Victor
   speed: number
   climbingOn?: IClimbingOn

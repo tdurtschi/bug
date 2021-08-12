@@ -11,6 +11,13 @@ interface PlantStateInternal extends PlantState {
 	graph: TreeStruct
 }
 
+export function defaultState(): Partial<PlantState> {
+	return {
+		pos: new Victor(1, 0),
+		size: new Victor(1, 1)
+	}
+}
+
 export default class Plant implements Entity, PlantState {
 	graph: TreeStruct
 	pos: Victor
@@ -24,12 +31,9 @@ export default class Plant implements Entity, PlantState {
 
 		Object.assign(
 			this,
-			{
-				pos: new Victor(1, 0),
-				size: new Victor(1, 1),
-				direction: new Victor(1, 0),
-				graph: new TreeStruct()
-			}, initialState)
+			defaultState(),
+			{graph: new TreeStruct()},
+			 initialState)
 	}
 
 	public getAbsolutePos = (node: ITreeStruct, accumulator?: Victor, rootNode?: ITreeStruct): Victor => {
