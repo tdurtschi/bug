@@ -1,4 +1,3 @@
-import Plant from "../../plant/plant"
 import Victor = require("victor")
 import TreeBuilder from "../../plant/treeBuilder"
 import Bug from "../bug"
@@ -7,10 +6,11 @@ import { multi } from "../../../util/stats"
 import { expectEquals } from "../../../util/vectors"
 import { TurnAround } from "./turnAround"
 import { DummyBugInstinct } from "./BugInstinct"
+import { Tree } from "../../plant/tree"
 
 describe("Climbing mode", () => {
   it("Climbs up on a branch", () => {
-    const tree = new Plant(1, {
+    const tree = new Tree(1, {
       pos: new Victor(0, 0),
       graph: new TreeBuilder().node(0, 100).build(),
     })
@@ -39,7 +39,7 @@ describe("Climbing mode", () => {
         speed: 1,
         pos: new Victor(0, 30),
         climbingOn: {
-          plant: new Plant(1, { pos: new Victor(0, 0), graph: tree }),
+          plant: new Tree(1, { pos: new Victor(0, 0), graph: tree }),
           branch: tree,
         },
         direction: new Victor(0, 1),
@@ -64,7 +64,7 @@ describe("Climbing mode", () => {
       speed: 1,
       pos: new Victor(0, 30),
       climbingOn: {
-        plant: new Plant(1, { pos: new Victor(0, 0), graph: tree }),
+        plant: new Tree(1, { pos: new Victor(0, 0), graph: tree }),
         branch: tree,
       },
       direction: new Victor(0, 1),
@@ -90,7 +90,7 @@ describe("Climbing mode", () => {
       speed: 1,
       pos: new Victor(0, 30),
       climbingOn: {
-        plant: new Plant(1, { pos: new Victor(0, 0), graph: tree }),
+        plant: new Tree(1, { pos: new Victor(0, 0), graph: tree }),
         branch: tree.left,
       },
       direction: direction,
@@ -115,7 +115,7 @@ describe("Climbing mode", () => {
         pos: new Victor(0, 0),
         size: new Victor(30, 20),
         climbingOn: {
-          plant: new Plant(1, { pos: new Victor(0, 0), graph: tree }),
+          plant: new Tree(1, { pos: new Victor(0, 0), graph: tree }),
           branch: tree,
         },
         direction: direction,
@@ -142,7 +142,7 @@ describe("Climbing mode", () => {
       pos: new Victor(0, 0),
       size: new Victor(30, 20),
       climbingOn: {
-        plant: new Plant(1, { pos: new Victor(0, 0), graph: tree }),
+        plant: new Tree(1, { pos: new Victor(0, 0), graph: tree }),
         branch: tree,
       },
       direction: direction,

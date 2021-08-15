@@ -2,7 +2,7 @@ import Entity from "./entities/entity";
 import Bug from "./entities/bug/bug";
 import EntityManager from "./entity-manager";
 import Wall from "./entities/wall/wall";
-import Plant from "./entities/plant/plant";
+import { Tree } from "./entities/plant/tree";
 
 describe("Entity Manager", () => {
 	it("Accepts an initial state", () => {
@@ -23,7 +23,7 @@ describe("Entity Manager", () => {
 	})
 
 	it("Sorts entities by z-index when it receives an event", () => {
-		const plant = new Plant(0);
+		const plant = new Tree(0);
 		const bug = new Bug(1, { climbingOn: { plant: plant, branch: plant.graph } });
 		const entities = [
 			bug,

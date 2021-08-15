@@ -1,11 +1,11 @@
-import Plant from "./plant";
 import TreeBuilder from "./treeBuilder";
 import { vectorEquals } from "../../util/vectors";
 import Victor = require("victor");
+import { Tree } from "./tree";
 
 describe("Plant", () => {
 	it("Gets the absolute position of a node", () => {
-		const tree = new Plant(0, {
+		const tree = new Tree(0, {
 			graph: new TreeBuilder()
 				.node(100, 10)
 				.left(new TreeBuilder()

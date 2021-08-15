@@ -2,8 +2,8 @@ import Bug from "./entities/bug/bug"
 import EntityUpdater from "./entity-updater"
 import Victor from "victor"
 import Entity from "./entities/entity";
-import Plant from "./entities/plant/plant";
 import { entityManagerStub } from "../../spec/entity-manager-stub";
+import { Tree } from "./entities/plant/tree";
 
 const intersectionsForEntity = (entity: Entity): any[] => (entity.update as jasmine.Spy).calls.mostRecent().args[0]
 
@@ -79,7 +79,7 @@ describe("Entity Updater", () => {
 			const entities = [
 				new Bug(0, { pos: new Victor(10, 1), direction: new Victor(-1, 0) }), // Moving left
 				new Bug(0, { pos: new Victor(10, 1), direction: new Victor(1, 0) }), // Moving right
-				new Plant(1, { pos: new Victor(10, 1) })
+				new Tree(1, { pos: new Victor(10, 1) })
 			]
 			entities.forEach(e => e.update = jasmine.createSpy());
 

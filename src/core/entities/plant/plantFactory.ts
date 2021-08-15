@@ -1,7 +1,7 @@
 import Plant, { PlantState } from "./plant"
-import { PlantagoBushStruct } from "./plantagoBushStruct"
 import Victor from "victor"
 import { randInt } from "../../util/stats"
+import { Plantago } from "./plantago"
 
 export default class PlantFactory {
   private plantPosCursor: Victor
@@ -13,12 +13,11 @@ export default class PlantFactory {
   build(initialState?: Partial<PlantState>): Plant {
     const newState = Object.assign(
       {
-        graph: new PlantagoBushStruct(),
         pos: this.getNextPos(),
       },
       initialState
     )
-    return new Plant(this.generateId(), newState)
+    return new Plantago(this.generateId(), newState)
   }
 
   private getNextPos() {

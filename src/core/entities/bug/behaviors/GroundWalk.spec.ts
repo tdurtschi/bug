@@ -3,8 +3,8 @@ import Victor = require("victor")
 import { GroundWalk } from "./GroundWalk"
 import Wall from "../../wall/wall"
 import { expectEquals } from "../../../util/vectors"
-import Plant from "../../plant/plant"
 import { DummyBugInstinct } from "./BugInstinct"
+import { Tree } from "../../plant/tree"
 
 describe("Ground Walking", () => {
 	it("will turn around when there is an obstruction ahead", () => {
@@ -37,7 +37,7 @@ describe("Ground Walking", () => {
 	})
 
 	it("will change to climbing mode when it reaches a tree if toggle is true", () => {
-		const input = [new Plant(1, { pos: new Victor(20, 0) })]
+		const input = [new Tree(1, { pos: new Victor(20, 0) })]
 		const bug = new Bug(0, {
 			pos: new Victor(10, 0),
 			size: new Victor(30, 20),
@@ -56,7 +56,7 @@ describe("Ground Walking", () => {
 	})
 
 	it("will stay on the ground when it reaches a tree if toggle is false", () => {
-		const input = [new Plant(1, { pos: new Victor(20, 0) })]
+		const input = [new Tree(1, { pos: new Victor(20, 0) })]
 		const bug = new Bug(0, {
 			pos: new Victor(10, 0),
 			size: new Victor(30, 20),
@@ -75,7 +75,7 @@ describe("Ground Walking", () => {
 	})
 
 	it("Emits an event when it starts climbing a tree", (done: DoneFn) => {
-		const input = [new Plant(1, { pos: new Victor(20, 0) })]
+		const input = [new Tree(1, { pos: new Victor(20, 0) })]
 		const bug = new Bug(0, {
 			pos: new Victor(10, 0),
 			size: new Victor(30, 20),

@@ -18,7 +18,7 @@ export function defaultState(): Partial<PlantState> {
 	}
 }
 
-export default class Plant implements Entity, PlantState {
+export default abstract class Plant implements Entity, PlantState {
 	graph: TreeStruct
 	pos: Victor
 	size: Victor
@@ -32,7 +32,7 @@ export default class Plant implements Entity, PlantState {
 		Object.assign(
 			this,
 			defaultState(),
-			{graph: new TreeStruct()},
+			{graph: this.struct()},
 			 initialState)
 	}
 
@@ -58,5 +58,8 @@ export default class Plant implements Entity, PlantState {
 	public update = (input: any) => {
 		this.graph.update()
 	}
+
+	public abstract struct(): ITreeStruct;
 }
+
 
