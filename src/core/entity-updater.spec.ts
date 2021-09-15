@@ -3,7 +3,7 @@ import EntityUpdater from "./entity-updater"
 import Victor from "victor"
 import Entity from "./entities/entity";
 import { entityManagerStub } from "../../spec/entity-manager-stub";
-import { Tree } from "./entities/plant/tree";
+import { Tree } from "./entities/plant/tree/tree";
 
 const intersectionsForEntity = (entity: Entity): any[] => (entity.update as jasmine.Spy).calls.mostRecent().args[0]
 

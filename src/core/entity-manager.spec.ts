@@ -2,7 +2,7 @@ import Entity from "./entities/entity";
 import Bug from "./entities/bug/bug";
 import EntityManager from "./entity-manager";
 import Wall from "./entities/wall/wall";
-import { Tree } from "./entities/plant/tree";
+import { Tree } from "./entities/plant/tree/tree";
 
 describe("Entity Manager", () => {
 	it("Accepts an initial state", () => {

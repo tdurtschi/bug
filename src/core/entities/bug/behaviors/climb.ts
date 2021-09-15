@@ -5,7 +5,7 @@ import { ITreeStruct } from "../../plant/ITreeStruct"
 import { randBool, randFromWeighted } from "../../../util/stats"
 import Victor = require("victor")
 import { TurnAround } from "./turnAround"
-import { PlantagoBushStruct } from "../../plant/plantagoBushStruct"
+import { PlantagoBushStruct } from "../../plant/plantago/plantagoBushStruct"
 
 export class Climb extends BugBehavior {
   public do(): void {

@@ -1,4 +1,4 @@
-import { ITreeStruct } from "./ITreeStruct";
+import { ITreeStruct } from "../ITreeStruct";
 import Victor = require("victor");
 
 export class TreeBranchStruct implements ITreeStruct {

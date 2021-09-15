@@ -4,7 +4,7 @@ import { GroundWalk } from "./GroundWalk"
 import Wall from "../../wall/wall"
 import { expectEquals } from "../../../util/vectors"
 import { DummyBugInstinct } from "./BugInstinct"
-import { Tree } from "../../plant/tree"
+import { Tree } from "../../plant/tree/tree"
 
 describe("Ground Walking", () => {
 	it("will turn around when there is an obstruction ahead", () => {

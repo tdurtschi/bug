@@ -1,7 +1,7 @@
-import TreeBuilder from "./treeBuilder";
+import TreeBuilder from "./tree/treeBuilder";
 import { vectorEquals } from "../../util/vectors";
 import Victor = require("victor");
-import { Tree } from "./tree";
+import { Tree } from "./tree/tree";
 
 describe("Plant", () => {
 	it("Gets the absolute position of a node", () => {

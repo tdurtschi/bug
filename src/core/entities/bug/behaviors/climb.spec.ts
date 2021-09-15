@@ -1,12 +1,12 @@
 import Victor = require("victor")
-import TreeBuilder from "../../plant/treeBuilder"
+import TreeBuilder from "../../plant/tree/treeBuilder"
 import Bug from "../bug"
 import { Climb } from "./climb"
 import { multi } from "../../../util/stats"
 import { expectEquals } from "../../../util/vectors"
 import { TurnAround } from "./turnAround"
 import { DummyBugInstinct } from "./BugInstinct"
-import { Tree } from "../../plant/tree"
+import { Tree } from "../../plant/tree/tree"
 
 describe("Climbing mode", () => {
   it("Climbs up on a branch", () => {

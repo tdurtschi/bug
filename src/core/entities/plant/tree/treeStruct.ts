@@ -1,5 +1,5 @@
 import Victor = require("victor")
-import { ITreeStruct } from "./ITreeStruct"
+import { ITreeStruct } from "../ITreeStruct"
 
 export class TreeStruct implements ITreeStruct {
 	parent: ITreeStruct | null = null

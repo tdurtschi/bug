@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import Victor from "victor"
 import { EntityState } from "../../../core/entities/entity"
 import { defaultState, PlantState } from "../../../core/entities/plant/plant"
-import { PlantagoBushStruct } from "../../../core/entities/plant/plantagoBushStruct"
+import { PlantagoBushStruct } from "../../../core/entities/plant/plantago/plantagoBushStruct"
 import { Indexable } from "../../Indexable"
 import { InputSet } from "./InputSet"
 

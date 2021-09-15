@@ -1,7 +1,7 @@
-import { ITreeStruct } from "./ITreeStruct";
+import { ITreeStruct } from "../ITreeStruct";
 import Victor = require("victor");
 import { PlantagoStruct } from "./plantagoStruct";
-import { randInt, randBool, normalRange } from "../../util/stats";
+import { randInt, randBool, normalRange } from "../../../util/stats";
 
 export class PlantagoBushStruct implements ITreeStruct {
 	left: ITreeStruct | null;

@@ -1,7 +1,7 @@
 import { fixY, EitherCanvasContext } from "../../canvas-helpers"
 import Plant from "../../../entities/plant/plant"
 import { ITreeStruct } from "../../../entities/plant/ITreeStruct"
-import { PlantagoStruct } from "../../../entities/plant/plantagoStruct"
+import { PlantagoStruct } from "../../../entities/plant/plantago/plantagoStruct"
 
 const leaf = loadLeafAsset()
 const preRenderedPlants: OffscreenCanvas[] = []

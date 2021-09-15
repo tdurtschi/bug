@@ -1,7 +1,7 @@
 import Plant, { PlantState } from "./plant"
 import Victor from "victor"
 import { randInt } from "../../util/stats"
-import { Plantago } from "./plantago"
+import { Plantago } from "./plantago/plantago"
 
 export default class PlantFactory {
   private plantPosCursor: Victor

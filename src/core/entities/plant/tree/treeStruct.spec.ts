@@ -1,5 +1,5 @@
 import { TreeStruct } from "./treeStruct";
-import { ITreeStruct } from "./ITreeStruct";
+import { ITreeStruct } from "../ITreeStruct";
 
 describe('TreeStruct', () => {
 	it("Starts as a single node", () => {

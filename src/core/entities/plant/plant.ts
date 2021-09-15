@@ -1,6 +1,6 @@
 import Entity, { EntityState } from "../entity"
 import Victor from "victor"
-import { TreeStruct } from "./treeStruct"
+import { TreeStruct } from "./tree/treeStruct"
 import { ITreeStruct } from "./ITreeStruct"
 
 export interface PlantState extends EntityState {
@@ -59,7 +59,7 @@ export default abstract class Plant implements Entity, PlantState {
 		this.graph.update()
 	}
 
-	public abstract struct(): ITreeStruct;
+	protected abstract struct(): ITreeStruct;
 }
 
 

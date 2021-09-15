@@ -1,6 +1,6 @@
-import { ITreeStruct } from "./ITreeStruct";
+import { ITreeStruct } from "../ITreeStruct";
 import Victor = require("victor");
-import { normalRange } from "../../util/stats";
+import { normalRange } from "../../../util/stats";
 
 export class PlantagoStruct implements ITreeStruct {
 	parent: ITreeStruct;
@@ -20,5 +20,4 @@ export class PlantagoStruct implements ITreeStruct {
 
 	update = () => {
 	};
-
 }
