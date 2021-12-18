@@ -22,7 +22,6 @@ export interface Game {
 	addEntity: (entity: Entity) => void
 	getEntities: () => Entity[]
 	start: () => void
-	entityManager: IEntityManager
 	width: number
 	height: number
 	exportCurrentState: () => string
@@ -30,9 +29,9 @@ export interface Game {
 
 export class GameEngine implements Game {
 	public isPaused: boolean = false
-	public entityManager: IEntityManager
 	public height: number
 	public width: number
+	entityManager: IEntityManager
 	gameUI: IGameUI
 	entityUpdater: EntityUpdater
 	frame: number = 0

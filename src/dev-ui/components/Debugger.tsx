@@ -56,7 +56,7 @@ export class Debugger extends React.Component<Props, State>{
 	}
 
 	private targetPreviousEntity = () => {
-		const entities = this.props.game.entityManager.getEntities()
+		const entities = this.props.game.getEntities()
 		if (entities.length < 1) { return }
 
 		const currentIndex = entities.indexOf(this.state.currentEntity)
@@ -69,7 +69,7 @@ export class Debugger extends React.Component<Props, State>{
 	}
 
 	private targetNextEntity = () => {
-		const entities = this.props.game.entityManager.getEntities()
+		const entities = this.props.game.getEntities()
 		if (entities.length < 1) { return }
 
 		const currentIndex = entities.indexOf(this.state.currentEntity)
