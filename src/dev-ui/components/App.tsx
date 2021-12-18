@@ -1,8 +1,6 @@
 import * as React from 'react'
 import { Game } from '../../core/game-engine'
 import Victor from "victor"
-import BugFactory from '../../core/entities/bug/bugFactory'
-import PlantFactory from '../../core/entities/plant/plantFactory'
 import { randInt } from '../../core/util/stats'
 import { Debugger } from './Debugger'
 import { BugForm } from './forms/BugForm'
@@ -17,9 +15,7 @@ import Entity from '../../core/entities/entity'
 interface Props {
 	game: Game,
 	height: number,
-	width: number,
-	bugFactory: BugFactory,
-	plantFactory: PlantFactory,
+	width: number
 }
 
 enum CurrentForm {
@@ -58,20 +54,19 @@ const App = (props: Props) => {
 	}
 
 	const addPlant = (initialState?: Partial<PlantState>): void => {
-		const { game, plantFactory: plantFactory } = props
+		const { game } = props
 
-		game.addEntity(plantFactory.build(initialState))
+		game.addPlant(initialState)
 	}
 
 	const addBug = (initialState?: Partial<BugState>) => {
-		const { game, bugFactory } = props
+		const { game } = props
 
 		const scaleFactor = randInt(5, 10)
 		const size = new Victor(3, 2).multiplyScalar(scaleFactor)
 		const speed = scaleFactor / 10
 
-		const bug = bugFactory.build(initialState ?? { size, speed })
-		game.addEntity(bug)
+		game.addBug(initialState ?? { size, speed })
 	}
 
 	const targetEntity = (clientX: number, clientY: number) => {

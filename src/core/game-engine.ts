@@ -5,8 +5,11 @@ import Entity from "./entities/entity";
 import Wall from "./entities/wall/wall";
 import { generateId } from "./util/id-generator";
 import Victor from "victor";
-import Bug from "./entities/bug/bug";
+import Bug, { BugState } from "./entities/bug/bug";
 import * as bugSerializer from "./entities/bug/bugSerializer"
+import { PlantState } from "./entities/plant/plant";
+import PlantFactory from "./entities/plant/plantFactory";
+import BugFactory from "./entities/bug/bugFactory";
 
 export interface GameEngineOptions {
 	gameUI: IGameUI
@@ -19,7 +22,8 @@ export interface GameEngineOptions {
 export interface Game {
 	togglePause: () => void
 	isPaused: boolean
-	addEntity: (entity: Entity) => void
+	addPlant: (initialState?: Partial<PlantState>) => void
+	addBug: (initialState?: Partial<BugState>) => void
 	getEntities: () => Entity[]
 	start: () => void
 	width: number
@@ -35,12 +39,16 @@ export class GameEngine implements Game {
 	gameUI: IGameUI
 	entityUpdater: EntityUpdater
 	frame: number = 0
+	private plantFactory: PlantFactory;
+	private bugFactory: BugFactory;
 
 	constructor(args: GameEngineOptions) {
 		this.gameUI = args.gameUI
 		this.entityManager = args.entityManager // wtf? The game should manage its own entities maybe?
 		this.height = args.height
 		this.width = args.width
+		this.plantFactory = new PlantFactory(generateId, this.width);
+		this.bugFactory = new BugFactory(generateId, this.width);
 
 		this.entityUpdater = new EntityUpdater(args.entityManager)
 		this.createInitialGameState(args.initialState);
@@ -51,10 +59,13 @@ export class GameEngine implements Game {
 		this.gameUI.start()
 	}
 
-	public addEntity(entity: Entity) {
-		this.entityManager.addEntity(entity)
+	public addBug(initialState?: Partial<BugState>){
+		this.entityManager.addEntity(this.bugFactory.build(initialState));
 	}
 
+	public addPlant(initialState?: Partial<PlantState>) {
+		this.entityManager.addEntity(this.plantFactory.build(initialState));
+	}
 
 	public getEntities() {
 		return this.entityManager.getEntities()

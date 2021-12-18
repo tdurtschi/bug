@@ -17,9 +17,7 @@ const game = Game("#bug-ui", HEIGHT, WIDTH);
 const appProps = {
   game: game.game,
   height: HEIGHT,
-  width: WIDTH,
-  bugFactory: game.bugFactory,
-  plantFactory: game.plantFactory,
+  width: WIDTH
 }
 
 const TARGET_DIV_ID = "root"

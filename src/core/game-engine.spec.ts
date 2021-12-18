@@ -3,6 +3,7 @@ import EntityManager, { IEntityManager } from "./entity-manager";
 import Bug from "./entities/bug/bug";
 import { IGameUI } from "./canvas-ui/canvas-ui";
 import newFakeUI from "../../spec/fixtures/fakeUI";
+import { Plantago } from "./entities/plant/plantago/plantago";
 
 describe("Game Engine", () => {
 	beforeEach(() => jasmine.clock().install())
@@ -60,11 +61,19 @@ describe("Game Engine", () => {
 		expect(fakeUI.togglePause).toHaveBeenCalled()
 	})
 
-	it("Passes new entity to entity manager", () => {
+	it("Can add a bug to the game", () => {
 		const game = getGameEngine({ gameUI: fakeUI, entityManager: new EntityManager([]) })
-		const bug = new Bug()
-		game.addEntity(bug)
+		game.addBug({id: 80})
 
-		expect(game.entityManager.getEntities().length).toBeGreaterThan(0);
+		expect(game.getEntities().length).toBeGreaterThan(0);
+		expect(game.getEntities().filter(e => e instanceof Bug)[0].id).toEqual(80);
+	})
+
+	it("Can add a plant to the game", () => {
+		const game = getGameEngine({ gameUI: fakeUI, entityManager: new EntityManager([]) })
+		game.addPlant({id: 100})
+
+		expect(game.getEntities().length).toBeGreaterThan(0);
+		expect(game.getEntities().filter(e => e instanceof Plantago)[0].id).toEqual(100);
 	})
 })
