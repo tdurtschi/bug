@@ -2,8 +2,8 @@ export type EitherCanvasContext =
   | OffscreenCanvasRenderingContext2D
   | CanvasRenderingContext2D
 
-export function fixY(ctx: EitherCanvasContext, y: number) {
-  return ctx.canvas.height - y
+export function fixY(height: number, y: number) {
+  return height - y
 }
 
 export const clearCanvas = (ctx: EitherCanvasContext) => {

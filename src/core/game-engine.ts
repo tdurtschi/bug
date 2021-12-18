@@ -20,6 +20,7 @@ export interface Game {
 	togglePause: () => void
 	isPaused: boolean
 	addEntity: (entity: Entity) => void
+	getEntities: () => Entity[]
 	start: () => void
 	entityManager: IEntityManager
 	width: number
@@ -54,6 +55,12 @@ export class GameEngine implements Game {
 	public addEntity(entity: Entity) {
 		this.entityManager.addEntity(entity)
 	}
+
+
+	public getEntities() {
+		return this.entityManager.getEntities()
+	}
+
 
 	public togglePause() {
 		this.isPaused = !this.isPaused

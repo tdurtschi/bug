@@ -21,7 +21,7 @@ export default (bug: Bug, ctx: CanvasRenderingContext2D) => {
 	const climbingYOffset = bug.climbingOn ? 3 : 0
 	const { direction, size } = bug
 
-	const pos = new Victor(bug.pos.x, fixY(ctx, bug.pos.y))
+	const pos = new Victor(bug.pos.x, fixY(ctx.canvas.height, bug.pos.y))
 
 	ctx.save()
 	ctx.translate(pos.x, pos.y)

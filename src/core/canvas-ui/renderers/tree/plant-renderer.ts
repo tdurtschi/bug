@@ -26,7 +26,7 @@ const drawPlantToCanvas = (plant: Plant, ctx: EitherCanvasContext) => {
   ctx.save()
   ctx.strokeStyle = "#a56a27"
   ctx.lineWidth = 10
-  ctx.translate(pos.x, fixY(ctx, pos.y))
+  ctx.translate(pos.x, fixY(ctx.canvas.height, pos.y))
   renderPlantRecursively(plant.graph, ctx)
   ctx.restore()
 }
