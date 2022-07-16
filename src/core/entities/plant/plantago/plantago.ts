@@ -3,7 +3,7 @@ import Plant from "../plant";
 import { PlantagoBushStruct } from "./plantagoBushStruct";
 
 export class Plantago extends Plant {
-	protected struct(): ITreeStruct {
+	protected generateGraph(): ITreeStruct {
 		return new PlantagoBushStruct();
 	}
 }

@@ -32,7 +32,7 @@ export const BugForm = (props: BugFormProps) => {
             </button>
             <button type="button"
                 onClick={() => {
-                    const scaleFactor = randInt(5, 10)
+                    const scaleFactor = randInt(8, 14)
                     const size = new Victor(3, 2).multiplyScalar(scaleFactor)
                     const speed = scaleFactor / 10
 

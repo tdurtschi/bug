@@ -32,7 +32,7 @@ export default abstract class Plant implements Entity, PlantState {
 		Object.assign(
 			this,
 			defaultState(),
-			{graph: this.struct()},
+			{graph: this.generateGraph()},
 			 initialState)
 	}
 
@@ -59,7 +59,7 @@ export default abstract class Plant implements Entity, PlantState {
 		this.graph.update()
 	}
 
-	protected abstract struct(): ITreeStruct;
+	protected abstract generateGraph(): ITreeStruct;
 }
 
 

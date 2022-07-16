@@ -3,7 +3,7 @@ import Plant from "../plant";
 import { TreeStruct } from "./treeStruct";
 
 export class Tree extends Plant {
-	protected struct(): ITreeStruct {
+	protected generateGraph(): ITreeStruct {
 		return new TreeStruct();
 	}
 }
