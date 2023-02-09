@@ -1,5 +1,5 @@
 import { GameEngine } from "./game-engine";
-import EntityManager, { IEntityManager } from "./entity-manager";
+import EntityManager from "./entity-manager";
 import Bug from "./entities/bug/bug";
 import { IGameUI } from "./canvas-ui/canvas-ui";
 import newFakeUI from "../../spec/fixtures/fakeUI";

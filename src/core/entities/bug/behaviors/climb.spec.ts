@@ -74,7 +74,7 @@ describe("Climbing mode", () => {
     bug.queueBehavior(climb)
     bug.update()
 
-    expect(bug.behaviorQueue[0] instanceof TurnAround).toBeTruthy()
+    expect(bug.behaviorQueue.find(behavior => behavior instanceof TurnAround)).not.toBeUndefined()
   })
 
   it("Moves to the parent branch when climbing down", () => {

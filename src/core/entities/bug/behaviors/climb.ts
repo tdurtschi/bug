@@ -2,10 +2,11 @@ import { BugBehavior } from "./BugBehavior";
 import { walk } from "./walk";
 import Bug from "../bug";
 import { ITreeStruct } from "../../plant/ITreeStruct";
-import { randBool, randFromWeighted } from "../../../util/stats";
+import { randBool, randFromWeighted, randInt } from "../../../util/stats";
 import Victor = require("victor");
 import { TurnAround } from "./turnAround";
 import { PlantagoBushStruct } from "../../plant/plantago/plantagoBushStruct";
+import { Pause } from "./pause";
 
 export class Climb extends BugBehavior {
   public do(): void {
@@ -47,6 +48,7 @@ export class Climb extends BugBehavior {
       if (nextBranch) {
         climbBranch(bug, nextBranch);
       } else {
+        bug.queueBehavior(new Pause(bug, randInt(50, 300)));
         bug.queueBehavior(new TurnAround(bug));
         bug.queueBehavior(new Climb(bug));
         bug.finishBehavior();
@@ -63,21 +65,6 @@ export class Climb extends BugBehavior {
 }
 
 const getNextBranch = (currentBranch: ITreeStruct) => {
-  if (randFromWeighted([4, 1])) {
-    if (
-      currentBranch.left &&
-      currentBranch.left.node instanceof PlantagoBushStruct
-    ) {
-      return currentBranch.left;
-    }
-    if (
-      currentBranch.right &&
-      currentBranch.right.node instanceof PlantagoBushStruct
-    ) {
-      return currentBranch.right;
-    }
-  }
-
   return randBool() && currentBranch.left
     ? currentBranch.left
     : currentBranch.right;

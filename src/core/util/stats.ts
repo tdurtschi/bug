@@ -5,6 +5,7 @@ export const randChance = (numerator: number, denominator: number) => {
 	return Math.random() < numerator / denominator
 }
 
+//pick an item from the list with probability by value (i,e, [1, 2] will give 33% chance 0, 66% chance 1)
 export const randFromWeighted = (list: number[]) => {
 	const total = list.reduce((a, b) => a + b, 0)
 	let result = Math.floor(Math.random() * total) + 1
