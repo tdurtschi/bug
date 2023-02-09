@@ -1,4 +1,4 @@
-import { fixY, EitherCanvasContext } from "../../canvas-helpers"
+import { fixY, EitherCanvasContext, circle } from "../../canvas-helpers"
 import Plant from "../../../entities/plant/plant"
 import { ITreeStruct } from "../../../entities/plant/ITreeStruct"
 import { PlantagoStruct } from "../../../entities/plant/plantago/plantagoStruct"
@@ -40,8 +40,10 @@ const renderPlantRecursively = (
   } else if (root instanceof JadeStem) {
     renderJade(root, ctx)
   } else {
-    ctx.strokeStyle = "#a56a27"
-    ctx.lineWidth = 10
+    // ctx.strokeStyle = "#a56a27"
+    // ctx.lineWidth = 10
+    ctx.strokeStyle = "#000000"
+    ctx.lineWidth = 2
     renderBranch(root, ctx)
     renderBranchChildren(root, ctx)
   }
@@ -92,14 +94,19 @@ function loadLeafAsset(): HTMLImageElement {
 
 function loadJadeAsset(): HTMLImageElement {
   const leaf = new Image()
-  leaf.src = require("./Jade.png")
+  leaf.src = require("./jade-3.png")
   return leaf
 }
 
 function renderJade(root: JadeStem, ctx: EitherCanvasContext) {
   ctx.save()
-  console.log("rendering jade!");
+  ctx.translate(1.1 * jade.width / 2, 0)
   ctx.drawImage(jade, -jade.width, -jade.height, jade.width, jade.height)
+  ctx.translate(-1.1 * jade.width / 2, 0)
+  if(window.DEBUG){
+    renderBranch(root, ctx)
+    renderBranchChildren(root, ctx)
+  } 
   ctx.restore()
 }
 

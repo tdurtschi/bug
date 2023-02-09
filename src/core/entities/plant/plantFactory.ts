@@ -2,6 +2,7 @@ import Plant, { PlantState } from "./plant"
 import Victor from "victor"
 import { randInt } from "../../util/stats"
 import { Plantago } from "./plantago/plantago"
+import { Jade } from "./jade/jade"
 
 export default class PlantFactory {
   private plantPosCursor: Victor
@@ -17,7 +18,8 @@ export default class PlantFactory {
       },
       initialState
     )
-    return new Plantago(this.generateId(), newState)
+    console.log("Created plant with: ", newState);
+    return new Jade(this.generateId(), newState)
   }
 
   private getNextPos() {

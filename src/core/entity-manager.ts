@@ -9,7 +9,7 @@ export interface IEntityManager {
 
 export default class EntityManager implements IEntityManager {
 	private entities: Entity[] = []
-	constructor(initialEntities: Entity[]) {
+	constructor(initialEntities: Entity[] = []) {
 		initialEntities.forEach(this.addEntity);
 	}
 
