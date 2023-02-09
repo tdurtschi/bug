@@ -25,7 +25,7 @@ export const PlantForm = (props: PlantFormProps) => {
             <button id="add-plant"
                 type="button"
                 onClick={() => {
-                    const newState = cloneState(plantState);
+                    const newState = cloneState(plantState) as PlantState;
                     newState.graph = new PlantagoBushStruct();
                     console.log("Create Plant with: ", newState);
                     props.addPlant(newState);
@@ -43,7 +43,7 @@ export const PlantForm = (props: PlantFormProps) => {
     </form >
 }
 
-export function cloneState(state: Partial<EntityState>) {
+export function cloneState(state: Indexable) {
     const newState: Indexable = {};
     Object.keys(state).forEach(key => {
         newState[key] = state[key] instanceof Victor ? state[key].clone() : state[key]

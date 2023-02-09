@@ -1,5 +1,4 @@
 import Victor from "victor"
-import { Indexable } from "../../dev-ui/Indexable";
 
 export default interface Entity extends EntityState {
 	id: number
@@ -7,7 +6,7 @@ export default interface Entity extends EntityState {
 	updateSpeed: number
 }
 
-export interface EntityState extends Indexable{
+export interface EntityState {
 	pos: Victor
 	size: Victor
 }

@@ -59,11 +59,11 @@ export class GameEngine implements Game {
 		this.gameUI.start()
 	}
 
-	public addBug(initialState?: Partial<BugState>){
+	public addBug(initialState?: Partial<BugState & Entity>){
 		this.entityManager.addEntity(this.bugFactory.build(initialState));
 	}
 
-	public addPlant(initialState?: Partial<PlantState>) {
+	public addPlant(initialState?: Partial<PlantState & Entity>) {
 		this.entityManager.addEntity(this.plantFactory.build(initialState));
 	}
 

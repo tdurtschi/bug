@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import Victor from "victor"
 import { BugState, defaultState } from "../../../core/entities/bug/bug"
 import { randInt } from "../../../core/util/stats"
+import { Indexable } from "../../Indexable"
 import { InputSet } from "./InputSet"
 
 export interface BugFormProps {
@@ -10,7 +11,7 @@ export interface BugFormProps {
 
 
 export const BugForm = (props: BugFormProps) => {
-    const [bugState, setBugState] = useState<BugState>({
+    const [bugState, setBugState] = useState<BugState & Indexable>({
         ...defaultState(),
         pos: new Victor(200, 0)
     })

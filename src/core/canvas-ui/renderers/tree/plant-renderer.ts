@@ -2,8 +2,10 @@ import { fixY, EitherCanvasContext } from "../../canvas-helpers"
 import Plant from "../../../entities/plant/plant"
 import { ITreeStruct } from "../../../entities/plant/ITreeStruct"
 import { PlantagoStruct } from "../../../entities/plant/plantago/plantagoStruct"
+import { JadeStem } from "../../../entities/plant/jade/jade"
 
 const leaf = loadLeafAsset()
+const jade = loadJadeAsset()
 const preRenderedPlants: OffscreenCanvas[] = []
 
 export default (plant: Plant, ctx: CanvasRenderingContext2D) => {
@@ -24,8 +26,6 @@ const drawPreRenderedPlant = (plant: Plant, ctx: CanvasRenderingContext2D) => {
 const drawPlantToCanvas = (plant: Plant, ctx: EitherCanvasContext) => {
   const { pos } = plant
   ctx.save()
-  ctx.strokeStyle = "#a56a27"
-  ctx.lineWidth = 10
   ctx.translate(pos.x, fixY(ctx.canvas.height, pos.y))
   renderPlantRecursively(plant.graph, ctx)
   ctx.restore()
@@ -37,7 +37,11 @@ const renderPlantRecursively = (
 ) => {
   if (root instanceof PlantagoStruct) {
     renderLeaf(root, ctx)
+  } else if (root instanceof JadeStem) {
+    renderJade(root, ctx)
   } else {
+    ctx.strokeStyle = "#a56a27"
+    ctx.lineWidth = 10
     renderBranch(root, ctx)
     renderBranchChildren(root, ctx)
   }
@@ -85,3 +89,17 @@ function loadLeafAsset(): HTMLImageElement {
   leaf.src = require("./Leaf.png")
   return leaf
 }
+
+function loadJadeAsset(): HTMLImageElement {
+  const leaf = new Image()
+  leaf.src = require("./Jade.png")
+  return leaf
+}
+
+function renderJade(root: JadeStem, ctx: EitherCanvasContext) {
+  ctx.save()
+  console.log("rendering jade!");
+  ctx.drawImage(jade, -jade.width, -jade.height, jade.width, jade.height)
+  ctx.restore()
+}
+

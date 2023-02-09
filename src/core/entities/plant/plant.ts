@@ -1,6 +1,5 @@
 import Entity, { EntityState } from "../entity"
 import Victor from "victor"
-import { TreeStruct } from "./tree/treeStruct"
 import { ITreeStruct } from "./ITreeStruct"
 
 export interface PlantState extends EntityState {
@@ -8,7 +7,7 @@ export interface PlantState extends EntityState {
 }
 
 interface PlantStateInternal extends PlantState {
-	graph: TreeStruct
+	graph: ITreeStruct
 }
 
 export function defaultState(): Partial<PlantState> {
@@ -19,7 +18,7 @@ export function defaultState(): Partial<PlantState> {
 }
 
 export default abstract class Plant implements Entity, PlantState {
-	graph: TreeStruct
+	graph: ITreeStruct
 	pos: Victor
 	size: Victor
 	id: number
@@ -55,9 +54,7 @@ export default abstract class Plant implements Entity, PlantState {
 		}
 	}
 
-	public update = (input: any) => {
-		this.graph.update()
-	}
+	public abstract update(): void;
 
 	protected abstract generateGraph(): ITreeStruct;
 }
