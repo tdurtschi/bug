@@ -9,12 +9,16 @@ const jade = loadJadeAsset()
 const preRenderedPlants: OffscreenCanvas[] = []
 
 export default (plant: Plant, ctx: CanvasRenderingContext2D) => {
-  if (preRenderedPlants[plant.id]) {
-    drawPreRenderedPlant(plant, ctx)
+  if(window.OffscreenCanvas != undefined){
+    if (preRenderedPlants[plant.id]) {
+      drawPreRenderedPlant(plant, ctx)
+    } else {
+      const offscreenCanvas = new OffscreenCanvas(ctx.canvas.width, ctx.canvas.height)
+      preRenderedPlants[plant.id] = offscreenCanvas
+      drawPlantToCanvas(plant, offscreenCanvas.getContext("2d") as OffscreenCanvasRenderingContext2D)
+    }
   } else {
-    const offscreenCanvas = new OffscreenCanvas(ctx.canvas.width, ctx.canvas.height)
-    preRenderedPlants[plant.id] = offscreenCanvas
-    drawPlantToCanvas(plant, offscreenCanvas.getContext("2d") as OffscreenCanvasRenderingContext2D)
+    drawPlantToCanvas(plant, ctx);
   }
 }
 
