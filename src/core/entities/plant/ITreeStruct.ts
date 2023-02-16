@@ -5,5 +5,4 @@ export interface ITreeStruct {
 	right: ITreeStruct | null;
 	node: Victor;
 	depth: number;
-	update: () => void;
 }

@@ -1,15 +1,19 @@
 import { ITreeStruct } from "../ITreeStruct";
 import Victor = require("victor");
 
+interface IUpdatable {
+	update: () => any;
+}
+
 export class TreeBranchStruct implements ITreeStruct {
-	parent: ITreeStruct;
-	left: ITreeStruct;
-	right: ITreeStruct;
+	parent: ITreeStruct & IUpdatable;
+	left: ITreeStruct & IUpdatable;
+	right: ITreeStruct & IUpdatable;
 	node = new Victor(0, 1);
 	depth: number;
 	maxDepth: number;
 
-	constructor(depth: number = 1, parent?: ITreeStruct, maxDepth: number = 5) {
+	constructor(depth: number = 1, parent?: ITreeStruct & IUpdatable, maxDepth: number = 5) {
 		this.depth = depth
 		this.parent = parent
 		this.maxDepth = maxDepth

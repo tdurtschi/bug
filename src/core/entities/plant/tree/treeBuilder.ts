@@ -5,7 +5,6 @@ import { ITreeStruct } from "../ITreeStruct"
 export default class TreeBuilder {
 	private static defaultNode: ITreeStruct = {
 		depth: 0,
-		update: () => null,
 		parent: null,
 		left: null,
 		right: null,

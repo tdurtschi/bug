@@ -1,15 +1,15 @@
-import { fixY, EitherCanvasContext, circle } from "../../canvas-helpers"
+import { fixY, EitherCanvasContext } from "../../canvas-helpers"
 import Plant from "../../../entities/plant/plant"
 import { ITreeStruct } from "../../../entities/plant/ITreeStruct"
-import { PlantagoStruct } from "../../../entities/plant/plantago/plantagoStruct"
-import { JadeStem } from "../../../entities/plant/jade/jade"
+import { Jade } from "../../../entities/plant/jade/jade"
+import { Plantago } from "../../../entities/plant/plantago/plantago"
 
 const leaf = loadLeafAsset()
 const jade = loadJadeAsset()
 const preRenderedPlants: OffscreenCanvas[] = []
 
 export default (plant: Plant, ctx: CanvasRenderingContext2D) => {
-  if(window.OffscreenCanvas != undefined){
+  if(window.OffscreenCanvas != undefined && !window.DEBUG){
     if (preRenderedPlants[plant.id]) {
       drawPreRenderedPlant(plant, ctx)
     } else {
@@ -31,17 +31,18 @@ const drawPlantToCanvas = (plant: Plant, ctx: EitherCanvasContext) => {
   const { pos } = plant
   ctx.save()
   ctx.translate(pos.x, fixY(ctx.canvas.height, pos.y))
-  renderPlantRecursively(plant.graph, ctx)
+  renderPlantRecursively(plant, plant.graph, ctx)
   ctx.restore()
 }
 
 const renderPlantRecursively = (
+  plant: Plant,
   root: ITreeStruct,
   ctx: EitherCanvasContext
 ) => {
-  if (root instanceof PlantagoStruct) {
+  if (plant instanceof Plantago) {
     renderLeaf(root, ctx)
-  } else if (root instanceof JadeStem) {
+  } else if (plant instanceof Jade) {
     renderJade(root, ctx)
   } else {
     // ctx.strokeStyle = "#a56a27"
@@ -49,7 +50,7 @@ const renderPlantRecursively = (
     ctx.strokeStyle = "#000000"
     ctx.lineWidth = 2
     renderBranch(root, ctx)
-    renderBranchChildren(root, ctx)
+    renderBranchChildren(plant, root, ctx)
   }
 }
 
@@ -61,16 +62,16 @@ const renderBranch = (root: ITreeStruct, ctx: EitherCanvasContext) => {
   ctx.stroke()
 }
 
-const renderBranchChildren = (root: ITreeStruct, ctx: EitherCanvasContext) => {
+const renderBranchChildren = (plant: Plant, root: ITreeStruct, ctx: EitherCanvasContext) => {
   const x = Math.floor(root.node.x),
     y = Math.floor(root.node.y)
   ctx.save()
   ctx.translate(x, -y)
   if (root.left) {
-    renderPlantRecursively(root.left, ctx)
+    renderPlantRecursively(plant, root.left, ctx)
   }
   if (root.right) {
-    renderPlantRecursively(root.right, ctx)
+    renderPlantRecursively(plant, root.right, ctx)
   }
   ctx.restore()
 }
@@ -102,14 +103,14 @@ function loadJadeAsset(): HTMLImageElement {
   return leaf
 }
 
-function renderJade(root: JadeStem, ctx: EitherCanvasContext) {
+function renderJade(root: ITreeStruct, ctx: EitherCanvasContext) {
   ctx.save()
   ctx.translate(1.1 * jade.width / 2, 0)
   ctx.drawImage(jade, -jade.width, -jade.height, jade.width, jade.height)
   ctx.translate(-1.1 * jade.width / 2, 0)
   if(window.DEBUG){
     renderBranch(root, ctx)
-    renderBranchChildren(root, ctx)
+    renderBranchChildren(undefined, root, ctx)
   } 
   ctx.restore()
 }

@@ -3,68 +3,64 @@ import { ITreeStruct } from "../ITreeStruct";
 import Plant from "../plant";
 
 export class Jade extends Plant {
-	protected generateGraph(): ITreeStruct {
-		return new JadeStem();
-	}
+  protected generateGraph(): ITreeStruct {
+    return this.generateGraphRecursive(jadeTree);
+  }
 
-    public update() {
-        
+  private generateGraphRecursive(
+    segment: TreeStructData,
+    parent?: PlantSegment,
+    depth = 0
+  ): PlantSegment {
+    const newSegment = new PlantSegment(
+      depth,
+      parent,
+      new Victor(segment.node.x, segment.node.y),
+      undefined,
+      undefined
+    );
+
+    if (segment.children && segment.children.length) {
+      newSegment.left = this.generateGraphRecursive(segment.children[0], newSegment, depth + 1);
+      
+      if(segment.children.length > 1){
+        newSegment.right = this.generateGraphRecursive(segment.children[1], newSegment, depth + 1);
+      }
     }
+
+    return newSegment;
+  }
+
+  public update() {}
 }
 
-export class JadeStem implements ITreeStruct {
-    parent: ITreeStruct | null;
-    left: ITreeStruct | null;
-    right: ITreeStruct | null;
-    node: Victor;
-    update = () => {};
-
-    constructor(public depth: number = 0) {
-        this.node = new Victor(9, 92);
-        this.left = new JadeSegment(
-            1,
-            this,
-            new Victor(40, 8),
-            undefined,
-            undefined
-        );
-        this.right = new JadeSegment(
-            1,
-            this,
-            new Victor(1, 54),
-            new JadeSegment(
-                2,
-                this,
-                new Victor(2, 66),
-                new JadeSegment(
-                    2,
-                    this,
-                    new Victor(-3, 33),
-                    undefined,
-                    undefined
-                ),
-                new JadeSegment(
-                    2,
-                    this,
-                    new Victor(66, 29),
-                    undefined,
-                    undefined
-                )
-            ),
-            undefined
-        );
-    }
+interface TreeStructData {
+  node: {x: number, y: number},
+  children?: TreeStructData[]
 }
 
-class JadeSegment implements ITreeStruct{
-    
-    update = () => {};
+var jadeTree: TreeStructData = {
+  node: { x: 9, y: 92 },
+  children: [
+    { node: { x: 40, y: 8 } },
+    {
+      node: { x: 1, y: 54 },
+      children: [
+        {
+          node: { x: 2, y: 66 },
+          children: [{ node: { x: -3, y: 33 } }, { node: { x: 66, y: 29 } }],
+        },
+      ],
+    },
+  ],
+};
 
-    constructor(
-        public depth: number,
-        public parent: ITreeStruct,
-        public node: Victor,
-        public left: JadeSegment | undefined,
-        public right: JadeSegment | undefined) {
-    }
+class PlantSegment implements ITreeStruct {
+  constructor(
+    public depth: number,
+    public parent: ITreeStruct,
+    public node: Victor,
+    public left: PlantSegment | undefined,
+    public right: PlantSegment | undefined
+  ) {}
 }

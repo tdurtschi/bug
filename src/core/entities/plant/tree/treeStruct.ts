@@ -1,10 +1,14 @@
 import Victor = require("victor")
 import { ITreeStruct } from "../ITreeStruct"
 
-export class TreeStruct implements ITreeStruct {
-	parent: ITreeStruct | null = null
-	left: ITreeStruct | null = null
-	right: ITreeStruct | null = null
+interface IUpdatable {
+	update: () => any;
+}
+
+export class TreeStruct implements ITreeStruct{
+	parent: (ITreeStruct & IUpdatable) | null = null
+	left: (ITreeStruct & IUpdatable) | null = null
+	right: (ITreeStruct & IUpdatable) | null = null
 	node = new Victor(0, 1)
 	depth: number = 0
 	maxDepth: number;
@@ -13,7 +17,7 @@ export class TreeStruct implements ITreeStruct {
 	branchAngle: number
 	growthFactor: number
 
-	constructor(depth: number = 1, parent?: ITreeStruct, maxDepth = 6) {
+	constructor(depth: number = 1, parent?: (ITreeStruct & IUpdatable), maxDepth = 6) {
 		this.depth = depth
 		this.maxDepth = maxDepth
 		this.maxSize = range2(80, 5)
