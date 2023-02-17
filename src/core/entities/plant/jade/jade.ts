@@ -28,6 +28,10 @@ export class Jade extends Plant {
       }
     }
 
+    if(segment.flipY){
+      newSegment.flipY = true;
+    }
+
     return newSegment;
   }
 
@@ -36,18 +40,22 @@ export class Jade extends Plant {
 
 interface TreeStructData {
   node: {x: number, y: number},
-  children?: TreeStructData[]
+  children?: TreeStructData[],
+  flipY?: boolean
 }
 
 var jadeTree: TreeStructData = {
   node: { x: 9, y: 92 },
+  flipY: true,
   children: [
     { node: { x: 40, y: 8 } },
     {
       node: { x: 1, y: 54 },
+      flipY: true,
       children: [
         {
           node: { x: 2, y: 66 },
+          flipY: true,
           children: [{ node: { x: -3, y: 33 } }, { node: { x: 66, y: 29 } }],
         },
       ],
@@ -56,6 +64,8 @@ var jadeTree: TreeStructData = {
 };
 
 class PlantSegment implements ITreeStruct {
+  public flipY: boolean = false;
+
   constructor(
     public depth: number,
     public parent: ITreeStruct,

@@ -88,7 +88,13 @@ const climbBranch = (
 ) => {
   let offset: Victor;
   if (direction === Direction.UP) {
-    offset = new Victor(bug.size.x / 3, 0).rotate(branch.node.direction());
+    if(!branch.parent) {
+      // Add offset for climbing first branch
+      offset = new Victor(bug.size.x / 3, 0).rotate(branch.node.direction());
+    } else {
+      // Add offset for taking a sharp turn onto a branch
+      offset = new Victor(Math.sin(Math.abs(branch.node.direction() - branch.parent.node.direction()) / 2) * bug.size.x, 0).rotate(branch.node.direction());
+    }
   } else {
     offset = branch.node;
   }

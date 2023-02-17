@@ -20,6 +20,7 @@ export default (bug: Bug, ctx: CanvasRenderingContext2D) => {
   uiBug.update();
   const climbingYOffset = bug.climbingOn ? 3 : 0;
   const groundYOffset = bug.climbingOn ? 0 : Math.ceil(bug.size.y * 0.08) - 2;
+  const XOffset = bug.size.x * -0.2;
   const { direction, size } = bug;
 
   const pos = new Victor(bug.pos.x, fixY(ctx.canvas.height, bug.pos.y));
@@ -36,10 +37,15 @@ export default (bug: Bug, ctx: CanvasRenderingContext2D) => {
 
     ctx.rotate(newDir.angle());
   }
+
+  if(shouldFlipY(bug)){
+    ctx.scale(1, -1);
+  }
+  
   window.DEBUG && horizLine(ctx, size.x);
   ctx.drawImage(
     uiBug.getImage(),
-    0,
+    XOffset,
     -size.y + climbingYOffset + groundYOffset,
     size.x,
     size.y
@@ -47,3 +53,11 @@ export default (bug: Bug, ctx: CanvasRenderingContext2D) => {
 
   ctx.restore();
 };
+
+function shouldFlipY(bug: Bug) {
+  if (bug.climbingOn && (bug.climbingOn.branch as any).flipY) {
+    return true;
+  }
+  return false;
+}
+
