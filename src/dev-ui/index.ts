@@ -13,6 +13,7 @@ const HEIGHT = window.innerHeight
 const WIDTH = window.innerWidth
 
 const game = Game("#bug-ui", HEIGHT, WIDTH);
+(window as any).game = game.game;
 
 const appProps = {
   game: game.game,

@@ -1,4 +1,4 @@
-import { fixY, EitherCanvasContext } from "../../canvas-helpers"
+import { fixY, EitherCanvasContext, circle } from "../../canvas-helpers"
 import Plant from "../../../entities/plant/plant"
 import { ITreeStruct } from "../../../entities/plant/ITreeStruct"
 import { Jade } from "../../../entities/plant/jade/jade"

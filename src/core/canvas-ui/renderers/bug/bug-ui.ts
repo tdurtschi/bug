@@ -3,6 +3,8 @@ import Bug from "../../../entities/bug/bug";
 import { randInt } from "../../../util/stats";
 import { Pause } from "../../../entities/bug/behaviors/pause";
 
+const FRAMES_BETWEEN_STEPS = 25;
+
 export default class BugUI implements UIEntity {
 	imageIdx: number
 	static images: HTMLImageElement[] = BugUI.getBugImages()
@@ -23,7 +25,7 @@ export default class BugUI implements UIEntity {
 	public update() {
 		if (this.bug.behaviorQueue[0] && !(this.bug.behaviorQueue[0] instanceof Pause))
 		{
-			if ((this.frame++ + this.randomOffset) % 15 == 0)
+			if ((this.frame++ + this.randomOffset) % FRAMES_BETWEEN_STEPS == 0)
 			{
 				this.imageIdx = (this.imageIdx + 1) % 2
 			}

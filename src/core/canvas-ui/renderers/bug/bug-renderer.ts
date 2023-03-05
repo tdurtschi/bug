@@ -4,6 +4,8 @@ import Victor = require("victor");
 import Bug from "../../../entities/bug/bug";
 
 const bugUIs: BugUI[] = [];
+const GROUND_Y_OFFSET = 0.08;
+const CLIMBING_Y_OFFSET = 0.1;
 
 const createNewBug = (bug: Bug) => {
   const bugUI = new BugUI(bug.id, bug);
@@ -18,8 +20,8 @@ const getUIBug = (bug: Bug) => {
 export default (bug: Bug, ctx: CanvasRenderingContext2D) => {
   const uiBug = getUIBug(bug);
   uiBug.update();
-  const climbingYOffset = bug.climbingOn ? 3 : 0;
-  const groundYOffset = bug.climbingOn ? 0 : Math.ceil(bug.size.y * 0.08) - 2;
+  const climbingYOffset = bug.climbingOn ? Math.ceil(bug.size.y * CLIMBING_Y_OFFSET) : 0;
+  const groundYOffset = bug.climbingOn ? 0 : Math.ceil(bug.size.y * GROUND_Y_OFFSET);
   const XOffset = bug.size.x * -0.2;
   const { direction, size } = bug;
 
