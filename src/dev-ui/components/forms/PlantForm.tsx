@@ -26,7 +26,6 @@ export const PlantForm = (props: PlantFormProps) => {
                 type="button"
                 onClick={() => {
                     const newState = cloneState(plantState) as PlantState;
-                    newState.graph = new PlantagoBushStruct();
                     console.log("Create Plant with: ", newState);
                     props.addPlant(newState);
                 }}>
