@@ -62,9 +62,8 @@ const App = (props: Props) => {
 	const addBug = (initialState?: Partial<BugState>) => {
 		const { game } = props
 
-		const scaleFactor = randInt(4, 6)
-		const size = new Victor(128, 60).multiplyScalar(scaleFactor/10)
-		const speed = 6 / scaleFactor
+		const size = randInt(3, 5);
+		const speed = Math.ceil(10 / size) / 2
 
 		game.addBug(initialState ?? { size, speed })
 	}

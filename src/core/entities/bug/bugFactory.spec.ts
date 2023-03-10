@@ -28,4 +28,11 @@ describe("BugFactory", () => {
     expect(bug.pos.y).toEqual(0)
     expect(bug.pos.x).not.toEqual(bugFactory.build().pos.x)
   })
+
+  it("Optionally, takes a numerical size and converts it to a vector", () => {
+    const bugFactory = new BugFactory(() => 0, 0)
+    const bug: Bug = bugFactory.build({size: 10})
+    expect(bug.size.y).not.toBeUndefined();
+    expect(bug.size.x).not.toBeUndefined();
+  })
 })

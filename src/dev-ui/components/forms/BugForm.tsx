@@ -6,7 +6,7 @@ import { Indexable } from "../../Indexable"
 import { InputSet } from "./InputSet"
 
 export interface BugFormProps {
-    addBug: (initial: Partial<BugState>) => any
+    addBug: (initial: Partial<BugState> | { size?: Victor | number }) => any
 }
 
 
@@ -33,9 +33,8 @@ export const BugForm = (props: BugFormProps) => {
             </button>
             <button type="button"
                 onClick={() => {
-                    const scaleFactor = randInt(8, 14)
-                    const size = new Victor(3, 2).multiplyScalar(scaleFactor)
-                    const speed = scaleFactor / 10
+                    const size = randInt(3, 6)
+                    const speed = size * 3 / 10
 
                     const bugState = { size, speed }
                     props.addBug(bugState);

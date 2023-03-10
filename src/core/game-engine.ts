@@ -23,7 +23,7 @@ export interface Game {
 	togglePause: () => void
 	isPaused: boolean
 	addPlant: (initialState?: Partial<PlantState>) => void
-	addBug: (initialState?: Partial<BugState>) => void
+	addBug: (initialState?: Partial<BugState> | {size?: number}) => void
 	getEntities: () => Entity[]
 	start: () => void
 	width: number
@@ -59,7 +59,7 @@ export class GameEngine implements Game {
 		this.gameUI.start()
 	}
 
-	public addBug(initialState?: Partial<BugState & Entity>){
+	public addBug(initialState?: Partial<BugState & Entity> & {size?: number}){
 		this.entityManager.addEntity(this.bugFactory.build(initialState));
 	}
 
