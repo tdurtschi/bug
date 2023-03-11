@@ -76,4 +76,34 @@ describe("Game Engine", () => {
 		expect(game.getEntities().length).toBeGreaterThan(0);
 		expect(game.getEntities().filter(e => e instanceof Plant)[0].id).toEqual(100);
 	})
+
+	it("Updates the game entities slower when the speed is reduced", () => {
+		const update = jasmine.createSpy("BUG-update");
+		const spyBug = Object.assign(new Bug(), { update });
+
+		const game = getGameEngine({ gameUI: fakeUI, entityManager: new EntityManager([spyBug]) })
+		game.start();
+		
+		game.setSpeed(100);
+		jasmine.clock().tick(1000)
+		const updateCount100 = update.calls.count();
+		
+		update.calls.reset()
+
+		game.setSpeed(50);
+		jasmine.clock().tick(1000)
+		const updateCount50 = update.calls.count();
+
+		expect(updateCount100).withContext("Game update count was wrong").toBeGreaterThan(updateCount50);
+	})
+
+	it("Updates the game entities slower when the speed is reduced", (done) => {
+		const game = getGameEngine({ gameUI: fakeUI, entityManager: new EntityManager([]) })
+		game.start();
+		
+		game.setSpeed(0);
+		jasmine.clock().tick(1000)
+		
+		done();
+	})
 })

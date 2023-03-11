@@ -27,6 +27,7 @@ enum CurrentForm {
 const App = (props: Props) => {
 	const [currentForm, setCurrentForm] = useState(CurrentForm.NONE);
 	const [isPaused, setIsPaused] = useState(false);
+	const [gameSpeed, setGameSpeed] = useState(100);
 	const bugUiRef = React.createRef();
 
 	useEffect(() => {
@@ -34,10 +35,15 @@ const App = (props: Props) => {
 		document.addEventListener("keydown", handleKeyDown)
 	}, []);
 
+	useEffect(() => {
+		props.game.setSpeed(gameSpeed)
+	}, [gameSpeed]);
+
 	const handleKeyDown = (e: KeyboardEvent) => {
 		switch (e.key) {
 			case "p":
 				pause()
+				console.log(gameSpeed);
 				break
 			case "b":
 				addBug()
@@ -111,6 +117,13 @@ const App = (props: Props) => {
 						onClick={pause}
 					>
 						PAUSE
+					</li>
+					<li>
+						<label htmlFor="gameSpeed">Speed (%): {gameSpeed}</label>
+					</li>
+					<li>
+						<button type="button" onClick={() => {setGameSpeed(gameSpeed + 5)}}>+</button>
+						<button type="button" onClick={() => {gameSpeed > 5 && setGameSpeed(gameSpeed - 5)}}>-</button>
 					</li>
 				</ul>
 				{currentForm == CurrentForm.BUG && <BugForm addBug={addBug} />}

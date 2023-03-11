@@ -29,6 +29,7 @@ export interface Game {
 	width: number
 	height: number
 	exportCurrentState: () => string
+	setSpeed: (speed: number) => void
 }
 
 export class GameEngine implements Game {
@@ -41,6 +42,7 @@ export class GameEngine implements Game {
 	frame: number = 0
 	private plantFactory: PlantFactory;
 	private bugFactory: BugFactory;
+	private updateHandle: NodeJS.Timer;
 
 	constructor(args: GameEngineOptions) {
 		this.gameUI = args.gameUI
@@ -55,7 +57,7 @@ export class GameEngine implements Game {
 	}
 
 	public start() {
-		setInterval(this.update, 17)
+		this.updateHandle = setInterval(this.update, calculateUpdatePeriodMs(100));
 		this.gameUI.start()
 	}
 
@@ -85,6 +87,11 @@ export class GameEngine implements Game {
 		if (!this.isPaused) {
 			this.entityUpdater.update()
 		}
+	}
+	
+	public setSpeed(speed: number){
+		clearInterval(this.updateHandle);
+		this.updateHandle = setInterval(this.update, calculateUpdatePeriodMs(speed));
 	}
 
 	createInitialGameState(initialState?: string) {
@@ -127,4 +134,14 @@ function rehydrateEntitiesFromString(state: string): Entity[] {
 		.map((entity: any) => bugSerializer.fromJson(entity as string))
 
 	return entities
+}
+
+function calculateUpdatePeriodMs(gameSpeed: number) {
+	// if speed = 100, update 60fps
+	// if speed = 0, update 0fps
+	const framesPerSecond = gameSpeed * 6 / 10;
+	// if(framesPerSecond == 0) return 0;
+
+	const updatePeriod = Math.ceil(1000 / framesPerSecond);
+	return updatePeriod;
 }

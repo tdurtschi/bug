@@ -9,5 +9,6 @@ export const gameStub = (): Game => ({
 	start: jasmine.createSpy("start"),
 	height: 0,
 	width: 0,
-	exportCurrentState: jasmine.createSpy("exportCurrentState")
+	exportCurrentState: jasmine.createSpy("exportCurrentState"),
+	setSpeed: (): any => null,
 })
