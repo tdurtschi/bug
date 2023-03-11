@@ -56,7 +56,10 @@ var jadeTree: TreeStructData = {
         {
           node: { x: 2, y: 66 },
           flipY: true,
-          children: [{ node: { x: -3, y: 33 } }, { node: { x: 66, y: 29 } }],
+          children: [
+            { node: { x: -3, y: 33 } }, 
+            { node: { x: 66, y: 29 } }
+          ],
         },
       ],
     },

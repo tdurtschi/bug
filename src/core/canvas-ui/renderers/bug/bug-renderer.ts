@@ -22,7 +22,7 @@ export default (bug: Bug, ctx: CanvasRenderingContext2D) => {
   uiBug.update();
   const climbingYOffset = bug.climbingOn ? Math.ceil(bug.size.y * CLIMBING_Y_OFFSET) : 0;
   const groundYOffset = bug.climbingOn ? 0 : Math.ceil(bug.size.y * GROUND_Y_OFFSET);
-  const XOffset = bug.size.x * -0.2;
+  const XOffset = bug.size.x * -1/3;
   const { direction, size } = bug;
 
   const pos = new Victor(bug.pos.x, fixY(ctx.canvas.height, bug.pos.y));
@@ -49,7 +49,7 @@ export default (bug: Bug, ctx: CanvasRenderingContext2D) => {
     uiBug.getImage(),
     XOffset,
     -size.y + climbingYOffset + groundYOffset,
-    size.x,
+    size.x * 10/6,
     size.y
   );
 

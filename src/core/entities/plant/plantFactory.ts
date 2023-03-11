@@ -18,7 +18,6 @@ export default class PlantFactory {
       },
       initialState
     )
-    console.log("Created plant with: ", newState);
     return new Jade(this.generateId(), newState)
   }
 

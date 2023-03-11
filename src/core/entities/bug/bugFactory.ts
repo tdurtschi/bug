@@ -1,4 +1,4 @@
-import Bug, { BugState } from "./bug";
+import Bug, { BugState, defaultState } from "./bug";
 import Victor = require("victor");
 import { randBool } from "../../util/stats";
 
@@ -17,7 +17,7 @@ export default class BugFactory {
         size:
           initialState && initialState.size instanceof Victor
             ? initialState.size
-            : new Victor(128, 60).multiplyScalar(initialState?.size as number / 10),
+            : defaultState().size.multiplyScalar(initialState?.size as number / 4),
       }
     );
 

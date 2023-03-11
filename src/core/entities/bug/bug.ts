@@ -24,7 +24,7 @@ export interface IClimbingOn {
 export const defaultState = () =>  ({
   //Position: the front of the bug at foot level
   pos: new Victor(0, 0),
-  size: new Victor(51.2, 24),
+  size: new Victor(30.72, 24),
   direction: new Victor(1, 0),
   speed: 1
 })

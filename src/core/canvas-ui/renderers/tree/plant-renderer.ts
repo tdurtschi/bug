@@ -9,7 +9,7 @@ const jade = loadJadeAsset()
 const preRenderedPlants: OffscreenCanvas[] = []
 
 export default (plant: Plant, ctx: CanvasRenderingContext2D) => {
-  if(window.OffscreenCanvas != undefined && !window.DEBUG){
+  if ( window.OffscreenCanvas != undefined && !window.DEBUG ){
     if (preRenderedPlants[plant.id]) {
       drawPreRenderedPlant(plant, ctx)
     } else {
@@ -45,8 +45,6 @@ const renderPlantRecursively = (
   } else if (plant instanceof Jade) {
     renderJade(root, ctx)
   } else {
-    // ctx.strokeStyle = "#a56a27"
-    // ctx.lineWidth = 10
     ctx.strokeStyle = "#000000"
     ctx.lineWidth = 2
     renderBranch(root, ctx)
@@ -99,15 +97,15 @@ function loadLeafAsset(): HTMLImageElement {
 
 function loadJadeAsset(): HTMLImageElement {
   const leaf = new Image()
-  leaf.src = require("./jade-3.png")
+  leaf.src = require("./Jade.png")
   return leaf
 }
 
 function renderJade(root: ITreeStruct, ctx: EitherCanvasContext) {
   ctx.save()
-  ctx.translate(1.1 * jade.width / 2, 0)
+  ctx.translate(jade.width / 2, 0)
   ctx.drawImage(jade, -jade.width, -jade.height, jade.width, jade.height)
-  ctx.translate(-1.1 * jade.width / 2, 0)
+  ctx.translate(-jade.width / 2, 0)
   if(window.DEBUG){
     renderBranch(root, ctx)
     renderBranchChildren(undefined, root, ctx)
