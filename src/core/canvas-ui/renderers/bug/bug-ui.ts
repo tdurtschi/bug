@@ -33,8 +33,8 @@ export default class BugUI implements UIEntity {
 	}
 
 	private static getBugImages() {
-		const weevil1 = require("./weevil1.png")
-		const weevil2 = require("./weevil2.png")
+		const weevil1 = require("./weevil1.png").default
+		const weevil2 = require("./weevil2.png").default
 
 		const images = [
 			new Image(),

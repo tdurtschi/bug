@@ -91,13 +91,13 @@ const renderLeaf = (root: ITreeStruct, ctx: EitherCanvasContext) => {
 
 function loadLeafAsset(): HTMLImageElement {
   const leaf = new Image()
-  leaf.src = require("./Leaf.png")
+  leaf.src = require("./Leaf.png").default
   return leaf
 }
 
 function loadJadeAsset(): HTMLImageElement {
   const leaf = new Image()
-  leaf.src = require("./Jade.png")
+  leaf.src = require("./Jade.png").default
   return leaf
 }
 
