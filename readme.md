@@ -1,7 +1,7 @@
 # Bug
 Bug is a simulation that models a weevil walking around in an HTML canvas.
 
-Check out (https://www.tdurtschi.com/)[https://www.tdurtschi.com/] for a live demo.
+Check out the [live demo](https://www.tdurtschi.com/).
 
 ## Setup
 ### Prerequisites
