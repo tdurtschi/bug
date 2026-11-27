@@ -3,6 +3,8 @@ Bug is a simulation that models a weevil walking around in an HTML canvas.
 
 Check out the [live demo](https://tdurtschi.github.io/bug/).
 
+Install via npm: [@tdurtschi/bug](https://www.npmjs.com/package/@tdurtschi/bug)
+
 ## Setup
 ### Prerequisites
 * NodeJS 17+
